@@ -1,0 +1,298 @@
+{
+  "common": {
+    "appName": "CLARTAS",
+    "tagline": "Pabrik konten e-commerce bertenaga AI",
+    "loading": "Memuat...",
+    "save": "Simpan",
+    "cancel": "Batal",
+    "delete": "Hapus",
+    "edit": "Edit",
+    "create": "Buat",
+    "upload": "Unggah",
+    "download": "Unduh",
+    "export": "Ekspor",
+    "search": "Cari",
+    "back": "Kembali",
+    "next": "Berikutnya",
+    "continue": "Lanjut",
+    "confirm": "Konfirmasi",
+    "close": "Tutup",
+    "getStarted": "Mulai sekarang",
+    "learnMore": "Pelajari lebih lanjut",
+    "comingSoon": "Segera hadir",
+    "tryAgain": "Coba lagi",
+    "credits": "kredit"
+  },
+  "nav": {
+    "dashboard": "Dasbor",
+    "editor": "Editor Studio",
+    "assets": "Pustaka Aset",
+    "aiTools": "Alat AI",
+    "brandKit": "Brand Kit",
+    "billing": "Tagihan",
+    "settings": "Pengaturan",
+    "admin": "Admin",
+    "signIn": "Masuk",
+    "signUp": "Daftar",
+    "signOut": "Keluar",
+    "pricing": "Harga",
+    "features": "Fitur"
+  },
+  "language": {
+    "label": "Bahasa",
+    "switch": "Ganti bahasa"
+  },
+  "landing": {
+    "hero": {
+      "badge": "Pabrik Konten E-Commerce AI",
+      "title": "Ubah foto produk mentah menjadi konten siap jual",
+      "subtitle": "CLARTAS menggabungkan editing foto AI, pembuatan video, copywriting, manajemen brand, dan otomasi e-commerce dalam satu platform untuk penjual global.",
+      "ctaPrimary": "Mulai gratis",
+      "ctaSecondary": "Lihat harga"
+    },
+    "value": {
+      "title": "Satu platform, seluruh alur kerja konten",
+      "subtitle": "Berhenti berpindah-pindah alat. Unggah sekali, hasilkan semua yang Anda butuhkan untuk berjualan.",
+      "items": {
+        "speed": { "title": "Dirancang untuk kecepatan", "description": "Buat aset siap marketplace dalam hitungan detik, bukan hari." },
+        "consistency": { "title": "Selalu sesuai brand", "description": "Brand kit menjaga setiap output konsisten dengan identitas Anda." },
+        "global": { "title": "Global sejak awal", "description": "Empat bahasa, pembayaran global, dan penanganan pajak dunia." }
+      }
+    },
+    "photoEditor": {
+      "title": "Editor Foto AI",
+      "description": "Hapus latar belakang, buat foto studio, bersihkan objek, dan tingkatkan kualitas secara otomatis."
+    },
+    "videoEditor": {
+      "title": "Editor Video AI",
+      "description": "Ubah foto produk menjadi video promosi pendek lengkap dengan musik, caption, dan voiceover."
+    },
+    "contentGenerator": {
+      "title": "Generator Konten AI",
+      "description": "Buat judul SEO, deskripsi produk, caption, dan skrip video dengan gaya brand Anda."
+    },
+    "automation": {
+      "title": "Otomasi E-Commerce",
+      "description": "Hubungkan unggah, editing, publikasi, dan notifikasi dalam satu alur kerja otomatis."
+    },
+    "pricing": {
+      "title": "Harga sederhana dan transparan",
+      "subtitle": "Mulai gratis. Tingkatkan saat Anda berkembang.",
+      "perMonth": "/bulan",
+      "mostPopular": "Paling populer",
+      "cta": "Pilih paket"
+    },
+    "globalLanguages": {
+      "title": "Dibuat untuk penjual global",
+      "description": "Gunakan CLARTAS dalam bahasa Inggris, Indonesia, Mandarin, dan Spanyol."
+    },
+    "security": {
+      "title": "Aman sejak desain",
+      "description": "Row Level Security, kunci API sisi server, URL file bertanda tangan, dan webhook pembayaran tervalidasi melindungi data Anda."
+    },
+    "finalCta": {
+      "title": "Siap membangun pabrik konten Anda?",
+      "subtitle": "Bergabunglah dengan penjual yang memakai CLARTAS untuk menskalakan visual commerce.",
+      "cta": "Mulai gratis"
+    }
+  },
+  "auth": {
+    "signInTitle": "Selamat datang kembali",
+    "signInSubtitle": "Masuk ke akun CLARTAS Anda",
+    "signUpTitle": "Buat akun Anda",
+    "signUpSubtitle": "Mulai pabrik konten AI Anda secara gratis",
+    "email": "Email",
+    "password": "Kata sandi",
+    "fullName": "Nama lengkap",
+    "emailPlaceholder": "anda@contoh.com",
+    "passwordPlaceholder": "••••••••",
+    "signInButton": "Masuk",
+    "signUpButton": "Buat akun",
+    "noAccount": "Belum punya akun?",
+    "haveAccount": "Sudah punya akun?",
+    "checkEmail": "Periksa email Anda untuk mengonfirmasi akun.",
+    "signingIn": "Sedang masuk...",
+    "signingUp": "Membuat akun...",
+    "genericError": "Terjadi kesalahan. Silakan coba lagi.",
+    "invalidCredentials": "Email atau kata sandi salah."
+  },
+  "dashboard": {
+    "welcome": "Selamat datang kembali, {name}",
+    "welcomeGeneric": "Selamat datang kembali",
+    "subtitle": "Berikut yang terjadi pada pabrik konten Anda.",
+    "creditBalance": "Saldo Kredit AI",
+    "creditsRemaining": "{count} kredit tersisa",
+    "subscriptionStatus": "Langganan",
+    "recentAssets": "Aset terbaru",
+    "recentJobs": "Pekerjaan AI terbaru",
+    "quickActions": "Aksi cepat",
+    "usageSummary": "Ringkasan penggunaan",
+    "noAssets": "Belum ada aset. Unggah foto produk pertama Anda.",
+    "noJobs": "Belum ada pekerjaan AI. Coba alat editor untuk memulai.",
+    "viewAll": "Lihat semua",
+    "actions": {
+      "removeBackground": "Hapus latar belakang",
+      "generateStudio": "Buat foto studio",
+      "writeCopy": "Tulis teks produk",
+      "uploadAsset": "Unggah aset"
+    },
+    "usage": {
+      "assets": "Aset",
+      "jobs": "Pekerjaan AI",
+      "creditsUsed": "Kredit terpakai"
+    }
+  },
+  "editor": {
+    "title": "Editor Studio",
+    "uploadPrompt": "Unggah gambar untuk mulai mengedit",
+    "uploadCta": "Unggah gambar",
+    "dragDrop": "Seret & lepas atau klik untuk mengunggah",
+    "output": "Hasil",
+    "noOutput": "Hasil olahan Anda akan muncul di sini.",
+    "processing": "Memproses...",
+    "saveToLibrary": "Simpan ke pustaka",
+    "history": "Riwayat",
+    "noHistory": "Belum ada riwayat.",
+    "settings": "Pengaturan",
+    "run": "Jalankan",
+    "creditCost": "Biaya: {count} kredit",
+    "tools": "Alat",
+    "tool": {
+      "removeBackground": { "name": "Hapus Latar Belakang", "description": "Hapus latar belakang dan dapatkan PNG transparan." },
+      "productStudio": { "name": "Product Studio", "description": "Buat scene produk berkualitas studio." },
+      "objectCleanup": { "name": "Bersihkan Objek", "description": "Hapus objek yang tidak diinginkan dari foto Anda." },
+      "smartEnhancer": { "name": "Smart Enhancer", "description": "Tingkatkan resolusi dan kualitas gambar." },
+      "cropResize": { "name": "Crop / Resize", "description": "Ubah ukuran dan potong untuk marketplace dan media sosial." },
+      "videoSlideshow": { "name": "Video Slideshow", "description": "Buat video promosi pendek dari gambar." },
+      "voiceover": { "name": "Voiceover", "description": "Buat voiceover dengan text-to-speech." },
+      "captionGenerator": { "name": "Generator Caption", "description": "Buat judul, deskripsi, dan caption." }
+    },
+    "fields": {
+      "prompt": "Prompt",
+      "promptPlaceholder": "Deskripsikan scene yang Anda inginkan...",
+      "scene": "Preset scene",
+      "aspectRatio": "Rasio aspek",
+      "tone": "Nada",
+      "language": "Bahasa output",
+      "voice": "Suara",
+      "text": "Teks"
+    }
+  },
+  "aiTools": {
+    "title": "Alat AI",
+    "subtitle": "Semua kemampuan AI di CLARTAS dalam satu tempat."
+  },
+  "assets": {
+    "title": "Pustaka Aset",
+    "subtitle": "Kelola file yang Anda unggah dan olah.",
+    "empty": "Belum ada aset.",
+    "emptyHint": "Unggah foto atau video produk untuk membangun pustaka Anda.",
+    "uploadButton": "Unggah file",
+    "filterAll": "Semua",
+    "filterImages": "Gambar",
+    "filterVideos": "Video",
+    "status": {
+      "ready": "Siap",
+      "processing": "Memproses",
+      "failed": "Gagal"
+    },
+    "uploadValidation": {
+      "imageType": "Format gambar yang diizinkan: JPEG, PNG, WebP.",
+      "videoType": "Format video yang diizinkan: MP4, MOV, WEBM.",
+      "imageSize": "Gambar harus di bawah 10MB.",
+      "videoSize": "Video harus di bawah 100MB."
+    }
+  },
+  "brandKit": {
+    "title": "Brand Kit",
+    "subtitle": "Jaga setiap output konsisten dengan brand Anda.",
+    "empty": "Belum ada brand kit.",
+    "create": "Buat brand kit",
+    "name": "Nama brand",
+    "logo": "Logo",
+    "colors": "Warna brand",
+    "fonts": "Font brand",
+    "voice": "Brand voice",
+    "voicePlaceholder": "mis. Ramah, premium, ringkas"
+  },
+  "billing": {
+    "title": "Tagihan",
+    "subtitle": "Kelola paket, kredit, dan invoice Anda.",
+    "currentPlan": "Paket saat ini",
+    "manageBilling": "Kelola tagihan",
+    "upgrade": "Tingkatkan",
+    "topUp": "Isi ulang kredit",
+    "invoices": "Invoice",
+    "noInvoices": "Belum ada invoice.",
+    "plans": {
+      "free": { "name": "Gratis", "description": "Untuk mencoba CLARTAS." },
+      "premium": { "name": "Premium", "description": "Untuk penjual dan kreator yang berkembang." },
+      "enterprise": { "name": "Enterprise", "description": "Untuk tim dan agensi dengan kebutuhan khusus." }
+    },
+    "status": {
+      "active": "Aktif",
+      "trialing": "Uji coba",
+      "past_due": "Jatuh tempo",
+      "canceled": "Dibatalkan",
+      "free": "Gratis"
+    }
+  },
+  "settings": {
+    "title": "Pengaturan",
+    "subtitle": "Kelola profil dan workspace Anda.",
+    "profile": "Profil",
+    "workspace": "Workspace",
+    "members": "Anggota",
+    "preferredLanguage": "Bahasa pilihan",
+    "saveChanges": "Simpan perubahan",
+    "saved": "Perubahan disimpan.",
+    "role": {
+      "owner": "Pemilik",
+      "admin": "Admin",
+      "editor": "Editor",
+      "viewer": "Penonton"
+    }
+  },
+  "credits": {
+    "balance": "Saldo kredit",
+    "insufficientTitle": "Kredit tidak cukup",
+    "insufficientMessage": "Anda butuh {required} kredit tetapi hanya punya {available}. Tingkatkan atau isi ulang untuk melanjutkan.",
+    "upgradeCta": "Tingkatkan paket",
+    "topUpCta": "Isi ulang kredit",
+    "history": "Riwayat kredit",
+    "noHistory": "Belum ada aktivitas kredit."
+  },
+  "admin": {
+    "title": "Dasbor Admin",
+    "subtitle": "Operasional dan pengawasan platform.",
+    "users": "Pengguna",
+    "assets": "Aset",
+    "jobs": "Pekerjaan AI",
+    "transactions": "Transaksi",
+    "subscriptions": "Langganan",
+    "errorLogs": "Log error",
+    "usageStats": "Statistik penggunaan",
+    "creditAdjust": "Sesuaikan kredit",
+    "creditAdjustHint": "Tambah atau kurangi kredit pengguna secara manual.",
+    "amount": "Jumlah",
+    "reason": "Alasan",
+    "apply": "Terapkan",
+    "accessDenied": "Anda tidak memiliki akses ke area ini.",
+    "totalUsers": "Total pengguna",
+    "totalJobs": "Total pekerjaan AI",
+    "totalRevenue": "Total pendapatan",
+    "activeSubscriptions": "Langganan aktif"
+  },
+  "states": {
+    "loadingTitle": "Memuat",
+    "errorTitle": "Terjadi kesalahan",
+    "errorMessage": "Terjadi kesalahan tak terduga. Silakan coba lagi.",
+    "emptyTitle": "Belum ada apa pun di sini",
+    "notFoundTitle": "Halaman tidak ditemukan",
+    "notFoundMessage": "Halaman yang Anda cari tidak ada.",
+    "goHome": "Ke beranda"
+  },
+  "mock": {
+    "banner": "Mode mock: kunci penyedia AI belum dikonfigurasi, jadi hasilnya disimulasikan. Tambahkan FAL_KEY atau REPLICATE_API_TOKEN untuk mengaktifkan pemrosesan nyata."
+  }
+}

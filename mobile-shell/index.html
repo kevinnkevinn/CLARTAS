@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>CLARTAS</title>
+    <style>
+      body {
+        font-family: ui-sans-serif, system-ui, sans-serif;
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #0f172a;
+        color: #f8fafc;
+        text-align: center;
+        padding: 24px;
+      }
+      .badge {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        background: #4f46e5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        margin-bottom: 16px;
+      }
+      a {
+        color: #a5b4fc;
+        margin-top: 16px;
+      }
+      .muted {
+        color: #94a3b8;
+        font-size: 14px;
+        max-width: 320px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="badge">✦</div>
+    <h1>CLARTAS</h1>
+    <p class="muted">
+      Offline shell. Configure <code>CAP_SERVER_URL</code> to point this app at your
+      deployed CLARTAS backend.
+    </p>
+    <a id="open" href="#">Open CLARTAS</a>
+    <script>
+      // If a server URL was injected at build time, offer to open it.
+      var url = "%CAP_SERVER_URL%";
+      var link = document.getElementById("open");
+      if (url && url.indexOf("http") === 0) {
+        link.href = url;
+      } else {
+        link.style.display = "none";
+      }
+    </script>
+  </body>
+</html>

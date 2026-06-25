@@ -1,0 +1,298 @@
+{
+  "common": {
+    "appName": "CLARTAS",
+    "tagline": "La fábrica de contenido para e-commerce impulsada por IA",
+    "loading": "Cargando...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "upload": "Subir",
+    "download": "Descargar",
+    "export": "Exportar",
+    "search": "Buscar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "continue": "Continuar",
+    "confirm": "Confirmar",
+    "close": "Cerrar",
+    "getStarted": "Comenzar",
+    "learnMore": "Saber más",
+    "comingSoon": "Próximamente",
+    "tryAgain": "Reintentar",
+    "credits": "créditos"
+  },
+  "nav": {
+    "dashboard": "Panel",
+    "editor": "Estudio de edición",
+    "assets": "Biblioteca de recursos",
+    "aiTools": "Herramientas IA",
+    "brandKit": "Kit de marca",
+    "billing": "Facturación",
+    "settings": "Ajustes",
+    "admin": "Admin",
+    "signIn": "Iniciar sesión",
+    "signUp": "Registrarse",
+    "signOut": "Cerrar sesión",
+    "pricing": "Precios",
+    "features": "Funciones"
+  },
+  "language": {
+    "label": "Idioma",
+    "switch": "Cambiar idioma"
+  },
+  "landing": {
+    "hero": {
+      "badge": "Fábrica de contenido e-commerce con IA",
+      "title": "Convierte fotos de producto en bruto en contenido listo para vender",
+      "subtitle": "CLARTAS combina edición de fotos con IA, generación de video, redacción, gestión de marca y automatización de e-commerce en una sola plataforma para vendedores globales.",
+      "ctaPrimary": "Empezar gratis",
+      "ctaSecondary": "Ver precios"
+    },
+    "value": {
+      "title": "Una plataforma, todo el flujo de contenido",
+      "subtitle": "Deja de cambiar de herramienta. Sube una vez y produce todo lo que necesitas para vender.",
+      "items": {
+        "speed": { "title": "Hecho para la velocidad", "description": "Genera recursos listos para marketplace en segundos, no en días." },
+        "consistency": { "title": "Fiel a tu marca", "description": "Los kits de marca mantienen cada resultado coherente con tu identidad." },
+        "global": { "title": "Global desde el primer día", "description": "Cuatro idiomas, pagos globales y gestión de impuestos en todo el mundo." }
+      }
+    },
+    "photoEditor": {
+      "title": "Editor de fotos IA",
+      "description": "Elimina fondos, genera tomas de estudio, limpia objetos y mejora la calidad automáticamente."
+    },
+    "videoEditor": {
+      "title": "Editor de video IA",
+      "description": "Convierte fotos de producto en videos promocionales cortos con música, subtítulos y locución."
+    },
+    "contentGenerator": {
+      "title": "Generador de contenido IA",
+      "description": "Genera títulos SEO, descripciones de producto, textos y guiones de video con la voz de tu marca."
+    },
+    "automation": {
+      "title": "Automatización de e-commerce",
+      "description": "Conecta cargas, edición, publicación y notificaciones en un único flujo automatizado."
+    },
+    "pricing": {
+      "title": "Precios simples y transparentes",
+      "subtitle": "Empieza gratis. Mejora cuando crezcas.",
+      "perMonth": "/mes",
+      "mostPopular": "Más popular",
+      "cta": "Elegir plan"
+    },
+    "globalLanguages": {
+      "title": "Creado para vendedores globales",
+      "description": "Usa CLARTAS en inglés, indonesio, chino mandarín y español."
+    },
+    "security": {
+      "title": "Seguro por diseño",
+      "description": "Row Level Security, claves de API del lado del servidor, URLs de archivos firmadas y webhooks de pago validados protegen tus datos."
+    },
+    "finalCta": {
+      "title": "¿Listo para construir tu fábrica de contenido?",
+      "subtitle": "Únete a los vendedores que usan CLARTAS para escalar su comercio visual.",
+      "cta": "Empezar gratis"
+    }
+  },
+  "auth": {
+    "signInTitle": "Bienvenido de nuevo",
+    "signInSubtitle": "Inicia sesión en tu cuenta de CLARTAS",
+    "signUpTitle": "Crea tu cuenta",
+    "signUpSubtitle": "Inicia tu fábrica de contenido IA gratis",
+    "email": "Correo",
+    "password": "Contraseña",
+    "fullName": "Nombre completo",
+    "emailPlaceholder": "tu@ejemplo.com",
+    "passwordPlaceholder": "••••••••",
+    "signInButton": "Iniciar sesión",
+    "signUpButton": "Crear cuenta",
+    "noAccount": "¿No tienes cuenta?",
+    "haveAccount": "¿Ya tienes cuenta?",
+    "checkEmail": "Revisa tu correo para confirmar tu cuenta.",
+    "signingIn": "Iniciando sesión...",
+    "signingUp": "Creando cuenta...",
+    "genericError": "Algo salió mal. Inténtalo de nuevo.",
+    "invalidCredentials": "Correo o contraseña incorrectos."
+  },
+  "dashboard": {
+    "welcome": "Bienvenido de nuevo, {name}",
+    "welcomeGeneric": "Bienvenido de nuevo",
+    "subtitle": "Esto es lo que está pasando en tu fábrica de contenido.",
+    "creditBalance": "Saldo de créditos IA",
+    "creditsRemaining": "{count} créditos restantes",
+    "subscriptionStatus": "Suscripción",
+    "recentAssets": "Recursos recientes",
+    "recentJobs": "Trabajos de IA recientes",
+    "quickActions": "Acciones rápidas",
+    "usageSummary": "Resumen de uso",
+    "noAssets": "Aún no hay recursos. Sube tu primera foto de producto.",
+    "noJobs": "Aún no hay trabajos de IA. Prueba una herramienta del editor para empezar.",
+    "viewAll": "Ver todo",
+    "actions": {
+      "removeBackground": "Eliminar fondo",
+      "generateStudio": "Generar toma de estudio",
+      "writeCopy": "Escribir texto de producto",
+      "uploadAsset": "Subir recurso"
+    },
+    "usage": {
+      "assets": "Recursos",
+      "jobs": "Trabajos IA",
+      "creditsUsed": "Créditos usados"
+    }
+  },
+  "editor": {
+    "title": "Estudio de edición",
+    "uploadPrompt": "Sube una imagen para empezar a editar",
+    "uploadCta": "Subir imagen",
+    "dragDrop": "Arrastra y suelta o haz clic para subir",
+    "output": "Resultado",
+    "noOutput": "Tu resultado procesado aparecerá aquí.",
+    "processing": "Procesando...",
+    "saveToLibrary": "Guardar en biblioteca",
+    "history": "Historial",
+    "noHistory": "Aún no hay historial.",
+    "settings": "Ajustes",
+    "run": "Ejecutar",
+    "creditCost": "Costo: {count} créditos",
+    "tools": "Herramientas",
+    "tool": {
+      "removeBackground": { "name": "Eliminar fondo", "description": "Elimina el fondo y obtén un PNG transparente." },
+      "productStudio": { "name": "Estudio de producto", "description": "Genera una escena de producto con calidad de estudio." },
+      "objectCleanup": { "name": "Limpieza de objetos", "description": "Elimina objetos no deseados de tu foto." },
+      "smartEnhancer": { "name": "Mejorador inteligente", "description": "Aumenta la resolución y mejora la calidad de la imagen." },
+      "cropResize": { "name": "Recortar / Redimensionar", "description": "Redimensiona y recorta para marketplaces y redes sociales." },
+      "videoSlideshow": { "name": "Video presentación", "description": "Crea un video promocional corto a partir de imágenes." },
+      "voiceover": { "name": "Locución", "description": "Genera una locución con texto a voz." },
+      "captionGenerator": { "name": "Generador de textos", "description": "Genera títulos, descripciones y textos." }
+    },
+    "fields": {
+      "prompt": "Indicación",
+      "promptPlaceholder": "Describe la escena que quieres...",
+      "scene": "Escena predefinida",
+      "aspectRatio": "Relación de aspecto",
+      "tone": "Tono",
+      "language": "Idioma de salida",
+      "voice": "Voz",
+      "text": "Texto"
+    }
+  },
+  "aiTools": {
+    "title": "Herramientas IA",
+    "subtitle": "Todas las capacidades de IA de CLARTAS en un solo lugar."
+  },
+  "assets": {
+    "title": "Biblioteca de recursos",
+    "subtitle": "Gestiona tus archivos subidos y procesados.",
+    "empty": "Aún no hay recursos.",
+    "emptyHint": "Sube fotos o videos de producto para construir tu biblioteca.",
+    "uploadButton": "Subir archivos",
+    "filterAll": "Todos",
+    "filterImages": "Imágenes",
+    "filterVideos": "Videos",
+    "status": {
+      "ready": "Listo",
+      "processing": "Procesando",
+      "failed": "Fallido"
+    },
+    "uploadValidation": {
+      "imageType": "Formatos de imagen permitidos: JPEG, PNG, WebP.",
+      "videoType": "Formatos de video permitidos: MP4, MOV, WEBM.",
+      "imageSize": "Las imágenes deben pesar menos de 10MB.",
+      "videoSize": "Los videos deben pesar menos de 100MB."
+    }
+  },
+  "brandKit": {
+    "title": "Kit de marca",
+    "subtitle": "Mantén cada resultado coherente con tu marca.",
+    "empty": "Aún no hay kit de marca.",
+    "create": "Crear kit de marca",
+    "name": "Nombre de marca",
+    "logo": "Logo",
+    "colors": "Colores de marca",
+    "fonts": "Fuentes de marca",
+    "voice": "Voz de marca",
+    "voicePlaceholder": "p. ej. Amigable, premium, conciso"
+  },
+  "billing": {
+    "title": "Facturación",
+    "subtitle": "Gestiona tu plan, créditos y facturas.",
+    "currentPlan": "Plan actual",
+    "manageBilling": "Gestionar facturación",
+    "upgrade": "Mejorar",
+    "topUp": "Recargar créditos",
+    "invoices": "Facturas",
+    "noInvoices": "Aún no hay facturas.",
+    "plans": {
+      "free": { "name": "Gratis", "description": "Para probar CLARTAS." },
+      "premium": { "name": "Premium", "description": "Para vendedores y creadores en crecimiento." },
+      "enterprise": { "name": "Enterprise", "description": "Para equipos y agencias con necesidades personalizadas." }
+    },
+    "status": {
+      "active": "Activo",
+      "trialing": "Prueba",
+      "past_due": "Vencido",
+      "canceled": "Cancelado",
+      "free": "Gratis"
+    }
+  },
+  "settings": {
+    "title": "Ajustes",
+    "subtitle": "Gestiona tu perfil y espacio de trabajo.",
+    "profile": "Perfil",
+    "workspace": "Espacio de trabajo",
+    "members": "Miembros",
+    "preferredLanguage": "Idioma preferido",
+    "saveChanges": "Guardar cambios",
+    "saved": "Cambios guardados.",
+    "role": {
+      "owner": "Propietario",
+      "admin": "Admin",
+      "editor": "Editor",
+      "viewer": "Visor"
+    }
+  },
+  "credits": {
+    "balance": "Saldo de créditos",
+    "insufficientTitle": "Créditos insuficientes",
+    "insufficientMessage": "Necesitas {required} créditos pero solo tienes {available}. Mejora tu plan o recarga para continuar.",
+    "upgradeCta": "Mejorar plan",
+    "topUpCta": "Recargar créditos",
+    "history": "Historial de créditos",
+    "noHistory": "Aún no hay actividad de créditos."
+  },
+  "admin": {
+    "title": "Panel de administración",
+    "subtitle": "Operaciones y supervisión de la plataforma.",
+    "users": "Usuarios",
+    "assets": "Recursos",
+    "jobs": "Trabajos IA",
+    "transactions": "Transacciones",
+    "subscriptions": "Suscripciones",
+    "errorLogs": "Registros de error",
+    "usageStats": "Estadísticas de uso",
+    "creditAdjust": "Ajustar créditos",
+    "creditAdjustHint": "Agrega o quita créditos manualmente a un usuario.",
+    "amount": "Cantidad",
+    "reason": "Motivo",
+    "apply": "Aplicar",
+    "accessDenied": "No tienes acceso a esta área.",
+    "totalUsers": "Usuarios totales",
+    "totalJobs": "Trabajos IA totales",
+    "totalRevenue": "Ingresos totales",
+    "activeSubscriptions": "Suscripciones activas"
+  },
+  "states": {
+    "loadingTitle": "Cargando",
+    "errorTitle": "Algo salió mal",
+    "errorMessage": "Ocurrió un error inesperado. Inténtalo de nuevo.",
+    "emptyTitle": "Aún no hay nada aquí",
+    "notFoundTitle": "Página no encontrada",
+    "notFoundMessage": "La página que buscas no existe.",
+    "goHome": "Ir al inicio"
+  },
+  "mock": {
+    "banner": "Modo simulado: las claves del proveedor de IA no están configuradas, por lo que los resultados son simulados. Agrega FAL_KEY o REPLICATE_API_TOKEN para habilitar el procesamiento real."
+  }
+}

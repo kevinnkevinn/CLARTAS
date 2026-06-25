@@ -1,0 +1,298 @@
+{
+  "common": {
+    "appName": "CLARTAS",
+    "tagline": "The AI-powered e-commerce content factory",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "upload": "Upload",
+    "download": "Download",
+    "export": "Export",
+    "search": "Search",
+    "back": "Back",
+    "next": "Next",
+    "continue": "Continue",
+    "confirm": "Confirm",
+    "close": "Close",
+    "getStarted": "Get started",
+    "learnMore": "Learn more",
+    "comingSoon": "Coming soon",
+    "tryAgain": "Try again",
+    "credits": "credits"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "editor": "Editor Studio",
+    "assets": "Asset Library",
+    "aiTools": "AI Tools",
+    "brandKit": "Brand Kit",
+    "billing": "Billing",
+    "settings": "Settings",
+    "admin": "Admin",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "signOut": "Sign out",
+    "pricing": "Pricing",
+    "features": "Features"
+  },
+  "language": {
+    "label": "Language",
+    "switch": "Switch language"
+  },
+  "landing": {
+    "hero": {
+      "badge": "AI E-Commerce Content Factory",
+      "title": "Turn raw product photos into sales-ready content",
+      "subtitle": "CLARTAS combines AI photo editing, video generation, copywriting, brand management, and e-commerce automation in one platform for global sellers.",
+      "ctaPrimary": "Start free",
+      "ctaSecondary": "View pricing"
+    },
+    "value": {
+      "title": "One platform, the whole content workflow",
+      "subtitle": "Stop switching between tools. Upload once, produce everything you need to sell.",
+      "items": {
+        "speed": { "title": "Built for speed", "description": "Generate marketplace-ready assets in seconds, not days." },
+        "consistency": { "title": "On-brand by default", "description": "Brand kits keep every output consistent with your identity." },
+        "global": { "title": "Global from day one", "description": "Four languages, global payments, and worldwide tax handling." }
+      }
+    },
+    "photoEditor": {
+      "title": "AI Photo Editor",
+      "description": "Remove backgrounds, generate studio shots, clean up objects, and enhance quality automatically."
+    },
+    "videoEditor": {
+      "title": "AI Video Editor",
+      "description": "Turn product photos into short promotional videos with music, captions, and voiceovers."
+    },
+    "contentGenerator": {
+      "title": "AI Content Generator",
+      "description": "Generate SEO titles, product descriptions, captions, and video scripts in your brand voice."
+    },
+    "automation": {
+      "title": "E-Commerce Automation",
+      "description": "Connect uploads, editing, publishing, and notifications into a single automated workflow."
+    },
+    "pricing": {
+      "title": "Simple, transparent pricing",
+      "subtitle": "Start free. Upgrade when you grow.",
+      "perMonth": "/month",
+      "mostPopular": "Most popular",
+      "cta": "Choose plan"
+    },
+    "globalLanguages": {
+      "title": "Built for global sellers",
+      "description": "Use CLARTAS in English, Indonesian, Mandarin Chinese, and Spanish."
+    },
+    "security": {
+      "title": "Secure by design",
+      "description": "Row Level Security, server-side API keys, signed file URLs, and validated payment webhooks protect your data."
+    },
+    "finalCta": {
+      "title": "Ready to build your content factory?",
+      "subtitle": "Join sellers using CLARTAS to scale their visual commerce.",
+      "cta": "Get started free"
+    }
+  },
+  "auth": {
+    "signInTitle": "Welcome back",
+    "signInSubtitle": "Sign in to your CLARTAS account",
+    "signUpTitle": "Create your account",
+    "signUpSubtitle": "Start your AI content factory for free",
+    "email": "Email",
+    "password": "Password",
+    "fullName": "Full name",
+    "emailPlaceholder": "you@example.com",
+    "passwordPlaceholder": "••••••••",
+    "signInButton": "Sign in",
+    "signUpButton": "Create account",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "checkEmail": "Check your email to confirm your account.",
+    "signingIn": "Signing in...",
+    "signingUp": "Creating account...",
+    "genericError": "Something went wrong. Please try again.",
+    "invalidCredentials": "Invalid email or password."
+  },
+  "dashboard": {
+    "welcome": "Welcome back, {name}",
+    "welcomeGeneric": "Welcome back",
+    "subtitle": "Here's what's happening with your content factory.",
+    "creditBalance": "AI Credit Balance",
+    "creditsRemaining": "{count} credits remaining",
+    "subscriptionStatus": "Subscription",
+    "recentAssets": "Recent assets",
+    "recentJobs": "Recent AI jobs",
+    "quickActions": "Quick actions",
+    "usageSummary": "Usage summary",
+    "noAssets": "No assets yet. Upload your first product photo.",
+    "noJobs": "No AI jobs yet. Try an editor tool to get started.",
+    "viewAll": "View all",
+    "actions": {
+      "removeBackground": "Remove background",
+      "generateStudio": "Generate studio shot",
+      "writeCopy": "Write product copy",
+      "uploadAsset": "Upload asset"
+    },
+    "usage": {
+      "assets": "Assets",
+      "jobs": "AI jobs",
+      "creditsUsed": "Credits used"
+    }
+  },
+  "editor": {
+    "title": "Editor Studio",
+    "uploadPrompt": "Upload an image to start editing",
+    "uploadCta": "Upload image",
+    "dragDrop": "Drag & drop or click to upload",
+    "output": "Output",
+    "noOutput": "Your processed result will appear here.",
+    "processing": "Processing...",
+    "saveToLibrary": "Save to library",
+    "history": "History",
+    "noHistory": "No history yet.",
+    "settings": "Settings",
+    "run": "Run",
+    "creditCost": "Cost: {count} credits",
+    "tools": "Tools",
+    "tool": {
+      "removeBackground": { "name": "Background Removal", "description": "Remove the background and get a transparent PNG." },
+      "productStudio": { "name": "Product Studio", "description": "Generate a studio-quality product scene." },
+      "objectCleanup": { "name": "Object Cleanup", "description": "Remove unwanted objects from your photo." },
+      "smartEnhancer": { "name": "Smart Enhancer", "description": "Upscale and enhance image quality." },
+      "cropResize": { "name": "Crop / Resize", "description": "Resize and crop for marketplaces and social media." },
+      "videoSlideshow": { "name": "Video Slideshow", "description": "Create a short promotional video from images." },
+      "voiceover": { "name": "Voiceover", "description": "Generate a voiceover with text-to-speech." },
+      "captionGenerator": { "name": "Caption Generator", "description": "Generate titles, descriptions, and captions." }
+    },
+    "fields": {
+      "prompt": "Prompt",
+      "promptPlaceholder": "Describe the scene you want...",
+      "scene": "Scene preset",
+      "aspectRatio": "Aspect ratio",
+      "tone": "Tone",
+      "language": "Output language",
+      "voice": "Voice",
+      "text": "Text"
+    }
+  },
+  "aiTools": {
+    "title": "AI Tools",
+    "subtitle": "Every AI capability in CLARTAS, in one place."
+  },
+  "assets": {
+    "title": "Asset Library",
+    "subtitle": "Manage your uploaded and processed files.",
+    "empty": "No assets yet.",
+    "emptyHint": "Upload product photos or videos to build your library.",
+    "uploadButton": "Upload files",
+    "filterAll": "All",
+    "filterImages": "Images",
+    "filterVideos": "Videos",
+    "status": {
+      "ready": "Ready",
+      "processing": "Processing",
+      "failed": "Failed"
+    },
+    "uploadValidation": {
+      "imageType": "Allowed image formats: JPEG, PNG, WebP.",
+      "videoType": "Allowed video formats: MP4, MOV, WEBM.",
+      "imageSize": "Images must be under 10MB.",
+      "videoSize": "Videos must be under 100MB."
+    }
+  },
+  "brandKit": {
+    "title": "Brand Kit",
+    "subtitle": "Keep every output consistent with your brand.",
+    "empty": "No brand kit yet.",
+    "create": "Create brand kit",
+    "name": "Brand name",
+    "logo": "Logo",
+    "colors": "Brand colors",
+    "fonts": "Brand fonts",
+    "voice": "Brand voice",
+    "voicePlaceholder": "e.g. Friendly, premium, concise"
+  },
+  "billing": {
+    "title": "Billing",
+    "subtitle": "Manage your plan, credits, and invoices.",
+    "currentPlan": "Current plan",
+    "manageBilling": "Manage billing",
+    "upgrade": "Upgrade",
+    "topUp": "Top up credits",
+    "invoices": "Invoices",
+    "noInvoices": "No invoices yet.",
+    "plans": {
+      "free": { "name": "Free", "description": "For trying out CLARTAS." },
+      "premium": { "name": "Premium", "description": "For growing sellers and creators." },
+      "enterprise": { "name": "Enterprise", "description": "For teams and agencies with custom needs." }
+    },
+    "status": {
+      "active": "Active",
+      "trialing": "Trial",
+      "past_due": "Past due",
+      "canceled": "Canceled",
+      "free": "Free"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your profile and workspace.",
+    "profile": "Profile",
+    "workspace": "Workspace",
+    "members": "Members",
+    "preferredLanguage": "Preferred language",
+    "saveChanges": "Save changes",
+    "saved": "Changes saved.",
+    "role": {
+      "owner": "Owner",
+      "admin": "Admin",
+      "editor": "Editor",
+      "viewer": "Viewer"
+    }
+  },
+  "credits": {
+    "balance": "Credit balance",
+    "insufficientTitle": "Not enough credits",
+    "insufficientMessage": "You need {required} credits but only have {available}. Upgrade or top up to continue.",
+    "upgradeCta": "Upgrade plan",
+    "topUpCta": "Top up credits",
+    "history": "Credit history",
+    "noHistory": "No credit activity yet."
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "subtitle": "Platform operations and oversight.",
+    "users": "Users",
+    "assets": "Assets",
+    "jobs": "AI Jobs",
+    "transactions": "Transactions",
+    "subscriptions": "Subscriptions",
+    "errorLogs": "Error logs",
+    "usageStats": "Usage statistics",
+    "creditAdjust": "Adjust credits",
+    "creditAdjustHint": "Manually add or remove credits for a user.",
+    "amount": "Amount",
+    "reason": "Reason",
+    "apply": "Apply",
+    "accessDenied": "You do not have access to this area.",
+    "totalUsers": "Total users",
+    "totalJobs": "Total AI jobs",
+    "totalRevenue": "Total revenue",
+    "activeSubscriptions": "Active subscriptions"
+  },
+  "states": {
+    "loadingTitle": "Loading",
+    "errorTitle": "Something went wrong",
+    "errorMessage": "An unexpected error occurred. Please try again.",
+    "emptyTitle": "Nothing here yet",
+    "notFoundTitle": "Page not found",
+    "notFoundMessage": "The page you're looking for doesn't exist.",
+    "goHome": "Go home"
+  },
+  "mock": {
+    "banner": "Mock mode: AI provider keys are not configured, so results are simulated. Add FAL_KEY or REPLICATE_API_TOKEN to enable real processing."
+  }
+}

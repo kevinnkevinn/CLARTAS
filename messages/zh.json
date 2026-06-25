@@ -1,0 +1,298 @@
+{
+  "common": {
+    "appName": "CLARTAS",
+    "tagline": "AI 驱动的电商内容工厂",
+    "loading": "加载中...",
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "create": "创建",
+    "upload": "上传",
+    "download": "下载",
+    "export": "导出",
+    "search": "搜索",
+    "back": "返回",
+    "next": "下一步",
+    "continue": "继续",
+    "confirm": "确认",
+    "close": "关闭",
+    "getStarted": "立即开始",
+    "learnMore": "了解更多",
+    "comingSoon": "即将推出",
+    "tryAgain": "重试",
+    "credits": "积分"
+  },
+  "nav": {
+    "dashboard": "仪表板",
+    "editor": "编辑工作室",
+    "assets": "素材库",
+    "aiTools": "AI 工具",
+    "brandKit": "品牌套件",
+    "billing": "账单",
+    "settings": "设置",
+    "admin": "管理",
+    "signIn": "登录",
+    "signUp": "注册",
+    "signOut": "退出",
+    "pricing": "价格",
+    "features": "功能"
+  },
+  "language": {
+    "label": "语言",
+    "switch": "切换语言"
+  },
+  "landing": {
+    "hero": {
+      "badge": "AI 电商内容工厂",
+      "title": "将原始产品照片转化为可直接销售的内容",
+      "subtitle": "CLARTAS 将 AI 图片编辑、视频生成、文案撰写、品牌管理和电商自动化整合到一个面向全球卖家的平台。",
+      "ctaPrimary": "免费开始",
+      "ctaSecondary": "查看价格"
+    },
+    "value": {
+      "title": "一个平台，完整的内容工作流",
+      "subtitle": "不再来回切换工具。上传一次，生成销售所需的一切。",
+      "items": {
+        "speed": { "title": "为速度而生", "description": "几秒钟即可生成适用于电商平台的素材，而非数天。" },
+        "consistency": { "title": "默认符合品牌", "description": "品牌套件让每个输出都与您的品牌形象保持一致。" },
+        "global": { "title": "从第一天起即面向全球", "description": "四种语言、全球支付和全球税务处理。" }
+      }
+    },
+    "photoEditor": {
+      "title": "AI 图片编辑器",
+      "description": "自动去除背景、生成影棚级照片、清除杂物并提升画质。"
+    },
+    "videoEditor": {
+      "title": "AI 视频编辑器",
+      "description": "将产品照片转化为带音乐、字幕和配音的短促销视频。"
+    },
+    "contentGenerator": {
+      "title": "AI 内容生成器",
+      "description": "以您的品牌语气生成 SEO 标题、产品描述、文案和视频脚本。"
+    },
+    "automation": {
+      "title": "电商自动化",
+      "description": "将上传、编辑、发布和通知连接成一个自动化工作流。"
+    },
+    "pricing": {
+      "title": "简单透明的定价",
+      "subtitle": "免费开始，随业务增长再升级。",
+      "perMonth": "/月",
+      "mostPopular": "最受欢迎",
+      "cta": "选择方案"
+    },
+    "globalLanguages": {
+      "title": "为全球卖家打造",
+      "description": "可使用英语、印尼语、中文和西班牙语使用 CLARTAS。"
+    },
+    "security": {
+      "title": "从设计上确保安全",
+      "description": "行级安全、服务端 API 密钥、签名文件链接和经过验证的支付 webhook 保护您的数据。"
+    },
+    "finalCta": {
+      "title": "准备好打造您的内容工厂了吗？",
+      "subtitle": "加入使用 CLARTAS 扩展视觉电商的卖家行列。",
+      "cta": "免费开始"
+    }
+  },
+  "auth": {
+    "signInTitle": "欢迎回来",
+    "signInSubtitle": "登录您的 CLARTAS 账户",
+    "signUpTitle": "创建账户",
+    "signUpSubtitle": "免费开启您的 AI 内容工厂",
+    "email": "邮箱",
+    "password": "密码",
+    "fullName": "全名",
+    "emailPlaceholder": "you@example.com",
+    "passwordPlaceholder": "••••••••",
+    "signInButton": "登录",
+    "signUpButton": "创建账户",
+    "noAccount": "还没有账户？",
+    "haveAccount": "已经有账户？",
+    "checkEmail": "请检查邮箱以确认您的账户。",
+    "signingIn": "正在登录...",
+    "signingUp": "正在创建账户...",
+    "genericError": "出错了，请重试。",
+    "invalidCredentials": "邮箱或密码错误。"
+  },
+  "dashboard": {
+    "welcome": "欢迎回来，{name}",
+    "welcomeGeneric": "欢迎回来",
+    "subtitle": "以下是您内容工厂的最新动态。",
+    "creditBalance": "AI 积分余额",
+    "creditsRemaining": "剩余 {count} 积分",
+    "subscriptionStatus": "订阅",
+    "recentAssets": "最近的素材",
+    "recentJobs": "最近的 AI 任务",
+    "quickActions": "快捷操作",
+    "usageSummary": "使用概览",
+    "noAssets": "暂无素材。上传您的第一张产品照片。",
+    "noJobs": "暂无 AI 任务。试试编辑器工具开始吧。",
+    "viewAll": "查看全部",
+    "actions": {
+      "removeBackground": "去除背景",
+      "generateStudio": "生成影棚照",
+      "writeCopy": "撰写产品文案",
+      "uploadAsset": "上传素材"
+    },
+    "usage": {
+      "assets": "素材",
+      "jobs": "AI 任务",
+      "creditsUsed": "已用积分"
+    }
+  },
+  "editor": {
+    "title": "编辑工作室",
+    "uploadPrompt": "上传图片以开始编辑",
+    "uploadCta": "上传图片",
+    "dragDrop": "拖放或点击上传",
+    "output": "输出",
+    "noOutput": "处理结果将显示在此处。",
+    "processing": "处理中...",
+    "saveToLibrary": "保存到素材库",
+    "history": "历史记录",
+    "noHistory": "暂无历史记录。",
+    "settings": "设置",
+    "run": "运行",
+    "creditCost": "费用：{count} 积分",
+    "tools": "工具",
+    "tool": {
+      "removeBackground": { "name": "背景去除", "description": "去除背景并获得透明 PNG。" },
+      "productStudio": { "name": "产品工作室", "description": "生成影棚级产品场景。" },
+      "objectCleanup": { "name": "杂物清除", "description": "从照片中移除不需要的物体。" },
+      "smartEnhancer": { "name": "智能增强", "description": "提升图片分辨率与画质。" },
+      "cropResize": { "name": "裁剪 / 调整尺寸", "description": "为电商平台和社交媒体调整尺寸和裁剪。" },
+      "videoSlideshow": { "name": "视频幻灯片", "description": "用图片制作短促销视频。" },
+      "voiceover": { "name": "配音", "description": "使用文字转语音生成配音。" },
+      "captionGenerator": { "name": "文案生成器", "description": "生成标题、描述和文案。" }
+    },
+    "fields": {
+      "prompt": "提示词",
+      "promptPlaceholder": "描述您想要的场景...",
+      "scene": "场景预设",
+      "aspectRatio": "宽高比",
+      "tone": "语气",
+      "language": "输出语言",
+      "voice": "声音",
+      "text": "文本"
+    }
+  },
+  "aiTools": {
+    "title": "AI 工具",
+    "subtitle": "CLARTAS 的所有 AI 能力，尽在一处。"
+  },
+  "assets": {
+    "title": "素材库",
+    "subtitle": "管理您上传和处理的文件。",
+    "empty": "暂无素材。",
+    "emptyHint": "上传产品照片或视频来建立您的素材库。",
+    "uploadButton": "上传文件",
+    "filterAll": "全部",
+    "filterImages": "图片",
+    "filterVideos": "视频",
+    "status": {
+      "ready": "就绪",
+      "processing": "处理中",
+      "failed": "失败"
+    },
+    "uploadValidation": {
+      "imageType": "允许的图片格式：JPEG、PNG、WebP。",
+      "videoType": "允许的视频格式：MP4、MOV、WEBM。",
+      "imageSize": "图片必须小于 10MB。",
+      "videoSize": "视频必须小于 100MB。"
+    }
+  },
+  "brandKit": {
+    "title": "品牌套件",
+    "subtitle": "让每个输出都与您的品牌保持一致。",
+    "empty": "暂无品牌套件。",
+    "create": "创建品牌套件",
+    "name": "品牌名称",
+    "logo": "标志",
+    "colors": "品牌色",
+    "fonts": "品牌字体",
+    "voice": "品牌语气",
+    "voicePlaceholder": "例如：友好、高端、简洁"
+  },
+  "billing": {
+    "title": "账单",
+    "subtitle": "管理您的方案、积分和发票。",
+    "currentPlan": "当前方案",
+    "manageBilling": "管理账单",
+    "upgrade": "升级",
+    "topUp": "充值积分",
+    "invoices": "发票",
+    "noInvoices": "暂无发票。",
+    "plans": {
+      "free": { "name": "免费", "description": "用于体验 CLARTAS。" },
+      "premium": { "name": "高级", "description": "适合成长中的卖家和创作者。" },
+      "enterprise": { "name": "企业", "description": "适合有定制需求的团队和代理机构。" }
+    },
+    "status": {
+      "active": "有效",
+      "trialing": "试用",
+      "past_due": "逾期",
+      "canceled": "已取消",
+      "free": "免费"
+    }
+  },
+  "settings": {
+    "title": "设置",
+    "subtitle": "管理您的个人资料和工作区。",
+    "profile": "个人资料",
+    "workspace": "工作区",
+    "members": "成员",
+    "preferredLanguage": "首选语言",
+    "saveChanges": "保存更改",
+    "saved": "更改已保存。",
+    "role": {
+      "owner": "所有者",
+      "admin": "管理员",
+      "editor": "编辑",
+      "viewer": "查看者"
+    }
+  },
+  "credits": {
+    "balance": "积分余额",
+    "insufficientTitle": "积分不足",
+    "insufficientMessage": "您需要 {required} 积分，但只有 {available}。请升级或充值以继续。",
+    "upgradeCta": "升级方案",
+    "topUpCta": "充值积分",
+    "history": "积分记录",
+    "noHistory": "暂无积分活动。"
+  },
+  "admin": {
+    "title": "管理仪表板",
+    "subtitle": "平台运营与监督。",
+    "users": "用户",
+    "assets": "素材",
+    "jobs": "AI 任务",
+    "transactions": "交易",
+    "subscriptions": "订阅",
+    "errorLogs": "错误日志",
+    "usageStats": "使用统计",
+    "creditAdjust": "调整积分",
+    "creditAdjustHint": "手动为用户增加或减少积分。",
+    "amount": "数量",
+    "reason": "原因",
+    "apply": "应用",
+    "accessDenied": "您无权访问此区域。",
+    "totalUsers": "用户总数",
+    "totalJobs": "AI 任务总数",
+    "totalRevenue": "总收入",
+    "activeSubscriptions": "有效订阅"
+  },
+  "states": {
+    "loadingTitle": "加载中",
+    "errorTitle": "出错了",
+    "errorMessage": "发生了意外错误，请重试。",
+    "emptyTitle": "这里暂时什么都没有",
+    "notFoundTitle": "页面未找到",
+    "notFoundMessage": "您查找的页面不存在。",
+    "goHome": "返回首页"
+  },
+  "mock": {
+    "banner": "模拟模式：未配置 AI 服务商密钥，结果为模拟生成。添加 FAL_KEY 或 REPLICATE_API_TOKEN 以启用真实处理。"
+  }
+}
