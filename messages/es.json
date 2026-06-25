@@ -31,6 +31,9 @@
     "brandKit": "Kit de marca",
     "billing": "Facturación",
     "settings": "Ajustes",
+    "analytics": "Analítica",
+    "approvals": "Aprobaciones",
+    "intelligence": "Inteligencia",
     "admin": "Admin",
     "signIn": "Iniciar sesión",
     "signUp": "Registrarse",
@@ -294,5 +297,41 @@
   },
   "mock": {
     "banner": "Modo simulado: las claves del proveedor de IA no están configuradas, por lo que los resultados son simulados. Agrega FAL_KEY o REPLICATE_API_TOKEN para habilitar el procesamiento real."
-  }
+  },
+  "analytics": {
+    "title": "Analítica",
+    "subtitle": "Sigue el rendimiento de tu fábrica de contenido.",
+    "totalAssets": "Recursos totales",
+    "totalJobs": "Trabajos IA ejecutados",
+    "succeededJobs": "Exitosos",
+    "failedJobs": "Fallidos",
+    "creditsUsed": "Créditos usados",
+    "jobsByAction": "Trabajos por herramienta",
+    "recentActivity": "Actividad reciente (7 días)",
+    "noActivity": "Sin actividad reciente."
+  },
+  "approvals": {
+    "title": "Aprobaciones",
+    "subtitle": "Revisa el contenido antes de publicar.",
+    "empty": "Aún no hay solicitudes de aprobación.",
+    "requestReview": "Solicitar revisión",
+    "selectAsset": "Seleccionar recurso",
+    "comment": "Comentario",
+    "commentPlaceholder": "Notas para el revisor...",
+    "submitRequest": "Enviar para revisión",
+    "requestSent": "Solicitud de aprobación enviada.",
+    "noAssets": "Sube un recurso primero para solicitar aprobación.",
+    "approve": "Aprobar",
+    "reject": "Rechazar",
+    "status": { "pending": "Pendiente", "approved": "Aprobado", "rejected": "Rechazado" }
+  },
+  "intelligence": {
+    "title": "Inteligencia E-Commerce",
+    "subtitle": "Asistentes IA para investigación, atención al cliente y venta en vivo.",
+    "marketResearch": { "title": "Investigación de mercado", "description": "Descubre productos en tendencia, precios de competidores y puntuaciones de oportunidad.", "cta": "Abrir investigación" },
+    "customerService": { "title": "Atención al cliente IA", "description": "Asistente omnicanal para WhatsApp, Telegram, Messenger e Instagram.", "cta": "Configurar canales" },
+    "liveSelling": { "title": "Asistente de venta en vivo", "description": "Genera guiones de presentación y respuestas interactivas para transmisiones en vivo.", "cta": "Iniciar sesión" },
+    "comingSoonNote": "Base lista — conecta canales y fuentes de datos en la siguiente fase de integración."
+  },
+  "pricingPage": { "title": "Precios", "subtitle": "Elige el plan que se adapte a tu fábrica de contenido." }
 }

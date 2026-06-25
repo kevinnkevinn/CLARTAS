@@ -7,6 +7,9 @@ import {
   CreditCard,
   Settings,
   Shield,
+  BarChart3,
+  CheckSquare,
+  Brain,
   type LucideIcon,
 } from "lucide-react";
 
@@ -24,6 +27,9 @@ export const NAV_ITEMS: NavItem[] = [
   { href: "/assets", labelKey: "assets", icon: Images },
   { href: "/ai-tools", labelKey: "aiTools", icon: Sparkles },
   { href: "/brand-kit", labelKey: "brandKit", icon: Palette },
+  { href: "/analytics", labelKey: "analytics", icon: BarChart3 },
+  { href: "/approvals", labelKey: "approvals", icon: CheckSquare },
+  { href: "/intelligence", labelKey: "intelligence", icon: Brain },
   { href: "/billing", labelKey: "billing", icon: CreditCard },
   { href: "/settings", labelKey: "settings", icon: Settings },
   { href: "/admin", labelKey: "admin", icon: Shield, adminOnly: true },

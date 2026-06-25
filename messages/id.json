@@ -31,6 +31,9 @@
     "brandKit": "Brand Kit",
     "billing": "Tagihan",
     "settings": "Pengaturan",
+    "analytics": "Analitik",
+    "approvals": "Persetujuan",
+    "intelligence": "Inteligensi",
     "admin": "Admin",
     "signIn": "Masuk",
     "signUp": "Daftar",
@@ -294,5 +297,41 @@
   },
   "mock": {
     "banner": "Mode mock: kunci penyedia AI belum dikonfigurasi, jadi hasilnya disimulasikan. Tambahkan FAL_KEY atau REPLICATE_API_TOKEN untuk mengaktifkan pemrosesan nyata."
-  }
+  },
+  "analytics": {
+    "title": "Analitik",
+    "subtitle": "Lacak performa pabrik konten Anda.",
+    "totalAssets": "Total aset",
+    "totalJobs": "Pekerjaan AI dijalankan",
+    "succeededJobs": "Berhasil",
+    "failedJobs": "Gagal",
+    "creditsUsed": "Kredit terpakai",
+    "jobsByAction": "Pekerjaan per alat",
+    "recentActivity": "Aktivitas terbaru (7 hari)",
+    "noActivity": "Belum ada aktivitas terbaru."
+  },
+  "approvals": {
+    "title": "Persetujuan",
+    "subtitle": "Tinjau konten sebelum dipublikasikan.",
+    "empty": "Belum ada permintaan persetujuan.",
+    "requestReview": "Minta tinjauan",
+    "selectAsset": "Pilih aset",
+    "comment": "Komentar",
+    "commentPlaceholder": "Catatan untuk peninjau...",
+    "submitRequest": "Kirim untuk ditinjau",
+    "requestSent": "Permintaan persetujuan terkirim.",
+    "noAssets": "Unggah aset terlebih dahulu untuk meminta persetujuan.",
+    "approve": "Setujui",
+    "reject": "Tolak",
+    "status": { "pending": "Menunggu", "approved": "Disetujui", "rejected": "Ditolak" }
+  },
+  "intelligence": {
+    "title": "Inteligensi E-Commerce",
+    "subtitle": "Asisten AI untuk riset, layanan pelanggan, dan live selling.",
+    "marketResearch": { "title": "Riset Pasar", "description": "Temukan produk tren, harga kompetitor, dan skor peluang.", "cta": "Buka riset" },
+    "customerService": { "title": "Layanan Pelanggan AI", "description": "Asisten chat omnichannel untuk WhatsApp, Telegram, Messenger, dan Instagram.", "cta": "Konfigurasi saluran" },
+    "liveSelling": { "title": "Asisten Live Selling", "description": "Buat skrip presentasi dan respons interaktif untuk live stream.", "cta": "Mulai sesi" },
+    "comingSoonNote": "Fondasi siap — hubungkan saluran dan sumber data pada fase integrasi berikutnya."
+  },
+  "pricingPage": { "title": "Harga", "subtitle": "Pilih paket yang sesuai dengan pabrik konten Anda." }
 }

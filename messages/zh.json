@@ -31,6 +31,9 @@
     "brandKit": "品牌套件",
     "billing": "账单",
     "settings": "设置",
+    "analytics": "分析",
+    "approvals": "审批",
+    "intelligence": "智能助手",
     "admin": "管理",
     "signIn": "登录",
     "signUp": "注册",
@@ -294,5 +297,41 @@
   },
   "mock": {
     "banner": "模拟模式：未配置 AI 服务商密钥，结果为模拟生成。添加 FAL_KEY 或 REPLICATE_API_TOKEN 以启用真实处理。"
-  }
+  },
+  "analytics": {
+    "title": "分析",
+    "subtitle": "追踪您的内容工厂表现。",
+    "totalAssets": "素材总数",
+    "totalJobs": "已运行 AI 任务",
+    "succeededJobs": "成功",
+    "failedJobs": "失败",
+    "creditsUsed": "已用积分",
+    "jobsByAction": "按工具统计任务",
+    "recentActivity": "近期活动（7 天）",
+    "noActivity": "暂无近期活动。"
+  },
+  "approvals": {
+    "title": "审批",
+    "subtitle": "发布前审核内容。",
+    "empty": "暂无审批请求。",
+    "requestReview": "申请审核",
+    "selectAsset": "选择素材",
+    "comment": "备注",
+    "commentPlaceholder": "给审核者的说明...",
+    "submitRequest": "提交审核",
+    "requestSent": "审批请求已提交。",
+    "noAssets": "请先上传素材再申请审核。",
+    "approve": "通过",
+    "reject": "拒绝",
+    "status": { "pending": "待处理", "approved": "已通过", "rejected": "已拒绝" }
+  },
+  "intelligence": {
+    "title": "电商智能助手",
+    "subtitle": "用于调研、客服和直播销售的 AI 助手。",
+    "marketResearch": { "title": "市场研究", "description": "发现趋势产品、竞品价格和机会评分。", "cta": "打开研究" },
+    "customerService": { "title": "AI 客服", "description": "覆盖 WhatsApp、Telegram、Messenger 和 Instagram 的全渠道聊天助手。", "cta": "配置渠道" },
+    "liveSelling": { "title": "直播销售助手", "description": "为直播生成讲解脚本和互动回复。", "cta": "开始会话" },
+    "comingSoonNote": "基础已就绪 — 在下一阶段连接渠道和数据源。"
+  },
+  "pricingPage": { "title": "价格", "subtitle": "选择适合您内容工厂的方案。" }
 }

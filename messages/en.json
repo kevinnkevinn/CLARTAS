@@ -31,6 +31,9 @@
     "brandKit": "Brand Kit",
     "billing": "Billing",
     "settings": "Settings",
+    "analytics": "Analytics",
+    "approvals": "Approvals",
+    "intelligence": "Intelligence",
     "admin": "Admin",
     "signIn": "Sign in",
     "signUp": "Sign up",
@@ -294,5 +297,60 @@
   },
   "mock": {
     "banner": "Mock mode: AI provider keys are not configured, so results are simulated. Add FAL_KEY or REPLICATE_API_TOKEN to enable real processing."
+  },
+  "analytics": {
+    "title": "Analytics",
+    "subtitle": "Track your content factory performance.",
+    "totalAssets": "Total assets",
+    "totalJobs": "AI jobs run",
+    "succeededJobs": "Succeeded",
+    "failedJobs": "Failed",
+    "creditsUsed": "Credits used",
+    "jobsByAction": "Jobs by tool",
+    "recentActivity": "Recent activity (7 days)",
+    "noActivity": "No recent activity."
+  },
+  "approvals": {
+    "title": "Approvals",
+    "subtitle": "Review content before publishing.",
+    "empty": "No approval requests yet.",
+    "requestReview": "Request review",
+    "selectAsset": "Select asset",
+    "comment": "Comment",
+    "commentPlaceholder": "Notes for the reviewer...",
+    "submitRequest": "Submit for review",
+    "requestSent": "Approval request submitted.",
+    "noAssets": "Upload an asset first to request approval.",
+    "approve": "Approve",
+    "reject": "Reject",
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    }
+  },
+  "intelligence": {
+    "title": "E-Commerce Intelligence",
+    "subtitle": "AI assistants for research, customer service, and live selling.",
+    "marketResearch": {
+      "title": "Market Research",
+      "description": "Discover trending products, competitor pricing, and opportunity scores.",
+      "cta": "Open research"
+    },
+    "customerService": {
+      "title": "AI Customer Service",
+      "description": "Omnichannel chat assistant for WhatsApp, Telegram, Messenger, and Instagram.",
+      "cta": "Configure channels"
+    },
+    "liveSelling": {
+      "title": "Live Selling Assistant",
+      "description": "Generate presentation scripts and interactive buyer responses for live streams.",
+      "cta": "Start session"
+    },
+    "comingSoonNote": "Foundation ready — connect channels and data sources in your next integration phase."
+  },
+  "pricingPage": {
+    "title": "Pricing",
+    "subtitle": "Choose the plan that fits your content factory."
   }
 }

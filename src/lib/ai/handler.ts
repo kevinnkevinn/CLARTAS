@@ -4,8 +4,16 @@ import { getSessionUser } from "@/features/auth/session";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { deductCredits, getCreditBalance } from "@/features/credits/service";
 import { runAIAction } from "@/lib/ai/providers";
+import { persistProcessedImage } from "@/lib/ai/storage";
 import { CREDIT_COSTS, ACTION_PROVIDER, type AIAction } from "@/lib/constants";
 import { logError } from "@/lib/logger";
+
+const IMAGE_ACTIONS: AIAction[] = [
+  "remove-background",
+  "product-studio",
+  "object-cleanup",
+  "enhance-image",
+];
 
 interface HandlerOptions<T> {
   action: AIAction;
@@ -86,17 +94,45 @@ export async function handleAIRequest<T>(
     // 6. Deduct credits after success
     const deduction = await deductCredits(user.id, cost, action.toUpperCase(), action);
 
+    let output = { ...result.output };
+    const workspaceId =
+      typeof input.workspaceId === "string" ? input.workspaceId : null;
+
+    if (IMAGE_ACTIONS.includes(action)) {
+      const imageUrl =
+        typeof output.imageUrl === "string"
+          ? output.imageUrl
+          : typeof input.imageUrl === "string"
+            ? input.imageUrl
+            : null;
+      if (imageUrl) {
+        const saved = await persistProcessedImage(user.id, imageUrl, {
+          action,
+          jobId,
+          workspaceId,
+        });
+        if (saved) {
+          output = {
+            ...output,
+            assetId: saved.assetId,
+            imageUrl: saved.signedUrl ?? imageUrl,
+            savedToLibrary: true,
+          };
+        }
+      }
+    }
+
     if (admin && jobId) {
       await admin
         .from("ai_jobs")
-        .update({ status: "succeeded", output_payload: result.output })
+        .update({ status: "succeeded", output_payload: output })
         .eq("id", jobId);
     }
 
     return NextResponse.json({
       jobId,
       mock: result.mock,
-      output: result.output,
+      output,
       creditCost: deduction.ok ? cost : 0,
       creditWarning: deduction.ok ? undefined : deduction.reason,
     });

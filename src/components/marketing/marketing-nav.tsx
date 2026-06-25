@@ -20,7 +20,7 @@ export async function MarketingNav() {
           <Link href="/#features" className="hover:text-foreground">
             {t("features")}
           </Link>
-          <Link href="/#pricing" className="hover:text-foreground">
+          <Link href="/pricing" className="hover:text-foreground">
             {t("pricing")}
           </Link>
         </nav>

@@ -68,7 +68,7 @@ export default async function LandingPage({
                 <ArrowRight className="size-4" />
               </Link>
               <Link
-                href="/#pricing"
+                href="/pricing"
                 className={buttonVariants({ size: "lg", variant: "outline" })}
               >
                 {t("hero.ctaSecondary")}

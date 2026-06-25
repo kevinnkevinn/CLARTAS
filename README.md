@@ -239,13 +239,10 @@ and `.env.local` is git-ignored.
 
 ## 16. Known limitations
 
-- AI provider model endpoints in `providers.ts` are sensible defaults; tune them
-  and add output-to-Storage persistence for your exact models.
 - Crop/Resize is a client-side placeholder (no AI credit cost).
-- Approval workflow has schema + RLS but no dedicated UI yet.
-- Static mobile export omits server routes by design (see Mobile build guide).
-- Tests cover pure logic (validation, credits, webhook signing); add integration
-  tests against a Supabase test project for full coverage.
+- Intelligence modules (market research, omnichannel CS, live selling) have UI foundations; external channel APIs must be connected in production.
+- Konsta UI is optional for mobile polish — Capacitor WebView uses the responsive Tailwind layout by default.
+- Tests cover pure logic (validation, credits, webhook signing); add integration tests against a Supabase test project for full coverage.
 
 ## 17. Next recommended improvements
 
