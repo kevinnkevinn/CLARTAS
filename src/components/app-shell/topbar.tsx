@@ -10,15 +10,25 @@ interface TopbarProps {
   fullName?: string | null;
   credits: number;
   isAdmin: boolean;
+  workspaceName?: string | null;
 }
 
-export async function Topbar({ email, fullName, credits, isAdmin }: TopbarProps) {
+export async function Topbar({
+  email,
+  fullName,
+  credits,
+  isAdmin,
+  workspaceName,
+}: TopbarProps) {
   const t = await getTranslations("credits");
 
   return (
     <header className="flex h-16 items-center justify-between gap-3 border-b bg-background/80 px-4 backdrop-blur md:px-6">
       <div className="flex items-center gap-3">
         <MobileNav isAdmin={isAdmin} />
+        {workspaceName ? (
+          <span className="hidden text-sm text-muted-foreground md:inline">{workspaceName}</span>
+        ) : null}
       </div>
       <div className="flex items-center gap-2 md:gap-3">
         <Link

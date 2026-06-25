@@ -78,12 +78,21 @@
       "title": "E-Commerce Automation",
       "description": "Connect uploads, editing, publishing, and notifications into a single automated workflow."
     },
+    "brandManagement": {
+      "title": "Brand Management",
+      "description": "Store logos, colors, fonts, and brand voice so every AI output stays on-brand."
+    },
+    "assetLibrary": {
+      "title": "Asset Library",
+      "description": "Organize raw and processed files with search, tags, and team-wide access."
+    },
     "pricing": {
       "title": "Simple, transparent pricing",
       "subtitle": "Start free. Upgrade when you grow.",
       "perMonth": "/month",
       "mostPopular": "Most popular",
-      "cta": "Choose plan"
+      "cta": "Choose plan",
+      "comingSoon": "Coming soon"
     },
     "globalLanguages": {
       "title": "Built for global sellers",
@@ -117,7 +126,22 @@
     "signingIn": "Signing in...",
     "signingUp": "Creating account...",
     "genericError": "Something went wrong. Please try again.",
-    "invalidCredentials": "Invalid email or password."
+    "invalidCredentials": "Invalid email or password.",
+    "forgotPassword": "Forgot password?",
+    "forgotPasswordTitle": "Reset your password",
+    "forgotPasswordSubtitle": "We'll email you a reset link.",
+    "resetPasswordTitle": "Set a new password",
+    "resetPasswordSubtitle": "Choose a strong password for your account.",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "resetEmailSent": "Check your email for a password reset link.",
+    "passwordUpdated": "Password updated. You can sign in now.",
+    "signInWithGoogle": "Continue with Google",
+    "notConfigured": "Auth is not configured.",
+    "sendResetLink": "Send reset link",
+    "updatePassword": "Update password",
+    "passwordMismatch": "Passwords do not match.",
+    "backToSignIn": "Back to sign in"
   },
   "dashboard": {
     "welcome": "Welcome back, {name}",
@@ -178,7 +202,18 @@
       "tone": "Tone",
       "language": "Output language",
       "voice": "Voice",
-      "text": "Text"
+      "text": "Product details",
+      "productName": "Product name",
+      "keywords": "SEO keywords",
+      "keywordsPlaceholder": "wireless, bluetooth, portable",
+      "marketplace": "Marketplace",
+      "marketplaceGeneral": "General"
+    },
+    "adjustments": {
+      "title": "Image adjustments",
+      "brightness": "Brightness",
+      "contrast": "Contrast",
+      "saturation": "Saturation"
     }
   },
   "aiTools": {
@@ -204,7 +239,15 @@
       "videoType": "Allowed video formats: MP4, MOV, WEBM.",
       "imageSize": "Images must be under 10MB.",
       "videoSize": "Videos must be under 100MB."
-    }
+    },
+    "searchPlaceholder": "Search assets...",
+    "noResults": "No assets match your search.",
+    "deleted": "Asset deleted.",
+    "renamed": "Asset renamed.",
+    "detailSubtitle": "Asset details and actions.",
+    "type": "Type",
+    "size": "Size",
+    "created": "Created"
   },
   "brandKit": {
     "title": "Brand Kit",
@@ -216,7 +259,8 @@
     "colors": "Brand colors",
     "fonts": "Brand fonts",
     "voice": "Brand voice",
-    "voicePlaceholder": "e.g. Friendly, premium, concise"
+    "voicePlaceholder": "e.g. Friendly, premium, concise",
+    "logoUploaded": "Logo on file"
   },
   "billing": {
     "title": "Billing",
@@ -230,7 +274,8 @@
     "plans": {
       "free": { "name": "Free", "description": "For trying out CLARTAS." },
       "premium": { "name": "Premium", "description": "For growing sellers and creators." },
-      "enterprise": { "name": "Enterprise", "description": "For teams and agencies with custom needs." }
+      "enterprise": { "name": "Enterprise", "description": "For teams and agencies with custom needs." },
+      "white-label": { "name": "White Label", "description": "Custom branding and reseller model for agencies." }
     },
     "status": {
       "active": "Active",
@@ -254,7 +299,13 @@
       "admin": "Admin",
       "editor": "Editor",
       "viewer": "Viewer"
-    }
+    },
+    "inviteMember": "Invite member",
+    "inviteSent": "Member added to workspace.",
+    "memberEmail": "Member email",
+    "memberRole": "Role",
+    "sendInvite": "Send invite",
+    "workspaceName": "Workspace name"
   },
   "credits": {
     "balance": "Credit balance",
@@ -263,7 +314,9 @@
     "upgradeCta": "Upgrade plan",
     "topUpCta": "Top up credits",
     "history": "Credit history",
-    "noHistory": "No credit activity yet."
+    "noHistory": "No credit activity yet.",
+    "lowBalanceTitle": "Low credit balance",
+    "lowBalanceMessage": "You're running low on AI credits. Upgrade or top up to keep creating."
   },
   "admin": {
     "title": "Admin Dashboard",
@@ -284,7 +337,8 @@
     "totalUsers": "Total users",
     "totalJobs": "Total AI jobs",
     "totalRevenue": "Total revenue",
-    "activeSubscriptions": "Active subscriptions"
+    "activeSubscriptions": "Active subscriptions",
+    "workspaces": "Workspaces"
   },
   "states": {
     "loadingTitle": "Loading",
@@ -308,7 +362,12 @@
     "creditsUsed": "Credits used",
     "jobsByAction": "Jobs by tool",
     "recentActivity": "Recent activity (7 days)",
-    "noActivity": "No recent activity."
+    "noActivity": "No recent activity.",
+    "ctr": "Click-through rate",
+    "conversionRate": "Conversion rate",
+    "roi": "ROI",
+    "revenue": "Revenue",
+    "notConnected": "Connect your store to see this metric."
   },
   "approvals": {
     "title": "Approvals",

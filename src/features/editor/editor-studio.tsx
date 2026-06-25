@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import {
   Upload,
@@ -19,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { ImageAdjustments } from "./image-adjustments";
 
 interface HistoryEntry {
   tool: string;
@@ -47,7 +48,11 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
   const [output, setOutput] = useState<HistoryEntry | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const displayUrl = previewUrl ?? inputUrl;
+  const onAdjustPreview = useCallback((url: string) => setPreviewUrl(url), []);
 
   const needsImage = tool.inputType === "image" || tool.inputType === "images";
   const setField = (k: string, v: string) => setFields((p) => ({ ...p, [k]: v }));
@@ -77,8 +82,10 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
     switch (tool.action) {
       case "generate-copy":
         return {
-          productName: (fields.text ?? "").slice(0, 200) || "Product",
+          productName: fields.productName || (fields.text ?? "").slice(0, 200) || "Product",
           details: fields.text ?? "",
+          keywords: fields.keywords || undefined,
+          marketplace: fields.marketplace || undefined,
           tone: fields.tone || undefined,
           language: fields.language || "en",
           type: "description",
@@ -102,8 +109,12 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
 
   async function handleRun() {
     if (!tool.action) {
-      // Local-only tool (crop/resize) — nothing to call.
-      setOutput({ tool: tool.id, at: Date.now(), output: { imageUrl: inputUrl }, mock: true });
+      setOutput({
+        tool: tool.id,
+        at: Date.now(),
+        output: { imageUrl: displayUrl },
+        mock: true,
+      });
       return;
     }
     setError(null);
@@ -169,6 +180,7 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
                 setTool(tool_);
                 setOutput(null);
                 setError(null);
+                setPreviewUrl(null);
               }}
               className={cn(
                 "flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors",
@@ -198,7 +210,7 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
           >
             {inputUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={inputUrl} alt="input" className="max-h-64 rounded-lg object-contain" />
+              <img src={displayUrl ?? inputUrl} alt="input" className="max-h-64 rounded-lg object-contain" />
             ) : (
               <>
                 <Upload className="mb-2 size-8 text-muted-foreground" />
@@ -221,6 +233,10 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
               </p>
             ) : null}
           </div>
+        ) : null}
+
+        {tool.id === "crop-resize" && inputUrl ? (
+          <ImageAdjustments imageUrl={inputUrl} onPreview={onAdjustPreview} />
         ) : null}
 
         {/* Output */}
@@ -307,6 +323,15 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
                 </Select>
               </div>
             ) : null}
+            {tool.fields.includes("productName") ? (
+              <div className="space-y-1.5">
+                <Label>{tf("productName")}</Label>
+                <Input
+                  value={fields.productName ?? ""}
+                  onChange={(e) => setField("productName", e.target.value)}
+                />
+              </div>
+            ) : null}
             {tool.fields.includes("text") ? (
               <div className="space-y-1.5">
                 <Label>{tf("text")}</Label>
@@ -315,6 +340,31 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
                   value={fields.text ?? ""}
                   onChange={(e) => setField("text", e.target.value)}
                 />
+              </div>
+            ) : null}
+            {tool.fields.includes("keywords") ? (
+              <div className="space-y-1.5">
+                <Label>{tf("keywords")}</Label>
+                <Input
+                  placeholder={tf("keywordsPlaceholder")}
+                  value={fields.keywords ?? ""}
+                  onChange={(e) => setField("keywords", e.target.value)}
+                />
+              </div>
+            ) : null}
+            {tool.fields.includes("marketplace") ? (
+              <div className="space-y-1.5">
+                <Label>{tf("marketplace")}</Label>
+                <Select
+                  value={fields.marketplace ?? "general"}
+                  onChange={(e) => setField("marketplace", e.target.value)}
+                >
+                  <option value="general">{tf("marketplaceGeneral")}</option>
+                  <option value="shopee">Shopee</option>
+                  <option value="tokopedia">Tokopedia</option>
+                  <option value="amazon">Amazon</option>
+                  <option value="tiktok">TikTok Shop</option>
+                </Select>
               </div>
             ) : null}
             {tool.fields.includes("tone") ? (

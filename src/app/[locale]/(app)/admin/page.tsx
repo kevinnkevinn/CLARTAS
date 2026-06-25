@@ -11,6 +11,7 @@ import {
   listTransactions,
   listSubscriptions,
   listErrorLogs,
+  listWorkspaces,
 } from "@/features/admin/service";
 import { CreditAdjustForm } from "@/features/admin/credit-adjust-form";
 import { formatDate, formatCurrency, truncate } from "@/lib/utils";
@@ -26,13 +27,14 @@ export default async function AdminPage({
 
   const t = await getTranslations("admin");
 
-  const [stats, users, jobs, transactions, subscriptions, logs] = await Promise.all([
+  const [stats, users, jobs, transactions, subscriptions, logs, workspaces] = await Promise.all([
     getAdminStats(),
     listUsers(),
     listJobs(),
     listTransactions(),
     listSubscriptions(),
     listErrorLogs(),
+    listWorkspaces(),
   ]);
 
   const statCards = [
@@ -138,6 +140,22 @@ export default async function AdminPage({
                   tx.status,
                   formatDate(tx.created_at, safeLocale),
                 ],
+              }))}
+              empty="—"
+            />
+          </CardContent>
+        </Card>
+
+        {/* Workspaces */}
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("workspaces")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <AdminTable
+              rows={workspaces.map((w) => ({
+                key: w.id,
+                cells: [w.name, w.slug, formatDate(w.created_at, safeLocale)],
               }))}
               empty="—"
             />

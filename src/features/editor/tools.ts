@@ -11,7 +11,17 @@ import {
 } from "lucide-react";
 import { CREDIT_COSTS, type AIAction } from "@/lib/constants";
 
-export type ToolField = "prompt" | "scene" | "aspectRatio" | "tone" | "language" | "voice" | "text";
+export type ToolField =
+  | "prompt"
+  | "scene"
+  | "aspectRatio"
+  | "tone"
+  | "language"
+  | "voice"
+  | "text"
+  | "productName"
+  | "keywords"
+  | "marketplace";
 
 export interface EditorTool {
   id: string;
@@ -96,7 +106,7 @@ export const EDITOR_TOOLS: EditorTool[] = [
     icon: PenLine,
     action: "generate-copy",
     inputType: "text",
-    fields: ["text", "tone", "language"],
+    fields: ["productName", "text", "keywords", "tone", "language", "marketplace"],
     cost: CREDIT_COSTS["generate-copy"],
   },
 ];

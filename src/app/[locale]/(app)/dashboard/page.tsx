@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Coins, Images, Sparkles, Wand2, PenLine, Upload, ArrowRight } from "lucide-react";
+import { Coins, Images, Sparkles, Wand2, PenLine, Upload, ArrowRight, AlertTriangle } from "lucide-react";
 import { isValidLocale, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { requireUser } from "@/features/auth/guards";
@@ -21,6 +21,7 @@ export default async function DashboardPage({
   setRequestLocale(safeLocale);
 
   const t = await getTranslations("dashboard");
+  const tCredits = await getTranslations("credits");
   const user = await requireUser(safeLocale);
 
   const [credits, assets, jobs, jobCount] = await Promise.all([
@@ -47,6 +48,19 @@ export default async function DashboardPage({
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
       </div>
+
+      {credits < 5 ? (
+        <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+          <AlertTriangle className="mt-0.5 size-5 shrink-0" />
+          <div>
+            <p className="font-medium">{tCredits("lowBalanceTitle")}</p>
+            <p className="mt-1 text-amber-800">{tCredits("lowBalanceMessage")}</p>
+            <Link href="/billing" className="mt-2 inline-block font-medium text-amber-900 underline">
+              {tCredits("upgradeCta")}
+            </Link>
+          </div>
+        </div>
+      ) : null}
 
       {/* Stats */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

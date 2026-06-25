@@ -34,23 +34,31 @@ export interface AssetWithUrl extends Asset {
   signedUrl: string | null;
 }
 
-/** Attach short-lived signed preview URLs to a list of assets (raw bucket). */
+/** Resolve storage bucket from asset path/metadata. */
+function assetBucket(asset: Asset): keyof typeof STORAGE_BUCKETS {
+  const meta = asset.metadata as { source?: string };
+  if (meta?.source === "ai" || asset.file_path.includes("/processed/")) {
+    return "processed";
+  }
+  return "raw";
+}
+
+/** Attach short-lived signed preview URLs to a list of assets. */
 export async function withSignedUrls(assets: Asset[]): Promise<AssetWithUrl[]> {
   const supabase = await createClient();
   if (!supabase || assets.length === 0) {
     return assets.map((a) => ({ ...a, signedUrl: null }));
   }
-  const paths = assets.map((a) => a.file_path);
-  const { data } = await supabase.storage
-    .from(STORAGE_BUCKETS.raw)
-    .createSignedUrls(paths, 3600);
 
-  const urlByPath = new Map<string, string>();
-  (data ?? []).forEach((entry) => {
-    if (entry.path && entry.signedUrl) urlByPath.set(entry.path, entry.signedUrl);
-  });
-
-  return assets.map((a) => ({ ...a, signedUrl: urlByPath.get(a.file_path) ?? null }));
+  const results: AssetWithUrl[] = [];
+  for (const asset of assets) {
+    const bucket = STORAGE_BUCKETS[assetBucket(asset)];
+    const { data } = await supabase.storage
+      .from(bucket)
+      .createSignedUrl(asset.file_path, 3600);
+    results.push({ ...asset, signedUrl: data?.signedUrl ?? null });
+  }
+  return results;
 }
 
 /**

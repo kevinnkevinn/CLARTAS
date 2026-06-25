@@ -45,6 +45,25 @@ export default async function AnalyticsPage({
         ))}
       </div>
 
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {[
+          { label: t("ctr"), key: "ctr" as const },
+          { label: t("conversionRate"), key: "conversionRate" as const },
+          { label: t("roi"), key: "roi" as const },
+          { label: t("revenue"), key: "revenue" as const },
+        ].map(({ label, key }) => (
+          <Card key={key} className="border-dashed">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm text-muted-foreground">{label}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-2xl font-bold text-muted-foreground">—</p>
+              <p className="mt-1 text-xs text-muted-foreground">{t("notConnected")}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>

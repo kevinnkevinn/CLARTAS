@@ -78,12 +78,21 @@
       "title": "Otomasi E-Commerce",
       "description": "Hubungkan unggah, editing, publikasi, dan notifikasi dalam satu alur kerja otomatis."
     },
+    "brandManagement": {
+      "title": "Manajemen Brand",
+      "description": "Simpan logo, warna, font, dan suara brand agar setiap output AI konsisten."
+    },
+    "assetLibrary": {
+      "title": "Pustaka Aset",
+      "description": "Kelola file mentah dan hasil proses dengan pencarian, tag, dan akses tim."
+    },
     "pricing": {
       "title": "Harga sederhana dan transparan",
       "subtitle": "Mulai gratis. Tingkatkan saat Anda berkembang.",
       "perMonth": "/bulan",
       "mostPopular": "Paling populer",
-      "cta": "Pilih paket"
+      "cta": "Pilih paket",
+      "comingSoon": "Segera hadir"
     },
     "globalLanguages": {
       "title": "Dibuat untuk penjual global",
@@ -117,7 +126,22 @@
     "signingIn": "Sedang masuk...",
     "signingUp": "Membuat akun...",
     "genericError": "Terjadi kesalahan. Silakan coba lagi.",
-    "invalidCredentials": "Email atau kata sandi salah."
+    "invalidCredentials": "Email atau kata sandi salah.",
+    "forgotPassword": "Lupa kata sandi?",
+    "forgotPasswordTitle": "Atur ulang kata sandi",
+    "forgotPasswordSubtitle": "Kami akan mengirim tautan reset ke email Anda.",
+    "resetPasswordTitle": "Buat kata sandi baru",
+    "resetPasswordSubtitle": "Pilih kata sandi yang kuat untuk akun Anda.",
+    "newPassword": "Kata sandi baru",
+    "confirmPassword": "Konfirmasi kata sandi",
+    "resetEmailSent": "Periksa email untuk tautan reset kata sandi.",
+    "passwordUpdated": "Kata sandi diperbarui. Anda bisa masuk sekarang.",
+    "signInWithGoogle": "Lanjutkan dengan Google",
+    "notConfigured": "Autentikasi belum dikonfigurasi.",
+    "sendResetLink": "Kirim tautan reset",
+    "updatePassword": "Perbarui kata sandi",
+    "passwordMismatch": "Kata sandi tidak cocok.",
+    "backToSignIn": "Kembali ke masuk"
   },
   "dashboard": {
     "welcome": "Selamat datang kembali, {name}",
@@ -178,7 +202,18 @@
       "tone": "Nada",
       "language": "Bahasa output",
       "voice": "Suara",
-      "text": "Teks"
+      "text": "Detail produk",
+      "productName": "Nama produk",
+      "keywords": "Kata kunci SEO",
+      "keywordsPlaceholder": "nirkabel, bluetooth, portabel",
+      "marketplace": "Marketplace",
+      "marketplaceGeneral": "Umum"
+    },
+    "adjustments": {
+      "title": "Penyesuaian gambar",
+      "brightness": "Kecerahan",
+      "contrast": "Kontras",
+      "saturation": "Saturasi"
     }
   },
   "aiTools": {
@@ -204,7 +239,15 @@
       "videoType": "Format video yang diizinkan: MP4, MOV, WEBM.",
       "imageSize": "Gambar harus di bawah 10MB.",
       "videoSize": "Video harus di bawah 100MB."
-    }
+    },
+    "searchPlaceholder": "Cari aset...",
+    "noResults": "Tidak ada aset yang cocok.",
+    "deleted": "Aset dihapus.",
+    "renamed": "Aset diganti nama.",
+    "detailSubtitle": "Detail dan tindakan aset.",
+    "type": "Tipe",
+    "size": "Ukuran",
+    "created": "Dibuat"
   },
   "brandKit": {
     "title": "Brand Kit",
@@ -216,7 +259,8 @@
     "colors": "Warna brand",
     "fonts": "Font brand",
     "voice": "Brand voice",
-    "voicePlaceholder": "mis. Ramah, premium, ringkas"
+    "voicePlaceholder": "mis. Ramah, premium, ringkas",
+    "logoUploaded": "Logo tersimpan"
   },
   "billing": {
     "title": "Tagihan",
@@ -230,7 +274,8 @@
     "plans": {
       "free": { "name": "Gratis", "description": "Untuk mencoba CLARTAS." },
       "premium": { "name": "Premium", "description": "Untuk penjual dan kreator yang berkembang." },
-      "enterprise": { "name": "Enterprise", "description": "Untuk tim dan agensi dengan kebutuhan khusus." }
+      "enterprise": { "name": "Enterprise", "description": "Untuk tim dan agensi dengan kebutuhan khusus." },
+      "white-label": { "name": "White Label", "description": "Branding kustom dan model reseller untuk agensi." }
     },
     "status": {
       "active": "Aktif",
@@ -254,7 +299,13 @@
       "admin": "Admin",
       "editor": "Editor",
       "viewer": "Penonton"
-    }
+    },
+    "inviteMember": "Undang anggota",
+    "inviteSent": "Anggota ditambahkan ke workspace.",
+    "memberEmail": "Email anggota",
+    "memberRole": "Peran",
+    "sendInvite": "Kirim undangan",
+    "workspaceName": "Nama workspace"
   },
   "credits": {
     "balance": "Saldo kredit",
@@ -263,7 +314,9 @@
     "upgradeCta": "Tingkatkan paket",
     "topUpCta": "Isi ulang kredit",
     "history": "Riwayat kredit",
-    "noHistory": "Belum ada aktivitas kredit."
+    "noHistory": "Belum ada aktivitas kredit.",
+    "lowBalanceTitle": "Saldo kredit rendah",
+    "lowBalanceMessage": "Kredit AI Anda hampir habis. Upgrade atau isi ulang untuk terus berkarya."
   },
   "admin": {
     "title": "Dasbor Admin",
@@ -284,7 +337,8 @@
     "totalUsers": "Total pengguna",
     "totalJobs": "Total pekerjaan AI",
     "totalRevenue": "Total pendapatan",
-    "activeSubscriptions": "Langganan aktif"
+    "activeSubscriptions": "Langganan aktif",
+    "workspaces": "Workspace"
   },
   "states": {
     "loadingTitle": "Memuat",
@@ -308,7 +362,12 @@
     "creditsUsed": "Kredit terpakai",
     "jobsByAction": "Pekerjaan per alat",
     "recentActivity": "Aktivitas terbaru (7 hari)",
-    "noActivity": "Belum ada aktivitas terbaru."
+    "noActivity": "Belum ada aktivitas terbaru.",
+    "ctr": "Rasio klik-tayang",
+    "conversionRate": "Tingkat konversi",
+    "roi": "ROI",
+    "revenue": "Pendapatan",
+    "notConnected": "Hubungkan toko Anda untuk melihat metrik ini."
   },
   "approvals": {
     "title": "Persetujuan",

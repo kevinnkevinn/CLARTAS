@@ -8,6 +8,12 @@ export interface UsageAnalytics {
   creditsUsed: number;
   jobsByAction: Record<string, number>;
   recentActivity: Array<{ date: string; jobs: number }>;
+  businessMetrics: {
+    ctr: number | null;
+    conversionRate: number | null;
+    roi: number | null;
+    revenue: number | null;
+  };
 }
 
 export async function getUsageAnalytics(userId: string): Promise<UsageAnalytics> {
@@ -20,6 +26,7 @@ export async function getUsageAnalytics(userId: string): Promise<UsageAnalytics>
     creditsUsed: 0,
     jobsByAction: {},
     recentActivity: [],
+    businessMetrics: { ctr: null, conversionRate: null, roi: null, revenue: null },
   };
   if (!supabase) return empty;
 
@@ -74,5 +81,6 @@ export async function getUsageAnalytics(userId: string): Promise<UsageAnalytics>
     creditsUsed: creditDeductions || creditsUsed,
     jobsByAction,
     recentActivity,
+    businessMetrics: { ctr: null, conversionRate: null, roi: null, revenue: null },
   };
 }

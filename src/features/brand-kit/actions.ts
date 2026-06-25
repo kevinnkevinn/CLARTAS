@@ -46,3 +46,17 @@ export async function createBrandKitAction(
   revalidatePath("/brand-kit", "page");
   return { success: true };
 }
+
+export async function deleteBrandKitAction(kitId: string): Promise<BrandKitResult> {
+  const user = await getSessionUser();
+  if (!user) return { error: "Unauthorized" };
+
+  const supabase = await createClient();
+  if (!supabase) return { error: "Not configured" };
+
+  const { error } = await supabase.from("brand_kits").delete().eq("id", kitId);
+  if (error) return { error: error.message };
+
+  revalidatePath("/brand-kit");
+  return { success: true };
+}

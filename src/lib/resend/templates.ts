@@ -38,3 +38,33 @@ export function operationalEmail(subject: string, message: string): {
 } {
   return { subject, html: shell(subject, `<p style="color:#475569">${message}</p>`) };
 }
+
+export function aiJobCompletedEmail(action: string): { subject: string; html: string } {
+  return {
+    subject: "Your CLARTAS AI job is ready",
+    html: shell(
+      "AI job completed",
+      `<p style="color:#475569">Your <strong>${action}</strong> job finished successfully. Open your asset library to view and download the result.</p>`,
+    ),
+  };
+}
+
+export function aiJobFailedEmail(action: string, reason?: string): { subject: string; html: string } {
+  return {
+    subject: "Your CLARTAS AI job failed",
+    html: shell(
+      "AI job failed",
+      `<p style="color:#475569">Your <strong>${action}</strong> job could not be completed.${reason ? ` Reason: ${reason}` : ""} Credits were refunded if deducted.</p>`,
+    ),
+  };
+}
+
+export function invoiceEmail(amount: string, invoiceId: string): { subject: string; html: string } {
+  return {
+    subject: "Your CLARTAS invoice",
+    html: shell(
+      "Invoice available",
+      `<p style="color:#475569">Invoice <strong>#${invoiceId}</strong> for <strong>${amount}</strong> is ready. View it in your billing dashboard.</p>`,
+    ),
+  };
+}

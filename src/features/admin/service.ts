@@ -80,6 +80,21 @@ export async function listSubscriptions(limit = 25) {
   return data ?? [];
 }
 
+export async function listWorkspaces(limit = 25, query?: string) {
+  const admin = createAdminClient();
+  if (!admin) return [];
+  let q = admin
+    .from("workspaces")
+    .select("id, name, slug, owner_id, created_at")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (query?.trim()) {
+    q = q.ilike("name", `%${query.trim()}%`);
+  }
+  const { data } = await q;
+  return data ?? [];
+}
+
 export async function listErrorLogs(limit = 25) {
   const admin = createAdminClient();
   if (!admin) return [];

@@ -3,6 +3,7 @@ import { isValidLocale, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { SignInForm } from "@/features/auth/sign-in-form";
+import { GoogleSignInButton } from "@/features/auth/google-sign-in-button";
 
 export default async function SignInPage({
   params,
@@ -22,6 +23,20 @@ export default async function SignInPage({
       </CardHeader>
       <CardContent>
         <SignInForm />
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-card px-2 text-muted-foreground">or</span>
+          </div>
+        </div>
+        <GoogleSignInButton />
+        <p className="mt-4 text-center text-sm">
+          <Link href="/forgot-password" className="text-primary hover:underline">
+            {t("forgotPassword")}
+          </Link>
+        </p>
         <p className="mt-6 text-center text-sm text-muted-foreground">
           {t("noAccount")}{" "}
           <Link href="/sign-up" className="font-medium text-primary hover:underline">

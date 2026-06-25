@@ -70,3 +70,43 @@ export async function signOutAction(locale: Locale) {
   revalidatePath("/", "layout");
   redirect({ href: "/sign-in", locale });
 }
+
+export async function forgotPasswordAction(
+  _prev: AuthResult,
+  formData: FormData,
+): Promise<AuthResult> {
+  if (!isSupabaseConfigured) {
+    return { error: "Authentication is not configured." };
+  }
+  const email = String(formData.get("email") ?? "").trim();
+  const locale = (String(formData.get("locale") ?? "en") || "en") as Locale;
+  const supabase = await createClient();
+  if (!supabase) return { error: "Authentication is not configured." };
+
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${appUrl}/${locale}/reset-password`,
+  });
+  if (error) return { error: error.message };
+  return { success: true };
+}
+
+export async function resetPasswordAction(
+  _prev: AuthResult,
+  formData: FormData,
+): Promise<AuthResult> {
+  if (!isSupabaseConfigured) {
+    return { error: "Authentication is not configured." };
+  }
+  const password = String(formData.get("password") ?? "");
+  const locale = (String(formData.get("locale") ?? "en") || "en") as Locale;
+  const supabase = await createClient();
+  if (!supabase) return { error: "Authentication is not configured." };
+
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) return { error: error.message };
+
+  revalidatePath("/", "layout");
+  redirect({ href: "/dashboard", locale });
+  return { success: true };
+}

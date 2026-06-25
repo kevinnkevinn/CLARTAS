@@ -2,11 +2,17 @@ import { NextResponse } from "next/server";
 import type { ZodSchema } from "zod";
 import { getSessionUser } from "@/features/auth/session";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { deductCredits, getCreditBalance } from "@/features/credits/service";
+import { deductCredits, getCreditBalance, addCredits } from "@/features/credits/service";
 import { runAIAction } from "@/lib/ai/providers";
 import { persistProcessedImage } from "@/lib/ai/storage";
 import { CREDIT_COSTS, ACTION_PROVIDER, type AIAction } from "@/lib/constants";
 import { logError } from "@/lib/logger";
+import { checkRateLimit } from "@/lib/rate-limit";
+
+interface HandlerOptions<T> {
+  action: AIAction;
+  schema: ZodSchema<T>;
+}
 
 const IMAGE_ACTIONS: AIAction[] = [
   "remove-background",
@@ -15,32 +21,20 @@ const IMAGE_ACTIONS: AIAction[] = [
   "enhance-image",
 ];
 
-interface HandlerOptions<T> {
-  action: AIAction;
-  schema: ZodSchema<T>;
-}
-
-/**
- * Shared, secure pipeline for every AI route handler:
- *  1. Require an authenticated user.
- *  2. Validate the JSON body.
- *  3. Check the AI credit balance (block if insufficient).
- *  4. Create an ai_jobs row.
- *  5. Run the AI action server-side (keys never leave the server).
- *  6. Deduct credits only after a successful run.
- *  7. Return a clean JSON response and log errors without leaking secrets.
- */
 export async function handleAIRequest<T>(
   request: Request,
   { action, schema }: HandlerOptions<T>,
 ): Promise<NextResponse> {
-  // 1. Auth
   const user = await getSessionUser();
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // 2. Validate
+  const rate = checkRateLimit(`ai:${user.id}:${action}`, 30, 60_000);
+  if (!rate.ok) {
+    return NextResponse.json({ error: "rate_limit_exceeded" }, { status: 429 });
+  }
+
   let body: unknown;
   try {
     body = await request.json();
@@ -59,7 +53,6 @@ export async function handleAIRequest<T>(
   const cost = CREDIT_COSTS[action];
   const provider = ACTION_PROVIDER[action];
 
-  // 3. Credit check
   const balance = await getCreditBalance(user.id);
   if (balance < cost) {
     return NextResponse.json(
@@ -68,7 +61,6 @@ export async function handleAIRequest<T>(
     );
   }
 
-  // 4. Create job row (best-effort; requires service role)
   const admin = createAdminClient();
   let jobId: string | null = null;
   if (admin) {
@@ -87,12 +79,13 @@ export async function handleAIRequest<T>(
     jobId = data?.id ?? null;
   }
 
-  // 5. Run
+  let creditsDeducted = false;
+
   try {
     const result = await runAIAction(action, provider, input);
 
-    // 6. Deduct credits after success
     const deduction = await deductCredits(user.id, cost, action.toUpperCase(), action);
+    creditsDeducted = deduction.ok;
 
     let output = { ...result.output };
     const workspaceId =
@@ -138,6 +131,11 @@ export async function handleAIRequest<T>(
     });
   } catch (error) {
     await logError(`ai:${action}`, error, { jobId }, user.id);
+
+    if (creditsDeducted) {
+      await addCredits(user.id, cost, "AI_REFUND", `Refund for failed ${action}`);
+    }
+
     if (admin && jobId) {
       await admin
         .from("ai_jobs")

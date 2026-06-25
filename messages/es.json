@@ -78,12 +78,21 @@
       "title": "Automatización de e-commerce",
       "description": "Conecta cargas, edición, publicación y notificaciones en un único flujo automatizado."
     },
+    "brandManagement": {
+      "title": "Gestión de marca",
+      "description": "Guarda logos, colores, fuentes y voz de marca para que cada salida de IA sea coherente."
+    },
+    "assetLibrary": {
+      "title": "Biblioteca de activos",
+      "description": "Organiza archivos originales y procesados con búsqueda, etiquetas y acceso en equipo."
+    },
     "pricing": {
       "title": "Precios simples y transparentes",
       "subtitle": "Empieza gratis. Mejora cuando crezcas.",
       "perMonth": "/mes",
       "mostPopular": "Más popular",
-      "cta": "Elegir plan"
+      "cta": "Elegir plan",
+      "comingSoon": "Próximamente"
     },
     "globalLanguages": {
       "title": "Creado para vendedores globales",
@@ -117,7 +126,22 @@
     "signingIn": "Iniciando sesión...",
     "signingUp": "Creando cuenta...",
     "genericError": "Algo salió mal. Inténtalo de nuevo.",
-    "invalidCredentials": "Correo o contraseña incorrectos."
+    "invalidCredentials": "Correo o contraseña incorrectos.",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "forgotPasswordTitle": "Restablecer contraseña",
+    "forgotPasswordSubtitle": "Te enviaremos un enlace de restablecimiento por correo.",
+    "resetPasswordTitle": "Establecer nueva contraseña",
+    "resetPasswordSubtitle": "Elige una contraseña segura para tu cuenta.",
+    "newPassword": "Nueva contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "resetEmailSent": "Revisa tu correo para el enlace de restablecimiento.",
+    "passwordUpdated": "Contraseña actualizada. Ya puedes iniciar sesión.",
+    "signInWithGoogle": "Continuar con Google",
+    "notConfigured": "La autenticación no está configurada.",
+    "sendResetLink": "Enviar enlace",
+    "updatePassword": "Actualizar contraseña",
+    "passwordMismatch": "Las contraseñas no coinciden.",
+    "backToSignIn": "Volver a iniciar sesión"
   },
   "dashboard": {
     "welcome": "Bienvenido de nuevo, {name}",
@@ -178,7 +202,18 @@
       "tone": "Tono",
       "language": "Idioma de salida",
       "voice": "Voz",
-      "text": "Texto"
+      "text": "Detalles del producto",
+      "productName": "Nombre del producto",
+      "keywords": "Palabras clave SEO",
+      "keywordsPlaceholder": "inalámbrico, bluetooth, portátil",
+      "marketplace": "Marketplace",
+      "marketplaceGeneral": "General"
+    },
+    "adjustments": {
+      "title": "Ajustes de imagen",
+      "brightness": "Brillo",
+      "contrast": "Contraste",
+      "saturation": "Saturación"
     }
   },
   "aiTools": {
@@ -204,7 +239,15 @@
       "videoType": "Formatos de video permitidos: MP4, MOV, WEBM.",
       "imageSize": "Las imágenes deben pesar menos de 10MB.",
       "videoSize": "Los videos deben pesar menos de 100MB."
-    }
+    },
+    "searchPlaceholder": "Buscar activos...",
+    "noResults": "Ningún activo coincide con la búsqueda.",
+    "deleted": "Activo eliminado.",
+    "renamed": "Activo renombrado.",
+    "detailSubtitle": "Detalles y acciones del activo.",
+    "type": "Tipo",
+    "size": "Tamaño",
+    "created": "Creado"
   },
   "brandKit": {
     "title": "Kit de marca",
@@ -216,7 +259,8 @@
     "colors": "Colores de marca",
     "fonts": "Fuentes de marca",
     "voice": "Voz de marca",
-    "voicePlaceholder": "p. ej. Amigable, premium, conciso"
+    "voicePlaceholder": "p. ej. Amigable, premium, conciso",
+    "logoUploaded": "Logo guardado"
   },
   "billing": {
     "title": "Facturación",
@@ -230,7 +274,8 @@
     "plans": {
       "free": { "name": "Gratis", "description": "Para probar CLARTAS." },
       "premium": { "name": "Premium", "description": "Para vendedores y creadores en crecimiento." },
-      "enterprise": { "name": "Enterprise", "description": "Para equipos y agencias con necesidades personalizadas." }
+      "enterprise": { "name": "Enterprise", "description": "Para equipos y agencias con necesidades personalizadas." },
+      "white-label": { "name": "Marca blanca", "description": "Marca personalizada y modelo de reventa para agencias." }
     },
     "status": {
       "active": "Activo",
@@ -254,7 +299,13 @@
       "admin": "Admin",
       "editor": "Editor",
       "viewer": "Visor"
-    }
+    },
+    "inviteMember": "Invitar miembro",
+    "inviteSent": "Miembro añadido al espacio de trabajo.",
+    "memberEmail": "Correo del miembro",
+    "memberRole": "Rol",
+    "sendInvite": "Enviar invitación",
+    "workspaceName": "Nombre del espacio"
   },
   "credits": {
     "balance": "Saldo de créditos",
@@ -263,7 +314,9 @@
     "upgradeCta": "Mejorar plan",
     "topUpCta": "Recargar créditos",
     "history": "Historial de créditos",
-    "noHistory": "Aún no hay actividad de créditos."
+    "noHistory": "Aún no hay actividad de créditos.",
+    "lowBalanceTitle": "Saldo de créditos bajo",
+    "lowBalanceMessage": "Te quedan pocos créditos de IA. Mejora tu plan o recarga para seguir creando."
   },
   "admin": {
     "title": "Panel de administración",
@@ -284,7 +337,8 @@
     "totalUsers": "Usuarios totales",
     "totalJobs": "Trabajos IA totales",
     "totalRevenue": "Ingresos totales",
-    "activeSubscriptions": "Suscripciones activas"
+    "activeSubscriptions": "Suscripciones activas",
+    "workspaces": "Espacios de trabajo"
   },
   "states": {
     "loadingTitle": "Cargando",
@@ -308,7 +362,12 @@
     "creditsUsed": "Créditos usados",
     "jobsByAction": "Trabajos por herramienta",
     "recentActivity": "Actividad reciente (7 días)",
-    "noActivity": "Sin actividad reciente."
+    "noActivity": "Sin actividad reciente.",
+    "ctr": "Tasa de clics",
+    "conversionRate": "Tasa de conversión",
+    "roi": "ROI",
+    "revenue": "Ingresos",
+    "notConnected": "Conecta tu tienda para ver esta métrica."
   },
   "approvals": {
     "title": "Aprobaciones",

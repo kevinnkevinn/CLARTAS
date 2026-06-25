@@ -34,7 +34,7 @@ export const ACTION_PROVIDER: Record<AIAction, "fal" | "replicate"> = {
   "text-to-speech": "replicate",
 };
 
-export type PlanId = "free" | "premium" | "enterprise";
+export type PlanId = "free" | "premium" | "enterprise" | "white-label";
 
 export interface Plan {
   id: PlanId;
@@ -46,6 +46,8 @@ export interface Plan {
   paddlePriceIdEnv?: string;
   featureKeys: string[];
   popular?: boolean;
+  /** Shown on marketing pages but not purchasable yet. */
+  comingSoon?: boolean;
 }
 
 export const PLANS: Record<PlanId, Plan> = {
@@ -81,6 +83,19 @@ export const PLANS: Record<PlanId, Plan> = {
       "Approval workflows",
       "API access",
       "Dedicated support",
+    ],
+  },
+  "white-label": {
+    id: "white-label",
+    price: 0,
+    credits: 0,
+    comingSoon: true,
+    featureKeys: [
+      "Custom domain & branding",
+      "Reseller / agency model",
+      "Unlimited workspaces",
+      "Priority SLA",
+      "Custom integrations",
     ],
   },
 };

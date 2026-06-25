@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/states/empty-state";
 import { SettingsForm } from "@/features/settings/settings-form";
+import { InviteMemberForm } from "@/features/workspace/invite-member-form";
+import { CreateWorkspaceForm } from "@/features/workspace/create-workspace-form";
 
 export default async function SettingsPage({
   params,
@@ -22,6 +24,8 @@ export default async function SettingsPage({
   const user = await requireUser(safeLocale);
   const workspace = await getPrimaryWorkspace(user.id);
   const members = workspace ? await getWorkspaceMembers(workspace.id) : [];
+  const myRole = members.find((m) => m.user_id === user.id)?.role ?? "viewer";
+  const isOwner = myRole === "owner";
 
   return (
     <div className="space-y-6">
@@ -51,11 +55,15 @@ export default async function SettingsPage({
                 <p className="font-medium">{workspace.name}</p>
                 <p className="text-xs text-muted-foreground">/{workspace.slug}</p>
               </div>
-              <Badge variant="secondary">{t("role.owner")}</Badge>
+              <Badge variant="secondary">{t(`role.${myRole}`)}</Badge>
             </div>
           ) : (
             <EmptyState icon={Users} title={t("workspace")} />
           )}
+
+          <CreateWorkspaceForm />
+
+          {isOwner ? <InviteMemberForm /> : null}
 
           <div>
             <h3 className="mb-2 text-sm font-semibold">{t("members")}</h3>

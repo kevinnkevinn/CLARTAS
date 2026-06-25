@@ -99,6 +99,10 @@ export default async function BillingPage({
                     <Badge variant="outline" className="w-full justify-center py-2">
                       {tb("free.name")}
                     </Badge>
+                  ) : plan.comingSoon ? (
+                    <Badge variant="secondary" className="w-full justify-center py-2">
+                      {tp("comingSoon")}
+                    </Badge>
                   ) : (
                     <CheckoutButton
                       priceId={priceId}

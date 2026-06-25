@@ -10,6 +10,8 @@ import {
   Zap,
   Check,
   ArrowRight,
+  Palette,
+  FolderOpen,
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { buttonVariants } from "@/components/ui/button";
@@ -36,6 +38,8 @@ export default async function LandingPage({
     { key: "videoEditor", icon: Clapperboard },
     { key: "contentGenerator", icon: PenLine },
     { key: "automation", icon: Workflow },
+    { key: "brandManagement", icon: Palette },
+    { key: "assetLibrary", icon: FolderOpen },
   ] as const;
 
   const values = [
@@ -103,7 +107,7 @@ export default async function LandingPage({
         {/* Features */}
         <section id="features" className="border-y bg-muted/30">
           <div className="container py-20">
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {features.map(({ key, icon: Icon }) => (
                 <Card key={key} className="overflow-hidden">
                   <CardHeader>
@@ -127,7 +131,7 @@ export default async function LandingPage({
             <h2 className="text-3xl font-bold tracking-tight">{t("pricing.title")}</h2>
             <p className="mt-3 text-muted-foreground">{t("pricing.subtitle")}</p>
           </div>
-          <div className="mx-auto mt-12 grid max-w-5xl gap-6 md:grid-cols-3">
+          <div className="mx-auto mt-12 grid max-w-6xl gap-6 md:grid-cols-2 lg:grid-cols-4">
             {(Object.keys(PLANS) as Array<keyof typeof PLANS>).map((id) => {
               const plan = PLANS[id];
               return (
@@ -138,7 +142,11 @@ export default async function LandingPage({
                     plan.popular && "border-primary shadow-md",
                   )}
                 >
-                  {plan.popular ? (
+                  {plan.comingSoon ? (
+                    <Badge className="absolute -top-3 left-1/2 -translate-x-1/2" variant="secondary">
+                      {tc("comingSoon")}
+                    </Badge>
+                  ) : plan.popular ? (
                     <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">
                       {t("pricing.mostPopular")}
                     </Badge>
@@ -163,13 +171,14 @@ export default async function LandingPage({
                       ))}
                     </ul>
                     <Link
-                      href="/sign-up"
+                      href={plan.comingSoon ? "/pricing" : "/sign-up"}
                       className={cn(
-                        buttonVariants({ variant: plan.popular ? "default" : "outline" }),
+                        buttonVariants({ variant: plan.popular && !plan.comingSoon ? "default" : "outline" }),
                         "mt-6",
+                        plan.comingSoon && "pointer-events-none opacity-60",
                       )}
                     >
-                      {t("pricing.cta")}
+                      {plan.comingSoon ? tc("comingSoon") : t("pricing.cta")}
                     </Link>
                   </CardContent>
                 </Card>
