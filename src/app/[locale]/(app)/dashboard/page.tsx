@@ -6,6 +6,7 @@ import { requireUser } from "@/features/auth/guards";
 import { getCreditBalance } from "@/features/credits/service";
 import { getRecentAssets } from "@/features/assets/service";
 import { getRecentJobs, getJobCount } from "@/features/ai/queries";
+import { getActiveWorkspace } from "@/features/workspace/service";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/states/empty-state";
@@ -22,13 +23,15 @@ export default async function DashboardPage({
 
   const t = await getTranslations("dashboard");
   const tCredits = await getTranslations("credits");
+  const tw = await getTranslations("workspace");
   const user = await requireUser(safeLocale);
 
-  const [credits, assets, jobs, jobCount] = await Promise.all([
+  const [credits, assets, jobs, jobCount, workspace] = await Promise.all([
     getCreditBalance(user.id),
     getRecentAssets(user.id),
     getRecentJobs(user.id),
     getJobCount(user.id),
+    getActiveWorkspace(user.id),
   ]);
 
   const name = user.profile?.full_name?.split(" ")[0];
@@ -38,6 +41,7 @@ export default async function DashboardPage({
     { href: "/editor?tool=product-studio", labelKey: "generateStudio", icon: Sparkles },
     { href: "/editor?tool=caption-generator", labelKey: "writeCopy", icon: PenLine },
     { href: "/assets", labelKey: "uploadAsset", icon: Upload },
+    { href: "/billing", labelKey: "billingQuick", icon: Coins },
   ] as const;
 
   return (
@@ -47,6 +51,11 @@ export default async function DashboardPage({
           {name ? t("welcome", { name }) : t("welcomeGeneric")}
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
+        {workspace ? (
+          <p className="mt-1 text-xs text-muted-foreground">
+            {tw("activeWorkspace")}: <span className="font-medium">{workspace.name}</span>
+          </p>
+        ) : null}
       </div>
 
       {credits < 5 ? (

@@ -39,7 +39,8 @@
     "signUp": "注册",
     "signOut": "退出",
     "pricing": "价格",
-    "features": "功能"
+    "features": "功能",
+    "workspace": "工作区"
   },
   "language": {
     "label": "语言",
@@ -298,8 +299,11 @@
       "owner": "所有者",
       "admin": "管理员",
       "editor": "编辑",
-      "viewer": "查看者"
+      "viewer": "查看者",
+      "reviewer": "审核者"
     },
+    "languageSwitcherHint": "即时切换界面语言。",
+    "workspaceManageHint": "在工作区页面创建团队、邀请成员并管理角色。",
     "inviteMember": "邀请成员",
     "inviteSent": "成员已添加到工作区。",
     "memberEmail": "成员邮箱",
@@ -338,7 +342,21 @@
     "totalJobs": "AI 任务总数",
     "totalRevenue": "总收入",
     "activeSubscriptions": "有效订阅",
-    "workspaces": "工作区"
+    "workspaces": "工作区",
+    "assets": "素材",
+    "searchPlaceholder": "搜索..."
+  },
+  "workspace": {
+    "title": "工作区",
+    "subtitle": "管理团队、角色和当前工作区。",
+    "activeWorkspace": "当前工作区",
+    "switchWorkspace": "切换工作区",
+    "workspaceName": "工作区名称",
+    "defaultName": "我的工作区",
+    "noWorkspace": "暂无工作区",
+    "renameWorkspace": "重命名工作区",
+    "inviteTitle": "邀请团队成员",
+    "membersTitle": "团队成员"
   },
   "states": {
     "loadingTitle": "加载中",

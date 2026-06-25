@@ -26,9 +26,12 @@ export const enhanceImageSchema = imageInput.extend({
 export const generateCopySchema = z.object({
   productName: z.string().min(1).max(200),
   details: z.string().max(2000).optional(),
+  keywords: z.string().max(500).optional(),
+  marketplace: z.string().max(50).optional(),
   tone: z.string().max(50).optional(),
+  brandVoice: z.string().max(500).optional(),
   language: z.string().max(10).optional().default("en"),
-  type: z.enum(["title", "description", "caption", "script"]).optional().default("description"),
+  type: z.enum(["title", "description", "caption", "script", "keywords"]).optional().default("description"),
 });
 
 export const videoSlideshowSchema = z.object({

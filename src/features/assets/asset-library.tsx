@@ -3,9 +3,10 @@
 import { useMemo, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
-import { Images, FileVideo, Search, Trash2, Pencil, ExternalLink } from "lucide-react";
+import { Images, FileVideo, Search, Trash2, Pencil, ExternalLink, LayoutGrid, List } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -20,12 +21,15 @@ import { useToast } from "@/components/ui/toast";
 import type { AssetWithUrl } from "@/features/assets/service";
 import { formatDate } from "@/lib/utils";
 
-type Filter = "all" | "images" | "videos";
+type Filter = "all" | "images" | "videos" | "text";
+type ViewMode = "grid" | "list";
+type StatusFilter = "all" | "ready" | "processing" | "failed";
 
-const FILTER_LABELS: Record<Filter, "filterAll" | "filterImages" | "filterVideos"> = {
+const FILTER_LABELS: Record<Filter, string> = {
   all: "filterAll",
   images: "filterImages",
   videos: "filterVideos",
+  text: "filterText",
 };
 
 interface AssetLibraryProps {
@@ -39,6 +43,9 @@ export function AssetLibrary({ assets, locale }: AssetLibraryProps) {
   const router = useRouter();
   const { toast } = useToast();
   const [filter, setFilter] = useState<Filter>("all");
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [tagFilter, setTagFilter] = useState("");
   const [query, setQuery] = useState("");
   const [renameId, setRenameId] = useState<string | null>(null);
   const [newName, setNewName] = useState("");
@@ -47,14 +54,21 @@ export function AssetLibrary({ assets, locale }: AssetLibraryProps) {
   const filtered = useMemo(() => {
     return assets.filter((a) => {
       const isVideo = a.file_type.startsWith("video/");
-      if (filter === "images" && isVideo) return false;
+      const isText = a.file_type.startsWith("text/") || Boolean((a.metadata as { text?: string })?.text);
+      if (filter === "images" && (isVideo || isText)) return false;
       if (filter === "videos" && !isVideo) return false;
+      if (filter === "text" && !isText) return false;
+      if (statusFilter !== "all" && a.processing_status !== statusFilter) return false;
       if (query && !a.original_filename.toLowerCase().includes(query.toLowerCase())) {
         return false;
       }
+      if (tagFilter) {
+        const tags = (a.metadata?.tags as string[] | undefined) ?? [];
+        if (!tags.some((t) => t.toLowerCase().includes(tagFilter.toLowerCase()))) return false;
+      }
       return true;
     });
-  }, [assets, filter, query]);
+  }, [assets, filter, query, statusFilter, tagFilter]);
 
   function handleDelete(id: string) {
     if (!confirm(tc("delete") + "?")) return;
@@ -93,22 +107,70 @@ export function AssetLibrary({ assets, locale }: AssetLibraryProps) {
             onChange={(e) => setQuery(e.target.value)}
           />
         </div>
-        <div className="flex gap-2">
-          {(["all", "images", "videos"] as Filter[]).map((f) => (
+        <div className="flex flex-wrap gap-2">
+          {(["all", "images", "videos", "text"] as Filter[]).map((f) => (
             <Button
               key={f}
               size="sm"
               variant={filter === f ? "default" : "outline"}
               onClick={() => setFilter(f)}
             >
-              {t(FILTER_LABELS[f])}
+              {t(FILTER_LABELS[f] as "filterAll")}
             </Button>
           ))}
+          <Button
+            size="sm"
+            variant={viewMode === "grid" ? "default" : "outline"}
+            onClick={() => setViewMode("grid")}
+            aria-label={t("gridView")}
+          >
+            <LayoutGrid className="size-4" />
+          </Button>
+          <Button
+            size="sm"
+            variant={viewMode === "list" ? "default" : "outline"}
+            onClick={() => setViewMode("list")}
+            aria-label={t("listView")}
+          >
+            <List className="size-4" />
+          </Button>
         </div>
+      </div>
+      <div className="flex flex-col gap-2 sm:flex-row">
+        <Select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
+          className="sm:w-40"
+        >
+          <option value="all">{t("filterStatusAll")}</option>
+          <option value="ready">{t("status.ready")}</option>
+          <option value="processing">{t("status.processing")}</option>
+          <option value="failed">{t("status.failed")}</option>
+        </Select>
+        <Input
+          placeholder={t("filterByTag")}
+          value={tagFilter}
+          onChange={(e) => setTagFilter(e.target.value)}
+          className="sm:max-w-xs"
+        />
       </div>
 
       {filtered.length === 0 ? (
         <p className="text-center text-sm text-muted-foreground">{t("noResults")}</p>
+      ) : viewMode === "list" ? (
+        <ul className="divide-y rounded-xl border">
+          {filtered.map((a) => (
+            <li key={a.id} className="flex items-center justify-between gap-3 p-3 text-sm">
+              <Link href={`/assets/${a.id}`} className="min-w-0 flex-1 truncate font-medium hover:underline">
+                {a.original_filename}
+              </Link>
+              <Badge variant="secondary">{a.processing_status}</Badge>
+              <span className="hidden text-xs text-muted-foreground sm:inline">
+                {formatDate(a.created_at, locale)}
+              </span>
+            </li>
+          ))}
+        </ul>
       ) : (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {filtered.map((a) => {

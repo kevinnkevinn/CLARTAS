@@ -5,9 +5,13 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { deductCredits, getCreditBalance, addCredits } from "@/features/credits/service";
 import { runAIAction } from "@/lib/ai/providers";
 import { persistProcessedImage } from "@/lib/ai/storage";
+import { getBrandContext } from "@/lib/ai/brand-context";
 import { CREDIT_COSTS, ACTION_PROVIDER, type AIAction } from "@/lib/constants";
 import { logError } from "@/lib/logger";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { sendEmail } from "@/lib/resend/client";
+import { aiJobCompletedEmail, aiJobFailedEmail } from "@/lib/resend/templates";
+import { triggerMakeWebhook } from "@/lib/make/client";
 
 interface HandlerOptions<T> {
   action: AIAction;
@@ -49,6 +53,17 @@ export async function handleAIRequest<T>(
     );
   }
   const input = parsed.data as Record<string, unknown>;
+
+  if (action === "generate-copy" || action === "product-studio") {
+    const brand = await getBrandContext(user.id);
+    if (brand) {
+      if (!input.tone && brand.voice) input.tone = brand.voice;
+      if (!input.brandVoice && brand.voice) input.brandVoice = brand.voice;
+      if (action === "product-studio" && brand.colors.length && !input.prompt) {
+        input.prompt = `Brand colors: ${brand.colors.join(", ")}. ${brand.name ?? "Product"} studio shot.`;
+      }
+    }
+  }
 
   const cost = CREDIT_COSTS[action];
   const provider = ACTION_PROVIDER[action];
@@ -103,6 +118,8 @@ export async function handleAIRequest<T>(
           action,
           jobId,
           workspaceId,
+          sourceAssetId:
+            typeof input.assetId === "string" ? input.assetId : undefined,
         });
         if (saved) {
           output = {
@@ -121,6 +138,17 @@ export async function handleAIRequest<T>(
         .update({ status: "succeeded", output_payload: output })
         .eq("id", jobId);
     }
+
+    if (user.email) {
+      const tpl = aiJobCompletedEmail(action);
+      void sendEmail({ to: user.email, ...tpl });
+    }
+    void triggerMakeWebhook("ai.job.completed", {
+      userId: user.id,
+      jobId,
+      action,
+      mock: result.mock,
+    });
 
     return NextResponse.json({
       jobId,
@@ -142,6 +170,13 @@ export async function handleAIRequest<T>(
         .update({ status: "failed", error_message: "Processing failed" })
         .eq("id", jobId);
     }
+
+    if (user.email) {
+      const tpl = aiJobFailedEmail(action);
+      void sendEmail({ to: user.email, ...tpl });
+    }
+    void triggerMakeWebhook("ai.job.failed", { userId: user.id, jobId, action });
+
     return NextResponse.json({ error: "processing_failed" }, { status: 502 });
   }
 }

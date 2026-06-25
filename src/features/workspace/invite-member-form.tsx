@@ -39,6 +39,7 @@ export function InviteMemberForm() {
           <Select id="role" name="role" defaultValue="viewer">
             <option value="admin">{t("role.admin")}</option>
             <option value="editor">{t("role.editor")}</option>
+            <option value="reviewer">{t("role.reviewer")}</option>
             <option value="viewer">{t("role.viewer")}</option>
           </Select>
         </div>

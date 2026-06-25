@@ -39,7 +39,8 @@
     "signUp": "Daftar",
     "signOut": "Keluar",
     "pricing": "Harga",
-    "features": "Fitur"
+    "features": "Fitur",
+    "workspace": "Workspace"
   },
   "language": {
     "label": "Bahasa",
@@ -298,8 +299,11 @@
       "owner": "Pemilik",
       "admin": "Admin",
       "editor": "Editor",
-      "viewer": "Penonton"
+      "viewer": "Penonton",
+      "reviewer": "Reviewer"
     },
+    "languageSwitcherHint": "Ganti bahasa antarmuka secara instan.",
+    "workspaceManageHint": "Buat workspace, undang anggota, dan kelola peran di halaman Workspace.",
     "inviteMember": "Undang anggota",
     "inviteSent": "Anggota ditambahkan ke workspace.",
     "memberEmail": "Email anggota",
@@ -338,7 +342,21 @@
     "totalJobs": "Total pekerjaan AI",
     "totalRevenue": "Total pendapatan",
     "activeSubscriptions": "Langganan aktif",
-    "workspaces": "Workspace"
+    "workspaces": "Workspace",
+    "assets": "Aset",
+    "searchPlaceholder": "Cari..."
+  },
+  "workspace": {
+    "title": "Workspace",
+    "subtitle": "Kelola tim, peran, dan workspace aktif.",
+    "activeWorkspace": "Workspace aktif",
+    "switchWorkspace": "Ganti workspace",
+    "workspaceName": "Nama workspace",
+    "defaultName": "Workspace Saya",
+    "noWorkspace": "Belum ada workspace",
+    "renameWorkspace": "Ganti nama workspace",
+    "inviteTitle": "Undang anggota tim",
+    "membersTitle": "Anggota tim"
   },
   "states": {
     "loadingTitle": "Memuat",

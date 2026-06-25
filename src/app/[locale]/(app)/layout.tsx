@@ -7,7 +7,7 @@ import { Sidebar } from "@/components/app-shell/sidebar";
 import { Topbar } from "@/components/app-shell/topbar";
 import { MockModeBanner } from "@/components/mock-mode-banner";
 import { AppProviders } from "@/components/providers";
-import { getPrimaryWorkspace } from "@/features/workspace/service";
+import { getActiveWorkspace } from "@/features/workspace/service";
 
 export default async function AppLayout({
   children,
@@ -23,7 +23,7 @@ export default async function AppLayout({
   const user = await requireUser(safeLocale);
   const isAdmin = isAdminUser(user);
   const credits = await getCreditBalance(user.id);
-  const workspace = await getPrimaryWorkspace(user.id);
+  const workspace = await getActiveWorkspace(user.id);
 
   return (
     <AppProviders>

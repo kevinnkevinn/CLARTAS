@@ -7,6 +7,7 @@ import { useRouter } from "@/i18n/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { deleteBrandKitAction } from "@/features/brand-kit/actions";
+import { BrandKitEditForm } from "@/features/brand-kit/brand-kit-edit-form";
 import type { BrandKit } from "@/lib/supabase/types";
 
 export function BrandKitCard({ kit }: { kit: BrandKit }) {
@@ -58,8 +59,13 @@ export function BrandKitCard({ kit }: { kit: BrandKit }) {
           <p className="italic text-muted-foreground">&ldquo;{kit.brand_voice}&rdquo;</p>
         ) : null}
         {kit.logo_url ? (
-          <p className="text-xs text-muted-foreground">{t("logoUploaded")}</p>
+          <div className="flex items-center gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={kit.logo_url} alt="" className="size-10 rounded border object-contain" />
+            <p className="text-xs text-muted-foreground">{t("logoUploaded")}</p>
+          </div>
         ) : null}
+        <BrandKitEditForm kit={kit} />
       </CardContent>
     </Card>
   );

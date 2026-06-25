@@ -5,6 +5,7 @@ import { requireUser } from "@/features/auth/guards";
 import { getUsageAnalytics } from "@/features/analytics/service";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatBytes } from "@/lib/utils";
 import { EmptyState } from "@/components/states/empty-state";
 
 export default async function AnalyticsPage({
@@ -24,7 +25,10 @@ export default async function AnalyticsPage({
     { label: t("totalAssets"), value: stats.totalAssets, icon: Images },
     { label: t("totalJobs"), value: stats.totalJobs, icon: Sparkles },
     { label: t("succeededJobs"), value: stats.succeededJobs, icon: TrendingUp },
+    { label: t("failedJobs"), value: stats.failedJobs, icon: BarChart3 },
     { label: t("creditsUsed"), value: stats.creditsUsed, icon: Coins },
+    { label: t("storageUsage"), value: formatBytes(stats.storageBytes), icon: Images },
+    { label: t("totalTransactions"), value: stats.totalTransactions, icon: Coins },
   ];
 
   return (
@@ -47,10 +51,14 @@ export default async function AnalyticsPage({
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[
-          { label: t("ctr"), key: "ctr" as const },
-          { label: t("conversionRate"), key: "conversionRate" as const },
-          { label: t("roi"), key: "roi" as const },
-          { label: t("revenue"), key: "revenue" as const },
+          { label: t("ctr"), key: "ctr" },
+          { label: t("conversionRate"), key: "conversion" },
+          { label: t("engagementRate"), key: "engagement" },
+          { label: t("roi"), key: "roi" },
+          { label: t("revenue"), key: "revenue" },
+          { label: t("grossRevenue"), key: "gross" },
+          { label: t("netProfit"), key: "net" },
+          { label: t("campaignPerformance"), key: "campaign" },
         ].map(({ label, key }) => (
           <Card key={key} className="border-dashed">
             <CardHeader className="pb-2">

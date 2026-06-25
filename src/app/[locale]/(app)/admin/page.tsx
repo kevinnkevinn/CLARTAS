@@ -12,7 +12,9 @@ import {
   listSubscriptions,
   listErrorLogs,
   listWorkspaces,
+  listAssets,
 } from "@/features/admin/service";
+import { AdminDataCard } from "@/features/admin/admin-data-card";
 import { CreditAdjustForm } from "@/features/admin/credit-adjust-form";
 import { formatDate, formatCurrency, truncate } from "@/lib/utils";
 
@@ -26,8 +28,10 @@ export default async function AdminPage({
   setRequestLocale(safeLocale);
 
   const t = await getTranslations("admin");
+  const ta = await getTranslations("assets");
 
-  const [stats, users, jobs, transactions, subscriptions, logs, workspaces] = await Promise.all([
+  const [stats, users, jobs, transactions, subscriptions, logs, workspaces, assets] =
+    await Promise.all([
     getAdminStats(),
     listUsers(),
     listJobs(),
@@ -35,6 +39,7 @@ export default async function AdminPage({
     listSubscriptions(),
     listErrorLogs(),
     listWorkspaces(),
+    listAssets(),
   ]);
 
   const statCards = [
@@ -74,12 +79,13 @@ export default async function AdminPage({
             <CardTitle>{t("users")}</CardTitle>
           </CardHeader>
           <CardContent>
-            <AdminTable
+            <AdminDataCard
+              title=""
               rows={users.map((u) => ({
                 key: u.id,
                 cells: [u.full_name || u.email, String(u.ai_credits), u.plan_status],
               }))}
-              empty="—"
+              searchPlaceholder={t("searchPlaceholder")}
             />
           </CardContent>
         </Card>
@@ -142,6 +148,23 @@ export default async function AdminPage({
                 ],
               }))}
               empty="—"
+            />
+          </CardContent>
+        </Card>
+
+        {/* Assets */}
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("assets")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <AdminDataCard
+              title=""
+              rows={assets.map((a) => ({
+                key: a.id,
+                cells: [a.original_filename, a.file_type, a.processing_status],
+              }))}
+              searchPlaceholder={ta("searchPlaceholder")}
             />
           </CardContent>
         </Card>

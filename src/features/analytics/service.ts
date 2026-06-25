@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { getStorageUsageBytes } from "@/features/assets/service";
 
 export interface UsageAnalytics {
   totalAssets: number;
@@ -6,13 +7,19 @@ export interface UsageAnalytics {
   succeededJobs: number;
   failedJobs: number;
   creditsUsed: number;
+  storageBytes: number;
+  totalTransactions: number;
   jobsByAction: Record<string, number>;
   recentActivity: Array<{ date: string; jobs: number }>;
   businessMetrics: {
     ctr: number | null;
     conversionRate: number | null;
+    engagementRate: number | null;
     roi: number | null;
     revenue: number | null;
+    grossRevenue: number | null;
+    netProfit: number | null;
+    campaignPerformance: number | null;
   };
 }
 
@@ -24,13 +31,24 @@ export async function getUsageAnalytics(userId: string): Promise<UsageAnalytics>
     succeededJobs: 0,
     failedJobs: 0,
     creditsUsed: 0,
+    storageBytes: 0,
+    totalTransactions: 0,
     jobsByAction: {},
     recentActivity: [],
-    businessMetrics: { ctr: null, conversionRate: null, roi: null, revenue: null },
+    businessMetrics: {
+      ctr: null,
+      conversionRate: null,
+      engagementRate: null,
+      roi: null,
+      revenue: null,
+      grossRevenue: null,
+      netProfit: null,
+      campaignPerformance: null,
+    },
   };
   if (!supabase) return empty;
 
-  const [assetsRes, jobsRes, creditsRes] = await Promise.all([
+  const [assetsRes, jobsRes, creditsRes, txsRes, storageBytes] = await Promise.all([
     supabase.from("assets").select("id", { count: "exact", head: true }).eq("user_id", userId),
     supabase
       .from("ai_jobs")
@@ -43,6 +61,11 @@ export async function getUsageAnalytics(userId: string): Promise<UsageAnalytics>
       .select("amount")
       .eq("user_id", userId)
       .lt("amount", 0),
+    supabase
+      .from("transactions")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId),
+    getStorageUsageBytes(userId),
   ]);
 
   const jobs = jobsRes.data ?? [];
@@ -79,8 +102,19 @@ export async function getUsageAnalytics(userId: string): Promise<UsageAnalytics>
     succeededJobs,
     failedJobs,
     creditsUsed: creditDeductions || creditsUsed,
+    storageBytes,
+    totalTransactions: txsRes.count ?? 0,
     jobsByAction,
     recentActivity,
-    businessMetrics: { ctr: null, conversionRate: null, roi: null, revenue: null },
+    businessMetrics: {
+      ctr: null,
+      conversionRate: null,
+      engagementRate: null,
+      roi: null,
+      revenue: null,
+      grossRevenue: null,
+      netProfit: null,
+      campaignPerformance: null,
+    },
   };
 }

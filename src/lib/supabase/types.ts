@@ -12,7 +12,7 @@ export type SubscriptionStatus =
   | "past_due"
   | "canceled"
   | "free";
-export type MemberRole = "owner" | "admin" | "editor" | "viewer";
+export type MemberRole = "owner" | "admin" | "editor" | "reviewer" | "viewer";
 export type ApprovalStatus = "pending" | "approved" | "rejected";
 
 export interface Profile {

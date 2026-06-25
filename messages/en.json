@@ -39,7 +39,8 @@
     "signUp": "Sign up",
     "signOut": "Sign out",
     "pricing": "Pricing",
-    "features": "Features"
+    "features": "Features",
+    "workspace": "Workspace"
   },
   "language": {
     "label": "Language",
@@ -161,7 +162,8 @@
       "removeBackground": "Remove background",
       "generateStudio": "Generate studio shot",
       "writeCopy": "Write product copy",
-      "uploadAsset": "Upload asset"
+      "uploadAsset": "Upload asset",
+      "billingQuick": "Billing"
     },
     "usage": {
       "assets": "Assets",
@@ -209,11 +211,46 @@
       "marketplace": "Marketplace",
       "marketplaceGeneral": "General"
     },
+    "copyType": {
+      "title": "Title",
+      "description": "Description",
+      "caption": "Caption",
+      "keywords": "Keywords",
+      "script": "Video script"
+    },
+    "brush": {
+      "title": "Mask brush",
+      "hint": "Paint white over areas to remove. Black = keep.",
+      "brushSize": "Brush size",
+      "clear": "Clear mask",
+      "applyMask": "Apply mask"
+    },
+    "videoTools": {
+      "title": "Video tools",
+      "subtitle": "Advanced editing connects in the next release.",
+      "cut": "Cut",
+      "merge": "Merge",
+      "speed": "Speed control",
+      "subtitles": "Auto subtitles",
+      "motion": "Motion tracking"
+    },
     "adjustments": {
       "title": "Image adjustments",
       "brightness": "Brightness",
       "contrast": "Contrast",
-      "saturation": "Saturation"
+      "saturation": "Saturation",
+      "hue": "Hue",
+      "exposure": "Exposure",
+      "rotate": "Rotate 90°",
+      "flipH": "Flip H",
+      "flipV": "Flip V",
+      "reset": "Reset",
+      "presetFree": "Free",
+      "presetSquare": "1:1",
+      "presetTiktok": "9:16 TikTok",
+      "presetInstagram": "4:5 Instagram",
+      "presetYoutube": "16:9 YouTube",
+      "presetMarketplace": "Marketplace"
     }
   },
   "aiTools": {
@@ -229,6 +266,16 @@
     "filterAll": "All",
     "filterImages": "Images",
     "filterVideos": "Videos",
+    "filterText": "Text",
+    "filterStatusAll": "All statuses",
+    "filterByTag": "Filter by tag...",
+    "gridView": "Grid view",
+    "listView": "List view",
+    "tags": "Tags",
+    "tagsPlaceholder": "product, sale, summer",
+    "versionHistory": "Version history",
+    "rename": "Rename",
+    "renameHint": "Enter a new filename.",
     "status": {
       "ready": "Ready",
       "processing": "Processing",
@@ -267,6 +314,7 @@
     "subtitle": "Manage your plan, credits, and invoices.",
     "currentPlan": "Current plan",
     "manageBilling": "Manage billing",
+    "contactSales": "Contact sales",
     "upgrade": "Upgrade",
     "topUp": "Top up credits",
     "invoices": "Invoices",
@@ -298,14 +346,17 @@
       "owner": "Owner",
       "admin": "Admin",
       "editor": "Editor",
-      "viewer": "Viewer"
+      "viewer": "Viewer",
+      "reviewer": "Reviewer"
     },
     "inviteMember": "Invite member",
     "inviteSent": "Member added to workspace.",
     "memberEmail": "Member email",
     "memberRole": "Role",
     "sendInvite": "Send invite",
-    "workspaceName": "Workspace name"
+    "workspaceName": "Workspace name",
+    "languageSwitcherHint": "Switch the app interface language instantly.",
+    "workspaceManageHint": "Create workspaces, invite members, and manage roles on the Workspace page."
   },
   "credits": {
     "balance": "Credit balance",
@@ -338,7 +389,21 @@
     "totalJobs": "Total AI jobs",
     "totalRevenue": "Total revenue",
     "activeSubscriptions": "Active subscriptions",
-    "workspaces": "Workspaces"
+    "workspaces": "Workspaces",
+    "assets": "Assets",
+    "searchPlaceholder": "Search..."
+  },
+  "workspace": {
+    "title": "Workspace",
+    "subtitle": "Manage teams, roles, and active workspace.",
+    "activeWorkspace": "Active workspace",
+    "switchWorkspace": "Switch workspace",
+    "workspaceName": "Workspace name",
+    "defaultName": "My Workspace",
+    "noWorkspace": "No workspace yet",
+    "renameWorkspace": "Rename workspace",
+    "inviteTitle": "Invite team member",
+    "membersTitle": "Team members"
   },
   "states": {
     "loadingTitle": "Loading",
@@ -367,6 +432,12 @@
     "conversionRate": "Conversion rate",
     "roi": "ROI",
     "revenue": "Revenue",
+    "engagementRate": "Engagement rate",
+    "grossRevenue": "Gross revenue",
+    "netProfit": "Net profit",
+    "campaignPerformance": "Campaign performance",
+    "storageUsage": "Storage used",
+    "totalTransactions": "Transactions",
     "notConnected": "Connect your store to see this metric."
   },
   "approvals": {

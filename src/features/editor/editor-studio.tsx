@@ -20,6 +20,8 @@ import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { ImageAdjustments } from "./image-adjustments";
+import { ObjectCleanupBrush } from "./object-cleanup-brush";
+import { VideoToolsPanel } from "./video-tools-panel";
 
 interface HistoryEntry {
   tool: string;
@@ -49,6 +51,7 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [maskUrl, setMaskUrl] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const displayUrl = previewUrl ?? inputUrl;
@@ -88,7 +91,14 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
           marketplace: fields.marketplace || undefined,
           tone: fields.tone || undefined,
           language: fields.language || "en",
-          type: "description",
+          type: (fields.copyType as string) || "description",
+        };
+      case "object-cleanup":
+        return {
+          imageUrl: inputUrl ?? undefined,
+          assetId: assetId ?? undefined,
+          maskUrl: maskUrl ?? undefined,
+          prompt: fields.prompt || undefined,
         };
       case "text-to-speech":
         return { text: fields.text ?? "", voice: fields.voice || "default" };
@@ -181,6 +191,7 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
                 setOutput(null);
                 setError(null);
                 setPreviewUrl(null);
+                setMaskUrl(null);
               }}
               className={cn(
                 "flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors",
@@ -238,6 +249,12 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
         {tool.id === "crop-resize" && inputUrl ? (
           <ImageAdjustments imageUrl={inputUrl} onPreview={onAdjustPreview} />
         ) : null}
+
+        {tool.id === "object-cleanup" && inputUrl ? (
+          <ObjectCleanupBrush imageUrl={inputUrl} onMaskReady={setMaskUrl} />
+        ) : null}
+
+        {tool.id === "video-slideshow" ? <VideoToolsPanel /> : null}
 
         {/* Output */}
         <div className="rounded-xl border bg-card p-4">
@@ -320,7 +337,24 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
                   <option value="lifestyle">Lifestyle Aesthetics</option>
                   <option value="outdoor">Outdoor Nature</option>
                   <option value="interior">Home Interior</option>
+                  <option value="board">Professional Board Advertisement</option>
                 </Select>
+              </div>
+            ) : null}
+            {tool.id === "caption-generator" ? (
+              <div className="flex flex-wrap gap-1">
+                {(["title", "description", "caption", "keywords", "script"] as const).map((ct) => (
+                  <Button
+                    key={ct}
+                    type="button"
+                    size="sm"
+                    variant={fields.copyType === ct ? "default" : "outline"}
+                    className="h-7 text-xs"
+                    onClick={() => setField("copyType", ct)}
+                  >
+                    {tf(`copyType.${ct}`)}
+                  </Button>
+                ))}
               </div>
             ) : null}
             {tool.fields.includes("productName") ? (

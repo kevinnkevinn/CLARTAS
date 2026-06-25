@@ -77,3 +77,39 @@ export async function getSignedUrl(
     .createSignedUrl(path, expiresInSeconds);
   return data?.signedUrl ?? null;
 }
+
+export async function getAssetVersions(
+  userId: string,
+  assetId: string,
+): Promise<Asset[]> {
+  const supabase = await createClient();
+  if (!supabase) return [];
+
+  const asset = await getAssetById(userId, assetId);
+  if (!asset) return [];
+
+  const parentId =
+    (asset.metadata as { parentAssetId?: string })?.parentAssetId ?? assetId;
+
+  const { data } = await supabase
+    .from("assets")
+    .select("*")
+    .eq("user_id", userId)
+    .or(`id.eq.${parentId},metadata->>parentAssetId.eq.${parentId}`)
+    .order("created_at", { ascending: true });
+
+  return (data as Asset[]) ?? [];
+}
+
+export async function getStorageUsageBytes(userId: string): Promise<number> {
+  const supabase = await createClient();
+  if (!supabase) return 0;
+  const { data } = await supabase
+    .from("assets")
+    .select("metadata")
+    .eq("user_id", userId);
+  return (data ?? []).reduce((sum, a) => {
+    const size = (a.metadata as { size?: number })?.size ?? 0;
+    return sum + size;
+  }, 0);
+}

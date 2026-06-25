@@ -95,6 +95,21 @@ export async function listWorkspaces(limit = 25, query?: string) {
   return data ?? [];
 }
 
+export async function listAssets(limit = 25, query?: string) {
+  const admin = createAdminClient();
+  if (!admin) return [];
+  let q = admin
+    .from("assets")
+    .select("id, original_filename, file_type, processing_status, user_id, created_at")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (query?.trim()) {
+    q = q.ilike("original_filename", `%${query.trim()}%`);
+  }
+  const { data } = await q;
+  return data ?? [];
+}
+
 export async function listErrorLogs(limit = 25) {
   const admin = createAdminClient();
   if (!admin) return [];

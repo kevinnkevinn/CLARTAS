@@ -1,15 +1,12 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
-import { Users } from "lucide-react";
 import { isValidLocale, type Locale } from "@/i18n/routing";
+import { Link } from "@/i18n/navigation";
 import { requireUser } from "@/features/auth/guards";
-import { getPrimaryWorkspace, getWorkspaceMembers } from "@/features/workspace/service";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { EmptyState } from "@/components/states/empty-state";
 import { SettingsForm } from "@/features/settings/settings-form";
-import { InviteMemberForm } from "@/features/workspace/invite-member-form";
-import { CreateWorkspaceForm } from "@/features/workspace/create-workspace-form";
+import { LanguageSwitcher } from "@/features/localization/language-switcher";
+import { buttonVariants } from "@/components/ui/button";
 
 export default async function SettingsPage({
   params,
@@ -21,11 +18,8 @@ export default async function SettingsPage({
   setRequestLocale(safeLocale);
 
   const t = await getTranslations("settings");
+  const tw = await getTranslations("workspace");
   const user = await requireUser(safeLocale);
-  const workspace = await getPrimaryWorkspace(user.id);
-  const members = workspace ? await getWorkspaceMembers(workspace.id) : [];
-  const myRole = members.find((m) => m.user_id === user.id)?.role ?? "viewer";
-  const isOwner = myRole === "owner";
 
   return (
     <div className="space-y-6">
@@ -45,44 +39,24 @@ export default async function SettingsPage({
       </Card>
 
       <Card>
-        <CardHeader>
-          <CardTitle>{t("workspace")}</CardTitle>
+        <CardHeader className="flex-row items-center justify-between space-y-0">
+          <CardTitle>{t("preferredLanguage")}</CardTitle>
+          <LanguageSwitcher align="end" />
         </CardHeader>
-        <CardContent className="space-y-4">
-          {workspace ? (
-            <div className="flex items-center justify-between rounded-lg border p-3">
-              <div>
-                <p className="font-medium">{workspace.name}</p>
-                <p className="text-xs text-muted-foreground">/{workspace.slug}</p>
-              </div>
-              <Badge variant="secondary">{t(`role.${myRole}`)}</Badge>
-            </div>
-          ) : (
-            <EmptyState icon={Users} title={t("workspace")} />
-          )}
+        <CardContent>
+          <p className="text-sm text-muted-foreground">{t("languageSwitcherHint")}</p>
+        </CardContent>
+      </Card>
 
-          <CreateWorkspaceForm />
-
-          {isOwner ? <InviteMemberForm /> : null}
-
-          <div>
-            <h3 className="mb-2 text-sm font-semibold">{t("members")}</h3>
-            {members.length === 0 ? (
-              <p className="text-sm text-muted-foreground">—</p>
-            ) : (
-              <ul className="space-y-2">
-                {members.map((m) => (
-                  <li
-                    key={m.id}
-                    className="flex items-center justify-between rounded-lg border p-3 text-sm"
-                  >
-                    <span>{m.profile?.full_name || m.profile?.email || m.user_id}</span>
-                    <Badge variant="outline">{t(`role.${m.role}`)}</Badge>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+      <Card>
+        <CardHeader className="flex-row items-center justify-between space-y-0">
+          <CardTitle>{t("workspace")}</CardTitle>
+          <Link href="/workspace" className={buttonVariants({ size: "sm", variant: "outline" })}>
+            {tw("title")}
+          </Link>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">{t("workspaceManageHint")}</p>
         </CardContent>
       </Card>
     </div>

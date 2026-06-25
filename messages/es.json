@@ -39,7 +39,8 @@
     "signUp": "Registrarse",
     "signOut": "Cerrar sesión",
     "pricing": "Precios",
-    "features": "Funciones"
+    "features": "Funciones",
+    "workspace": "Espacio de trabajo"
   },
   "language": {
     "label": "Idioma",
@@ -298,8 +299,11 @@
       "owner": "Propietario",
       "admin": "Admin",
       "editor": "Editor",
-      "viewer": "Visor"
+      "viewer": "Visor",
+      "reviewer": "Revisor"
     },
+    "languageSwitcherHint": "Cambia el idioma de la interfaz al instante.",
+    "workspaceManageHint": "Crea espacios, invita miembros y gestiona roles en la página Workspace.",
     "inviteMember": "Invitar miembro",
     "inviteSent": "Miembro añadido al espacio de trabajo.",
     "memberEmail": "Correo del miembro",
@@ -338,7 +342,21 @@
     "totalJobs": "Trabajos IA totales",
     "totalRevenue": "Ingresos totales",
     "activeSubscriptions": "Suscripciones activas",
-    "workspaces": "Espacios de trabajo"
+    "workspaces": "Espacios de trabajo",
+    "assets": "Activos",
+    "searchPlaceholder": "Buscar..."
+  },
+  "workspace": {
+    "title": "Espacio de trabajo",
+    "subtitle": "Gestiona equipos, roles y el espacio activo.",
+    "activeWorkspace": "Espacio activo",
+    "switchWorkspace": "Cambiar espacio",
+    "workspaceName": "Nombre del espacio",
+    "defaultName": "Mi espacio",
+    "noWorkspace": "Sin espacio aún",
+    "renameWorkspace": "Renombrar espacio",
+    "inviteTitle": "Invitar miembro",
+    "membersTitle": "Miembros del equipo"
   },
   "states": {
     "loadingTitle": "Cargando",

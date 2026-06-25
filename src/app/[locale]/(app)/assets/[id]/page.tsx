@@ -9,6 +9,8 @@ import { PageHeader } from "@/components/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AssetDetailActions } from "@/features/assets/asset-detail-actions";
+import { AssetTagsEditor } from "@/features/assets/asset-tags-editor";
+import { getAssetVersions } from "@/features/assets/service";
 import { formatDate, formatBytes } from "@/lib/utils";
 
 export default async function AssetDetailPage({
@@ -36,6 +38,7 @@ export default async function AssetDetailPage({
     .createSignedUrl(asset.file_path, 3600);
 
   const tags = (asset.metadata?.tags as string[] | undefined) ?? [];
+  const versions = await getAssetVersions(user.id, id);
   const size = asset.metadata?.size as number | undefined;
   const isVideo = asset.file_type.startsWith("video/");
 
@@ -77,13 +80,20 @@ export default async function AssetDetailPage({
                 <dd>{formatDate(asset.created_at, safeLocale)}</dd>
               </div>
             </dl>
-            {tags.length > 0 ? (
-              <div className="flex flex-wrap gap-1">
-                {tags.map((tag) => (
-                  <Badge key={tag} variant="outline">
-                    {tag}
-                  </Badge>
-                ))}
+            <AssetTagsEditor assetId={asset.id} initialTags={tags} />
+            {versions.length > 1 ? (
+              <div>
+                <h3 className="mb-2 text-sm font-semibold">{t("versionHistory")}</h3>
+                <ul className="space-y-1 text-sm">
+                  {versions.map((v) => (
+                    <li key={v.id} className="flex justify-between rounded border px-2 py-1">
+                      <span className="truncate">{v.original_filename}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {formatDate(v.created_at, safeLocale)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ) : null}
             <AssetDetailActions

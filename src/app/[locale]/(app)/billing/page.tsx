@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/states/empty-state";
 import { CheckoutButton } from "@/features/billing/checkout-button";
+import { ManageBillingButton, ContactSalesButton } from "@/features/billing/manage-billing-button";
 import { PLANS, type PlanId } from "@/lib/constants";
 import { cn, formatDate, formatCurrency } from "@/lib/utils";
 
@@ -35,10 +36,15 @@ export default async function BillingPage({
   ]);
 
   const currentPlan = subscription?.plan_name ?? "free";
+  const portalUrl = process.env.NEXT_PUBLIC_PADDLE_BILLING_PORTAL_URL;
 
   return (
     <div className="space-y-6">
       <PageHeader title={t("title")} description={t("subtitle")} />
+
+      <div className="flex flex-wrap gap-2">
+        <ManageBillingButton portalUrl={portalUrl} />
+      </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Card>
@@ -100,9 +106,9 @@ export default async function BillingPage({
                       {tb("free.name")}
                     </Badge>
                   ) : plan.comingSoon ? (
-                    <Badge variant="secondary" className="w-full justify-center py-2">
-                      {tp("comingSoon")}
-                    </Badge>
+                    <ContactSalesButton />
+                  ) : id === "enterprise" ? (
+                    <ContactSalesButton />
                   ) : (
                     <CheckoutButton
                       priceId={priceId}

@@ -1,9 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 import { getSessionUser } from "@/features/auth/session";
 import { createClient } from "@/lib/supabase/server";
-import { getPrimaryWorkspace } from "@/features/workspace/service";
+import { getActiveWorkspace, getUserWorkspaces } from "@/features/workspace/service";
+import { ACTIVE_WORKSPACE_COOKIE } from "@/lib/workspace-cookie";
 import type { MemberRole } from "@/lib/supabase/types";
 
 export interface WorkspaceActionResult {
@@ -84,7 +86,7 @@ export async function inviteMemberAction(
   const supabase = await createClient();
   if (!supabase) return { error: "Not configured" };
 
-  const workspace = await getPrimaryWorkspace(user.id);
+  const workspace = await getActiveWorkspace(user.id);
   if (!workspace || workspace.owner_id !== user.id) {
     return { error: "Only workspace owners can invite members" };
   }
@@ -122,7 +124,7 @@ export async function updateMemberRoleAction(
   const supabase = await createClient();
   if (!supabase) return { error: "Not configured" };
 
-  const workspace = await getPrimaryWorkspace(user.id);
+  const workspace = await getActiveWorkspace(user.id);
   if (!workspace || workspace.owner_id !== user.id) {
     return { error: "Only owners can change roles" };
   }
@@ -145,7 +147,7 @@ export async function removeMemberAction(memberId: string): Promise<WorkspaceAct
   const supabase = await createClient();
   if (!supabase) return { error: "Not configured" };
 
-  const workspace = await getPrimaryWorkspace(user.id);
+  const workspace = await getActiveWorkspace(user.id);
   if (!workspace || workspace.owner_id !== user.id) {
     return { error: "Only owners can remove members" };
   }
@@ -158,5 +160,26 @@ export async function removeMemberAction(memberId: string): Promise<WorkspaceAct
 
   if (error) return { error: error.message };
   revalidatePath("/settings");
+  revalidatePath("/workspace");
+  return { success: true };
+}
+
+export async function switchWorkspaceAction(workspaceId: string): Promise<WorkspaceActionResult> {
+  const user = await getSessionUser();
+  if (!user) return { error: "Unauthorized" };
+
+  const workspaces = await getUserWorkspaces(user.id);
+  if (!workspaces.some((w) => w.id === workspaceId)) {
+    return { error: "Workspace not found" };
+  }
+
+  const cookieStore = await cookies();
+  cookieStore.set(ACTIVE_WORKSPACE_COOKIE, workspaceId, {
+    path: "/",
+    maxAge: 60 * 60 * 24 * 365,
+    sameSite: "lax",
+  });
+
+  revalidatePath("/", "layout");
   return { success: true };
 }

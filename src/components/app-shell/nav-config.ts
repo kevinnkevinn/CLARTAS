@@ -10,6 +10,7 @@ import {
   BarChart3,
   CheckSquare,
   Brain,
+  Users,
   type LucideIcon,
 } from "lucide-react";
 
@@ -30,6 +31,7 @@ export const NAV_ITEMS: NavItem[] = [
   { href: "/analytics", labelKey: "analytics", icon: BarChart3 },
   { href: "/approvals", labelKey: "approvals", icon: CheckSquare },
   { href: "/intelligence", labelKey: "intelligence", icon: Brain },
+  { href: "/workspace", labelKey: "workspace", icon: Users },
   { href: "/billing", labelKey: "billing", icon: CreditCard },
   { href: "/settings", labelKey: "settings", icon: Settings },
   { href: "/admin", labelKey: "admin", icon: Shield, adminOnly: true },

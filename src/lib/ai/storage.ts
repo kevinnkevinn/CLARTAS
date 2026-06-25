@@ -9,7 +9,12 @@ import { logError } from "@/lib/logger";
 export async function persistProcessedImage(
   userId: string,
   imageUrl: string,
-  meta: { action: string; jobId?: string | null; workspaceId?: string | null },
+  meta: {
+    action: string;
+    jobId?: string | null;
+    workspaceId?: string | null;
+    sourceAssetId?: string;
+  },
 ): Promise<{ assetId: string; signedUrl: string | null } | null> {
   const admin = createAdminClient();
   if (!admin || !imageUrl) return null;
@@ -41,7 +46,12 @@ export async function persistProcessedImage(
         file_type: contentType,
         original_filename: `${meta.action}-output.${ext}`,
         processing_status: "ready",
-        metadata: { source: "ai", action: meta.action, jobId: meta.jobId },
+        metadata: {
+          source: "ai",
+          action: meta.action,
+          jobId: meta.jobId,
+          parentAssetId: meta.sourceAssetId ?? null,
+        },
       })
       .select("id")
       .single();
