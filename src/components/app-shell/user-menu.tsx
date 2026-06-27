@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { LogOut, User as UserIcon } from "lucide-react";
+import { LogOut, User as UserIcon, Settings } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import type { Locale } from "@/i18n/routing";
+import { Link } from "@/i18n/navigation";
 import { signOutAction } from "@/features/auth/actions";
+import { env } from "@/lib/env";
 
 export function UserMenu({ email, fullName }: { email: string; fullName?: string | null }) {
   const t = useTranslations("nav");
@@ -36,14 +38,25 @@ export function UserMenu({ email, fullName }: { email: string; fullName?: string
               </div>
             </div>
             <div className="my-1 h-px bg-border" />
-            <button
-              disabled={isPending}
-              onClick={() => startTransition(() => signOutAction(locale))}
-              className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-destructive hover:bg-destructive/10"
-            >
-              <LogOut className="size-4" />
-              {t("signOut")}
-            </button>
+            {env.demoMode ? (
+              <Link
+                href="/settings"
+                onClick={() => setOpen(false)}
+                className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-accent"
+              >
+                <Settings className="size-4" />
+                {t("settings")}
+              </Link>
+            ) : (
+              <button
+                disabled={isPending}
+                onClick={() => startTransition(() => signOutAction(locale))}
+                className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-destructive hover:bg-destructive/10"
+              >
+                <LogOut className="size-4" />
+                {t("signOut")}
+              </button>
+            )}
           </div>
         </>
       ) : null}

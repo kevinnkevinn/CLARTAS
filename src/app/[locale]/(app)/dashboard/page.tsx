@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Coins, Images, Sparkles, Wand2, PenLine, Upload, ArrowRight, AlertTriangle } from "lucide-react";
-import { isValidLocale, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
+import { isValidLocale, type Locale } from "@/i18n/routing";
 import { requireUser } from "@/features/auth/guards";
 import { getCreditBalance } from "@/features/credits/service";
 import { getRecentAssets } from "@/features/assets/service";

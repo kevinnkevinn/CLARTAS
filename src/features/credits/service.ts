@@ -1,6 +1,7 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { DEFAULT_FREE_CREDITS } from "@/lib/constants";
+import { DEMO_CREDITS, isDemoMode } from "@/lib/demo/config";
 
 /**
  * Credit service. Balance reads go through the user-scoped client (RLS), while
@@ -10,6 +11,8 @@ import { DEFAULT_FREE_CREDITS } from "@/lib/constants";
 
 /** Read the current user's AI credit balance. Falls back to mock when unconfigured. */
 export async function getCreditBalance(userId: string): Promise<number> {
+  if (isDemoMode()) return DEMO_CREDITS;
+
   const supabase = await createClient();
   if (!supabase) return DEFAULT_FREE_CREDITS;
 
@@ -35,6 +38,8 @@ export async function deductCredits(
   description?: string,
   workspaceId?: string | null,
 ): Promise<DeductResult> {
+  if (isDemoMode()) return { ok: true };
+
   const admin = createAdminClient();
   if (!admin) return { ok: false, reason: "unconfigured" };
 

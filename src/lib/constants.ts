@@ -104,7 +104,7 @@ export const PLANS: Record<PlanId, Plan> = {
 export const DEFAULT_FREE_CREDITS = PLANS.free.credits;
 
 /** File upload validation rules. */
-export const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"] as const;
+export const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"] as const;
 export const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/quicktime", "video/webm"] as const;
 
 export const MAX_IMAGE_BYTES = 10 * 1024 * 1024; // 10MB

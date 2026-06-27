@@ -1,12 +1,14 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { isValidLocale, type Locale } from "@/i18n/routing";
 import { requireUser } from "@/features/auth/guards";
-import { getAssets, withSignedUrls } from "@/features/assets/service";
+import { isDemoMode } from "@/lib/demo/config";
 import { PageHeader } from "@/components/page-header";
+import { DemoAssetLibrary } from "@/features/demo/demo-asset-library";
 import { EmptyState } from "@/components/states/empty-state";
 import { Images } from "lucide-react";
 import { AssetUploader } from "@/features/assets/asset-uploader";
 import { AssetLibrary } from "@/features/assets/asset-library";
+import { getAssets, withSignedUrls } from "@/features/assets/service";
 
 export default async function AssetsPage({
   params,
@@ -19,6 +21,16 @@ export default async function AssetsPage({
 
   const t = await getTranslations("assets");
   const user = await requireUser(safeLocale);
+
+  if (isDemoMode()) {
+    return (
+      <div>
+        <PageHeader title={t("title")} description={t("subtitle")} />
+        <DemoAssetLibrary />
+      </div>
+    );
+  }
+
   const rawAssets = await getAssets(user.id);
   const assets = await withSignedUrls(rawAssets);
 

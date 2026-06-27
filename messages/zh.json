@@ -40,7 +40,21 @@
     "signOut": "退出",
     "pricing": "价格",
     "features": "功能",
-    "workspace": "工作区"
+    "workspace": "工作区",
+    "home": "首页",
+    "hub": "功能中心",
+    "videoEditor": "视频编辑器",
+    "content": "内容生成器",
+    "design": "设计生成器",
+    "photography": "产品摄影",
+    "videoAd": "视频广告工厂",
+    "ecommerce": "电商助手",
+    "agents": "AI 智能体",
+    "automation": "自动化",
+    "future": "未来科技"
+  },
+  "demo": {
+    "banner": "演示模式已开启 — 无需登录。上传照片/视频并测试所有功能。积分无限。"
   },
   "language": {
     "label": "语言",
@@ -162,7 +176,8 @@
       "removeBackground": "去除背景",
       "generateStudio": "生成影棚照",
       "writeCopy": "撰写产品文案",
-      "uploadAsset": "上传素材"
+      "uploadAsset": "上传素材",
+      "billingQuick": "账单"
     },
     "usage": {
       "assets": "素材",
@@ -175,6 +190,13 @@
     "uploadPrompt": "上传图片以开始编辑",
     "uploadCta": "上传图片",
     "dragDrop": "拖放或点击上传",
+    "uploadFormats": "JPG、PNG、WebP、GIF、MP4、MOV、WebM（图片最大 10MB / 视频最大 100MB）",
+    "errors": {
+      "upload_failed": "上传失败，请重试。",
+      "file_too_large": "文件过大。图片最大 10MB，视频最大 100MB。",
+      "invalid_file_type": "不支持的文件类型。请使用 JPG、PNG、WebP、GIF、MP4、MOV 或 WebM。",
+      "processing_failed": "处理失败，请重试。"
+    },
     "output": "输出",
     "noOutput": "处理结果将显示在此处。",
     "processing": "处理中...",

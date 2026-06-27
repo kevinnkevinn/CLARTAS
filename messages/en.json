@@ -25,6 +25,7 @@
   },
   "nav": {
     "dashboard": "Dashboard",
+    "home": "Beranda",
     "editor": "Editor Studio",
     "assets": "Asset Library",
     "aiTools": "AI Tools",
@@ -40,7 +41,20 @@
     "signOut": "Sign out",
     "pricing": "Pricing",
     "features": "Features",
-    "workspace": "Workspace"
+    "workspace": "Workspace",
+    "hub": "Feature Hub",
+    "videoEditor": "Video Editor",
+    "content": "Content Generator",
+    "design": "Design Generator",
+    "photography": "Product Photography",
+    "videoAd": "Video Ad Factory",
+    "ecommerce": "E-Commerce Assistant",
+    "agents": "AI Agents",
+    "automation": "Automation",
+    "future": "Future Tech"
+  },
+  "demo": {
+    "banner": "Demo mode aktif — tanpa login. Upload foto/video dan uji semua fitur. Kredit unlimited."
   },
   "language": {
     "label": "Language",
@@ -163,7 +177,8 @@
       "generateStudio": "Generate studio shot",
       "writeCopy": "Write product copy",
       "uploadAsset": "Upload asset",
-      "billingQuick": "Billing"
+      "billingQuick": "Billing",
+      "featureHub": "Open Feature Hub"
     },
     "usage": {
       "assets": "Assets",
@@ -176,6 +191,13 @@
     "uploadPrompt": "Upload an image to start editing",
     "uploadCta": "Upload image",
     "dragDrop": "Drag & drop or click to upload",
+    "uploadFormats": "JPG, PNG, WebP, GIF, MP4, MOV, WebM (max 10MB image / 100MB video)",
+    "errors": {
+      "upload_failed": "Upload failed. Please try again.",
+      "file_too_large": "File is too large. Max 10MB for images, 100MB for videos.",
+      "invalid_file_type": "Unsupported file type. Use JPG, PNG, WebP, GIF, MP4, MOV, or WebM.",
+      "processing_failed": "Processing failed. Please try again."
+    },
     "output": "Output",
     "noOutput": "Your processed result will appear here.",
     "processing": "Processing...",
@@ -186,11 +208,35 @@
     "run": "Run",
     "creditCost": "Cost: {count} credits",
     "tools": "Tools",
+    "category": {
+      "catBasic": "Basic",
+      "catAi": "AI Edit",
+      "catProduct": "Product",
+      "catVideo": "Video",
+      "catContent": "Content"
+    },
     "tool": {
+      "adjustments": { "name": "Adjustments", "description": "Brightness, contrast, vibrance, sharpness, hue, exposure." },
       "removeBackground": { "name": "Background Removal", "description": "Remove the background and get a transparent PNG." },
       "productStudio": { "name": "Product Studio", "description": "Generate a studio-quality product scene." },
       "objectCleanup": { "name": "Object Cleanup", "description": "Remove unwanted objects from your photo." },
-      "smartEnhancer": { "name": "Smart Enhancer", "description": "Upscale and enhance image quality." },
+      "reflectionRemoval": { "name": "Reflection Removal", "description": "Reduce reflections on product surfaces." },
+      "shadowGenerator": { "name": "Shadow Generator", "description": "Add realistic product shadow." },
+      "productRetouch": { "name": "Product Retouch", "description": "Professional product photo retouching." },
+      "beautyEnhancement": { "name": "Beauty Enhancement", "description": "Enhance portrait and beauty shots." },
+      "faceRestoration": { "name": "Face Restoration", "description": "Restore and sharpen faces." },
+      "smartEnhancer": { "name": "Smart Enhancer / Upscale", "description": "Upscale and enhance image quality." },
+      "noiseReduction": { "name": "Noise Reduction", "description": "Reduce image noise." },
+      "imageRepair": { "name": "Image Repair", "description": "Repair damaged or low-quality images." },
+      "colorCorrection": { "name": "Color Correction", "description": "Auto color balance and correction." },
+      "whiteBackground": { "name": "White Background", "description": "Pure white marketplace background." },
+      "luxuryBackground": { "name": "Luxury Background", "description": "Premium dark luxury scene." },
+      "studioBackground": { "name": "Studio Background", "description": "Clean studio photography look." },
+      "marketplaceBackground": { "name": "Marketplace Background", "description": "Optimized for Shopee/Tokopedia." },
+      "lifestyleScene": { "name": "Lifestyle Photography", "description": "Warm lifestyle product scene." },
+      "outdoorScene": { "name": "Outdoor Photography", "description": "Natural outdoor product scene." },
+      "customBackground": { "name": "Custom AI Background", "description": "Custom scene from prompt." },
+      "batchVariations": { "name": "Batch Variations", "description": "Generate many product photo variations." },
       "cropResize": { "name": "Crop / Resize", "description": "Resize and crop for marketplaces and social media." },
       "videoSlideshow": { "name": "Video Slideshow", "description": "Create a short promotional video from images." },
       "voiceover": { "name": "Voiceover", "description": "Generate a voiceover with text-to-speech." },
@@ -239,6 +285,8 @@
       "brightness": "Brightness",
       "contrast": "Contrast",
       "saturation": "Saturation",
+      "vibrance": "Vibrance",
+      "sharpness": "Sharpness",
       "hue": "Hue",
       "exposure": "Exposure",
       "rotate": "Rotate 90°",

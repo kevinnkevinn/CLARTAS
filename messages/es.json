@@ -40,7 +40,21 @@
     "signOut": "Cerrar sesión",
     "pricing": "Precios",
     "features": "Funciones",
-    "workspace": "Espacio de trabajo"
+    "workspace": "Espacio de trabajo",
+    "home": "Inicio",
+    "hub": "Centro de funciones",
+    "videoEditor": "Editor de video",
+    "content": "Generador de contenido",
+    "design": "Generador de diseño",
+    "photography": "Fotografía de producto",
+    "videoAd": "Fábrica de anuncios de video",
+    "ecommerce": "Asistente de e-commerce",
+    "agents": "Agentes IA",
+    "automation": "Automatización",
+    "future": "Tecnología futura"
+  },
+  "demo": {
+    "banner": "Modo demo activo — sin inicio de sesión. Sube fotos/videos y prueba todas las funciones. Créditos ilimitados."
   },
   "language": {
     "label": "Idioma",
@@ -162,7 +176,8 @@
       "removeBackground": "Eliminar fondo",
       "generateStudio": "Generar toma de estudio",
       "writeCopy": "Escribir texto de producto",
-      "uploadAsset": "Subir recurso"
+      "uploadAsset": "Subir recurso",
+      "billingQuick": "Facturación"
     },
     "usage": {
       "assets": "Recursos",
@@ -175,6 +190,13 @@
     "uploadPrompt": "Sube una imagen para empezar a editar",
     "uploadCta": "Subir imagen",
     "dragDrop": "Arrastra y suelta o haz clic para subir",
+    "uploadFormats": "JPG, PNG, WebP, GIF, MP4, MOV, WebM (máx. 10MB imagen / 100MB video)",
+    "errors": {
+      "upload_failed": "Error al subir. Inténtalo de nuevo.",
+      "file_too_large": "Archivo demasiado grande. Máx. 10MB para imágenes, 100MB para videos.",
+      "invalid_file_type": "Tipo de archivo no compatible. Usa JPG, PNG, WebP, GIF, MP4, MOV o WebM.",
+      "processing_failed": "Error al procesar. Inténtalo de nuevo."
+    },
     "output": "Resultado",
     "noOutput": "Tu resultado procesado aparecerá aquí.",
     "processing": "Procesando...",

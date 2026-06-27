@@ -23,8 +23,8 @@ export function isValidLocale(value: unknown): value is Locale {
 export const routing = defineRouting({
   locales,
   defaultLocale,
-  // Always show the locale prefix (e.g. /en/dashboard) for predictable routing.
-  localePrefix: "always",
+  // Default locale (en) uses `/` without prefix — http://localhost:3000 works directly.
+  localePrefix: "as-needed",
   localeCookie: {
     name: "NEXT_LOCALE",
   },

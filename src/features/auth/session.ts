@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Profile } from "@/lib/supabase/types";
 import { getAdminEmails } from "@/lib/env";
+import { DEMO_USER, isDemoMode } from "@/lib/demo/config";
 
 export interface SessionUser {
   id: string;
@@ -13,6 +14,8 @@ export interface SessionUser {
  * Never throws — safe to call from any Server Component.
  */
 export async function getSessionUser(): Promise<SessionUser | null> {
+  if (isDemoMode()) return DEMO_USER;
+
   const supabase = await createClient();
   if (!supabase) return null;
 

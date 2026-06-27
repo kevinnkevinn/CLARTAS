@@ -9,6 +9,8 @@ export interface ImageTransformState {
   brightness: number;
   contrast: number;
   saturation: number;
+  vibrance: number;
+  sharpness: number;
   hue: number;
   exposure: number;
   rotate: number;
@@ -23,6 +25,8 @@ const DEFAULT_TRANSFORM: ImageTransformState = {
   saturation: 100,
   hue: 0,
   exposure: 100,
+  vibrance: 100,
+  sharpness: 0,
   rotate: 0,
   flipH: false,
   flipV: false,
@@ -72,15 +76,43 @@ export function ImageAdjustments({
         ctx.translate(canvas.width / 2, canvas.height / 2);
         ctx.rotate((rot * Math.PI) / 180);
         ctx.scale(tState.flipH ? -1 : 1, tState.flipV ? -1 : 1);
+        const satBoost = tState.saturation + (tState.vibrance - 100) * 0.5;
         ctx.filter = [
           `brightness(${tState.brightness}%)`,
           `contrast(${tState.contrast}%)`,
-          `saturate(${tState.saturation}%)`,
+          `saturate(${satBoost}%)`,
           `hue-rotate(${tState.hue}deg)`,
           `brightness(${tState.exposure}%)`,
         ].join(" ");
         ctx.drawImage(img, -img.width / 2, -img.height / 2);
         ctx.restore();
+
+        if (tState.sharpness > 0) {
+          const ctx2 = canvas.getContext("2d")!;
+          const imageData = ctx2.getImageData(0, 0, canvas.width, canvas.height);
+          const d = imageData.data;
+          const copy = new Uint8ClampedArray(d);
+          const amount = tState.sharpness / 100;
+          const kernel = [0, -amount, 0, -amount, 1 + 4 * amount, -amount, 0, -amount, 0];
+          const w = canvas.width;
+          const h = canvas.height;
+          for (let y = 1; y < h - 1; y++) {
+            for (let x = 1; x < w - 1; x++) {
+              for (let c = 0; c < 3; c++) {
+                let sum = 0;
+                let ki = 0;
+                for (let ky = -1; ky <= 1; ky++) {
+                  for (let kx = -1; kx <= 1; kx++) {
+                    sum += copy[((y + ky) * w + (x + kx)) * 4 + c]! * kernel[ki]!;
+                    ki++;
+                  }
+                }
+                d[(y * w + x) * 4 + c] = Math.min(255, Math.max(0, sum));
+              }
+            }
+          }
+          ctx2.putImageData(imageData, 0, 0);
+        }
 
         onPreview(canvas.toDataURL("image/png"));
         onTransformChange?.(tState);
@@ -102,6 +134,8 @@ export function ImageAdjustments({
     ["brightness", 50, 150, transform.brightness],
     ["contrast", 50, 150, transform.contrast],
     ["saturation", 0, 200, transform.saturation],
+    ["vibrance", 0, 200, transform.vibrance],
+    ["sharpness", 0, 100, transform.sharpness],
     ["hue", -180, 180, transform.hue],
     ["exposure", 50, 150, transform.exposure],
   ] as const;

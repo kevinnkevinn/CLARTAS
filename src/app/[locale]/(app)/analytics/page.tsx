@@ -2,7 +2,9 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { BarChart3, Images, Sparkles, Coins, TrendingUp } from "lucide-react";
 import { isValidLocale, type Locale } from "@/i18n/routing";
 import { requireUser } from "@/features/auth/guards";
+import { isDemoMode } from "@/lib/demo/config";
 import { getUsageAnalytics } from "@/features/analytics/service";
+import { FullAnalyticsDashboard } from "@/features/analytics/full-analytics";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatBytes } from "@/lib/utils";
@@ -19,6 +21,16 @@ export default async function AnalyticsPage({
 
   const t = await getTranslations("analytics");
   const user = await requireUser(safeLocale);
+
+  if (isDemoMode()) {
+    return (
+      <div className="space-y-6">
+        <PageHeader title={t("title")} description={t("subtitle")} />
+        <FullAnalyticsDashboard />
+      </div>
+    );
+  }
+
   const stats = await getUsageAnalytics(user.id);
 
   const statCards = [

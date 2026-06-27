@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { MarketingNav } from "@/components/marketing/marketing-nav";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PLANS } from "@/lib/constants";
+import { isDemoMode } from "@/lib/demo/config";
 import { cn } from "@/lib/utils";
 
 export default async function PricingPage({
@@ -62,7 +63,7 @@ export default async function PricingPage({
                     ))}
                   </ul>
                   <Link
-                    href="/sign-up"
+                    href={isDemoMode() ? "/billing" : "/sign-up"}
                     className={cn(
                       buttonVariants({ variant: plan.popular ? "default" : "outline" }),
                       "mt-6",

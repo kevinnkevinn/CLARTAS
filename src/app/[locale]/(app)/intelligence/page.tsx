@@ -30,10 +30,6 @@ export default async function IntelligencePage({
     <div className="space-y-6">
       <PageHeader title={t("title")} description={t("subtitle")} />
 
-      <p className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-        {t("comingSoonNote")}
-      </p>
-
       <div className="grid gap-4 md:grid-cols-3">
         {modules.map(({ key, icon: Icon, href }) => (
           <Card key={key} className="flex flex-col">

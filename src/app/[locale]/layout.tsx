@@ -35,9 +35,11 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
   const messages = await getMessages();
 
+  const bodyClassName = cn(inter.variable, "font-sans min-h-screen bg-background");
+
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <body className={cn(inter.variable, "font-sans min-h-screen bg-background")}>
+    <html lang={locale} className="dark" suppressHydrationWarning>
+      <body className={bodyClassName} suppressHydrationWarning>
         <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </body>
     </html>

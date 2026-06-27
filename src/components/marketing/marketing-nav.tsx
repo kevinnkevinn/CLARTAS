@@ -3,9 +3,12 @@ import { Sparkles } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { buttonVariants } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/features/localization/language-switcher";
+import { isDemoMode } from "@/lib/demo/config";
 
 export async function MarketingNav() {
   const t = await getTranslations("nav");
+  const demo = isDemoMode();
+
   return (
     <header className="sticky top-0 z-30 border-b bg-background/80 backdrop-blur">
       <div className="container flex h-16 items-center justify-between">
@@ -17,8 +20,8 @@ export async function MarketingNav() {
         </Link>
 
         <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
-          <Link href="/#features" className="hover:text-foreground">
-            {t("features")}
+          <Link href={demo ? "/editor" : "/#features"} className="hover:text-foreground">
+            {t("editor")}
           </Link>
           <Link href="/pricing" className="hover:text-foreground">
             {t("pricing")}
@@ -27,12 +30,20 @@ export async function MarketingNav() {
 
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
-          <Link href="/sign-in" className={buttonVariants({ variant: "ghost", size: "sm" })}>
-            {t("signIn")}
-          </Link>
-          <Link href="/sign-up" className={buttonVariants({ size: "sm" })}>
-            {t("signUp")}
-          </Link>
+          {demo ? (
+            <Link href="/dashboard" className={buttonVariants({ size: "sm" })}>
+              {t("home")}
+            </Link>
+          ) : (
+            <>
+              <Link href="/sign-in" className={buttonVariants({ variant: "ghost", size: "sm" })}>
+                {t("signIn")}
+              </Link>
+              <Link href="/sign-up" className={buttonVariants({ size: "sm" })}>
+                {t("signUp")}
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>

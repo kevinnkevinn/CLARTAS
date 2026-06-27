@@ -9,6 +9,7 @@ export const env = {
   appUrl: process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
   paddleClientToken: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN ?? "",
   paddleEnv: process.env.NEXT_PUBLIC_PADDLE_ENV ?? "sandbox",
+  demoMode: process.env.NEXT_PUBLIC_DEMO_MODE === "true",
 };
 
 /** True when Supabase public config is present. Used to enable real auth/data. */

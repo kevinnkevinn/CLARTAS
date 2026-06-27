@@ -2,22 +2,20 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/features/auth/session";
 import { createClient } from "@/lib/supabase/server";
 import { validateUpload } from "@/lib/upload-validation";
+import { resolveFileMimeType } from "@/lib/mime";
 import { STORAGE_BUCKETS } from "@/lib/constants";
+import { isDemoMode } from "@/lib/demo/config";
 import { logError } from "@/lib/logger";
 
 /**
  * Secure upload endpoint. Validates file type/size, stores the file in the
  * private `raw-assets` bucket namespaced by user id, and records an asset row.
+ * In demo mode, returns a base64 data URL for client-side processing.
  */
 export async function POST(request: Request) {
   const user = await getSessionUser();
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const supabase = await createClient();
-  if (!supabase) {
-    return NextResponse.json({ error: "Storage is not configured" }, { status: 503 });
   }
 
   let formData: FormData;
@@ -28,18 +26,41 @@ export async function POST(request: Request) {
   }
 
   const file = formData.get("file");
-  const workspaceId = formData.get("workspaceId");
   if (!(file instanceof File)) {
     return NextResponse.json({ error: "No file provided" }, { status: 400 });
   }
 
-  const validation = validateUpload(file.type, file.size);
+  const validation = validateUpload(resolveFileMimeType(file), file.size);
   if (!validation.ok) {
     return NextResponse.json(
       { error: validation.error === "size" ? "file_too_large" : "invalid_file_type" },
       { status: 400 },
     );
   }
+
+  if (isDemoMode()) {
+    const mime = resolveFileMimeType(file) || file.type || "application/octet-stream";
+    const buffer = await file.arrayBuffer();
+    const base64 = Buffer.from(buffer).toString("base64");
+    const dataUrl = `data:${mime};base64,${base64}`;
+    return NextResponse.json({
+      asset: {
+        id: crypto.randomUUID(),
+        original_filename: file.name,
+        file_type: file.type,
+        processing_status: "ready",
+      },
+      signedUrl: dataUrl,
+      demo: true,
+    });
+  }
+
+  const supabase = await createClient();
+  if (!supabase) {
+    return NextResponse.json({ error: "Storage is not configured" }, { status: 503 });
+  }
+
+  const workspaceId = formData.get("workspaceId");
 
   const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 80);
   const path = `${user.id}/${crypto.randomUUID()}-${safeName}`;

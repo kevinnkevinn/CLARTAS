@@ -25,6 +25,7 @@
   },
   "nav": {
     "dashboard": "Dasbor",
+    "home": "Beranda",
     "editor": "Editor Studio",
     "assets": "Pustaka Aset",
     "aiTools": "Alat AI",
@@ -40,7 +41,20 @@
     "signOut": "Keluar",
     "pricing": "Harga",
     "features": "Fitur",
-    "workspace": "Workspace"
+    "workspace": "Workspace",
+    "hub": "Pusat Fitur",
+    "videoEditor": "Editor Video",
+    "content": "Generator Konten",
+    "design": "Generator Desain",
+    "photography": "Fotografi Produk",
+    "videoAd": "Pabrik Iklan Video",
+    "ecommerce": "Asisten E-Commerce",
+    "agents": "Agen AI",
+    "automation": "Otomasi",
+    "future": "Teknologi Masa Depan"
+  },
+  "demo": {
+    "banner": "Mode demo aktif — tanpa login. Upload foto/video dan uji semua fitur. Kredit unlimited."
   },
   "language": {
     "label": "Bahasa",
@@ -162,7 +176,8 @@
       "removeBackground": "Hapus latar belakang",
       "generateStudio": "Buat foto studio",
       "writeCopy": "Tulis teks produk",
-      "uploadAsset": "Unggah aset"
+      "uploadAsset": "Unggah aset",
+      "billingQuick": "Tagihan"
     },
     "usage": {
       "assets": "Aset",
@@ -175,6 +190,13 @@
     "uploadPrompt": "Unggah gambar untuk mulai mengedit",
     "uploadCta": "Unggah gambar",
     "dragDrop": "Seret & lepas atau klik untuk mengunggah",
+    "uploadFormats": "JPG, PNG, WebP, GIF, MP4, MOV, WebM (maks 10MB gambar / 100MB video)",
+    "errors": {
+      "upload_failed": "Unggahan gagal. Silakan coba lagi.",
+      "file_too_large": "File terlalu besar. Maks 10MB untuk gambar, 100MB untuk video.",
+      "invalid_file_type": "Tipe file tidak didukung. Gunakan JPG, PNG, WebP, GIF, MP4, MOV, atau WebM.",
+      "processing_failed": "Pemrosesan gagal. Silakan coba lagi."
+    },
     "output": "Hasil",
     "noOutput": "Hasil olahan Anda akan muncul di sini.",
     "processing": "Memproses...",
@@ -185,11 +207,35 @@
     "run": "Jalankan",
     "creditCost": "Biaya: {count} kredit",
     "tools": "Alat",
+    "category": {
+      "catBasic": "Dasar",
+      "catAi": "Edit AI",
+      "catProduct": "Produk",
+      "catVideo": "Video",
+      "catContent": "Konten"
+    },
     "tool": {
+      "adjustments": { "name": "Penyesuaian", "description": "Kecerahan, kontras, vibrance, ketajaman, hue, exposure." },
       "removeBackground": { "name": "Hapus Latar Belakang", "description": "Hapus latar belakang dan dapatkan PNG transparan." },
       "productStudio": { "name": "Product Studio", "description": "Buat scene produk berkualitas studio." },
       "objectCleanup": { "name": "Bersihkan Objek", "description": "Hapus objek yang tidak diinginkan dari foto Anda." },
-      "smartEnhancer": { "name": "Smart Enhancer", "description": "Tingkatkan resolusi dan kualitas gambar." },
+      "reflectionRemoval": { "name": "Hapus Refleksi", "description": "Kurangi pantulan pada permukaan produk." },
+      "shadowGenerator": { "name": "Generator Bayangan", "description": "Tambahkan bayangan produk yang realistis." },
+      "productRetouch": { "name": "Retouch Produk", "description": "Retouch foto produk profesional." },
+      "beautyEnhancement": { "name": "Beauty Enhancement", "description": "Perbaiki foto portrait dan beauty." },
+      "faceRestoration": { "name": "Restorasi Wajah", "description": "Pulihkan dan pertajam wajah." },
+      "smartEnhancer": { "name": "Smart Enhancer / Upscale", "description": "Tingkatkan resolusi dan kualitas gambar." },
+      "noiseReduction": { "name": "Reduksi Noise", "description": "Kurangi noise pada gambar." },
+      "imageRepair": { "name": "Perbaikan Gambar", "description": "Perbaiki gambar rusak atau berkualitas rendah." },
+      "colorCorrection": { "name": "Koreksi Warna", "description": "Keseimbangan dan koreksi warna otomatis." },
+      "whiteBackground": { "name": "Latar Putih", "description": "Latar belakang putih untuk marketplace." },
+      "luxuryBackground": { "name": "Latar Luxury", "description": "Scene premium gelap mewah." },
+      "studioBackground": { "name": "Latar Studio", "description": "Tampilan fotografi studio bersih." },
+      "marketplaceBackground": { "name": "Latar Marketplace", "description": "Dioptimalkan untuk Shopee/Tokopedia." },
+      "lifestyleScene": { "name": "Fotografi Lifestyle", "description": "Scene produk lifestyle hangat." },
+      "outdoorScene": { "name": "Fotografi Outdoor", "description": "Scene produk alam terbuka." },
+      "customBackground": { "name": "Latar AI Kustom", "description": "Scene kustom dari prompt." },
+      "batchVariations": { "name": "Variasi Massal", "description": "Buat banyak variasi foto produk." },
       "cropResize": { "name": "Crop / Resize", "description": "Ubah ukuran dan potong untuk marketplace dan media sosial." },
       "videoSlideshow": { "name": "Video Slideshow", "description": "Buat video promosi pendek dari gambar." },
       "voiceover": { "name": "Voiceover", "description": "Buat voiceover dengan text-to-speech." },
@@ -210,11 +256,48 @@
       "marketplace": "Marketplace",
       "marketplaceGeneral": "Umum"
     },
+    "copyType": {
+      "title": "Judul",
+      "description": "Deskripsi",
+      "caption": "Caption",
+      "keywords": "Kata kunci",
+      "script": "Script video"
+    },
+    "brush": {
+      "title": "Kuas mask",
+      "hint": "Cat putih di area yang ingin dihapus. Hitam = pertahankan.",
+      "brushSize": "Ukuran kuas",
+      "clear": "Hapus mask",
+      "applyMask": "Terapkan mask"
+    },
+    "videoTools": {
+      "title": "Alat video",
+      "subtitle": "Klik untuk membuka Video Editor lengkap.",
+      "cut": "Potong",
+      "merge": "Gabung",
+      "speed": "Kontrol kecepatan",
+      "subtitles": "Subtitle otomatis",
+      "motion": "Motion tracking"
+    },
     "adjustments": {
       "title": "Penyesuaian gambar",
       "brightness": "Kecerahan",
       "contrast": "Kontras",
-      "saturation": "Saturasi"
+      "saturation": "Saturasi",
+      "vibrance": "Vibrance",
+      "sharpness": "Ketajaman",
+      "hue": "Hue",
+      "exposure": "Exposure",
+      "rotate": "Putar 90°",
+      "flipH": "Flip H",
+      "flipV": "Flip V",
+      "reset": "Reset",
+      "presetFree": "Bebas",
+      "presetSquare": "1:1",
+      "presetTiktok": "9:16 TikTok",
+      "presetInstagram": "4:5 Instagram",
+      "presetYoutube": "16:9 YouTube",
+      "presetMarketplace": "Marketplace"
     }
   },
   "aiTools": {
