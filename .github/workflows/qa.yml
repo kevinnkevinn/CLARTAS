@@ -1,0 +1,44 @@
+name: QA Automation
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Unit & integration (Vitest)
+        run: npm run test:unit
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium --with-deps
+
+      - name: E2E (Playwright)
+        run: npm run test:e2e
+        env:
+          CI: true
+          NEXT_PUBLIC_DEMO_MODE: "true"
+
+      - name: Generate QA report
+        run: npm run test:report
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qa-reports
+          path: |
+            playwright-report/
+            test-results/
+            docs/qa/reports/
