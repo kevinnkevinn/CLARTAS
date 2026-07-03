@@ -152,6 +152,7 @@
     "resetEmailSent": "请查收邮件中的密码重置链接。",
     "passwordUpdated": "密码已更新，您现在可以登录。",
     "signInWithGoogle": "使用 Google 继续",
+    "signInWithApple": "使用 Apple 继续",
     "notConfigured": "身份验证未配置。",
     "sendResetLink": "发送重置链接",
     "updatePassword": "更新密码",

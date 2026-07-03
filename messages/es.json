@@ -152,6 +152,7 @@
     "resetEmailSent": "Revisa tu correo para el enlace de restablecimiento.",
     "passwordUpdated": "Contraseña actualizada. Ya puedes iniciar sesión.",
     "signInWithGoogle": "Continuar con Google",
+    "signInWithApple": "Continuar con Apple",
     "notConfigured": "La autenticación no está configurada.",
     "sendResetLink": "Enviar enlace",
     "updatePassword": "Actualizar contraseña",

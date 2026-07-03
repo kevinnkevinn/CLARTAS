@@ -152,6 +152,7 @@
     "resetEmailSent": "Periksa email untuk tautan reset kata sandi.",
     "passwordUpdated": "Kata sandi diperbarui. Anda bisa masuk sekarang.",
     "signInWithGoogle": "Lanjutkan dengan Google",
+    "signInWithApple": "Lanjutkan dengan Apple",
     "notConfigured": "Autentikasi belum dikonfigurasi.",
     "sendResetLink": "Kirim tautan reset",
     "updatePassword": "Perbarui kata sandi",

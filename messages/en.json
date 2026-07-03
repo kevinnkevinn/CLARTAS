@@ -152,6 +152,7 @@
     "resetEmailSent": "Check your email for a password reset link.",
     "passwordUpdated": "Password updated. You can sign in now.",
     "signInWithGoogle": "Continue with Google",
+    "signInWithApple": "Continue with Apple",
     "notConfigured": "Auth is not configured.",
     "sendResetLink": "Send reset link",
     "updatePassword": "Update password",
