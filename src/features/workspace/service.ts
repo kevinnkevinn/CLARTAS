@@ -2,6 +2,9 @@ import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import type { Workspace, WorkspaceMember } from "@/lib/supabase/types";
 import { ACTIVE_WORKSPACE_COOKIE } from "@/lib/workspace-cookie";
+import { cachedValue } from "@/lib/rate-limit";
+
+const WORKSPACE_CACHE_TTL = 60;
 
 export async function getUserWorkspaces(userId: string): Promise<Workspace[]> {
   const supabase = await createClient();
@@ -15,16 +18,19 @@ export async function getUserWorkspaces(userId: string): Promise<Workspace[]> {
 }
 
 export async function getActiveWorkspace(userId: string): Promise<Workspace | null> {
-  const workspaces = await getUserWorkspaces(userId);
-  if (workspaces.length === 0) return null;
-
   const cookieStore = await cookies();
-  const activeId = cookieStore.get(ACTIVE_WORKSPACE_COOKIE)?.value;
-  if (activeId) {
-    const match = workspaces.find((w) => w.id === activeId);
-    if (match) return match;
-  }
-  return workspaces[0] ?? null;
+  const activeId = cookieStore.get(ACTIVE_WORKSPACE_COOKIE)?.value ?? "default";
+
+  return cachedValue(`workspace:active:${userId}:${activeId}`, WORKSPACE_CACHE_TTL, async () => {
+    const workspaces = await getUserWorkspaces(userId);
+    if (workspaces.length === 0) return null;
+
+    if (activeId !== "default") {
+      const match = workspaces.find((w) => w.id === activeId);
+      if (match) return match;
+    }
+    return workspaces[0] ?? null;
+  });
 }
 
 /** @deprecated Use getActiveWorkspace */

@@ -2,7 +2,7 @@ name: QA Automation
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, feat/**]
   pull_request:
     branches: [main, master]
 
@@ -42,3 +42,23 @@ jobs:
             playwright-report/
             test-results/
             docs/qa/reports/
+
+  build-perf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Production build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_DEMO_MODE: "true"
+
+      - name: Bundle budget gate
+        run: npm run perf:bundle

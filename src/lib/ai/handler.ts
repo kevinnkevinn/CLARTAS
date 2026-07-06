@@ -2,28 +2,24 @@ import { NextResponse } from "next/server";
 import type { ZodSchema } from "zod";
 import { getSessionUser } from "@/features/auth/session";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { deductCredits, getCreditBalance, addCredits } from "@/features/credits/service";
-import { runAIAction } from "@/lib/ai/providers";
-import { persistProcessedImage } from "@/lib/ai/storage";
+import { getCreditBalance } from "@/features/credits/service";
 import { getBrandContext } from "@/lib/ai/brand-context";
+import { enqueueAIJob, processAIJob } from "@/lib/ai/process-job";
 import { CREDIT_COSTS, ACTION_PROVIDER, type AIAction } from "@/lib/constants";
-import { logError } from "@/lib/logger";
 import { checkRateLimit } from "@/lib/rate-limit";
-import { sendEmail } from "@/lib/resend/client";
-import { aiJobCompletedEmail, aiJobFailedEmail } from "@/lib/resend/templates";
-import { triggerMakeWebhook } from "@/lib/make/client";
 
 interface HandlerOptions<T> {
   action: AIAction;
   schema: ZodSchema<T>;
 }
 
-const IMAGE_ACTIONS: AIAction[] = [
-  "remove-background",
-  "product-studio",
-  "object-cleanup",
-  "enhance-image",
-];
+function isAsyncMode(request: Request): boolean {
+  if (process.env.AI_ASYNC_JOBS === "false") return false;
+  if (request.headers.get("x-clartas-sync") === "1") return false;
+  const url = new URL(request.url);
+  if (url.searchParams.get("sync") === "1") return false;
+  return process.env.AI_ASYNC_JOBS === "true";
+}
 
 export async function handleAIRequest<T>(
   request: Request,
@@ -34,7 +30,7 @@ export async function handleAIRequest<T>(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const rate = checkRateLimit(`ai:${user.id}:${action}`, 30, 60_000);
+  const rate = await checkRateLimit(`ai:${user.id}:${action}`, 30, 60_000);
   if (!rate.ok) {
     return NextResponse.json({ error: "rate_limit_exceeded" }, { status: 429 });
   }
@@ -85,7 +81,7 @@ export async function handleAIRequest<T>(
         user_id: user.id,
         action,
         provider,
-        status: "processing",
+        status: isAsyncMode(request) ? "queued" : "processing",
         input_payload: input,
         credit_cost: cost,
       })
@@ -94,89 +90,37 @@ export async function handleAIRequest<T>(
     jobId = data?.id ?? null;
   }
 
-  let creditsDeducted = false;
+  const jobParams = {
+    jobId,
+    userId: user.id,
+    userEmail: user.email,
+    action,
+    input,
+    cost,
+  };
+
+  if (isAsyncMode(request)) {
+    enqueueAIJob(jobParams);
+    return NextResponse.json(
+      {
+        jobId,
+        status: "queued",
+        pollUrl: jobId ? `/api/ai/jobs/${jobId}` : null,
+        message: "Job queued. Poll pollUrl until status is succeeded or failed.",
+      },
+      { status: 202 },
+    );
+  }
 
   try {
-    const result = await runAIAction(action, provider, input);
-
-    const deduction = await deductCredits(user.id, cost, action.toUpperCase(), action);
-    creditsDeducted = deduction.ok;
-
-    let output = { ...result.output };
-    const workspaceId =
-      typeof input.workspaceId === "string" ? input.workspaceId : null;
-
-    if (IMAGE_ACTIONS.includes(action)) {
-      const imageUrl =
-        typeof output.imageUrl === "string"
-          ? output.imageUrl
-          : typeof input.imageUrl === "string"
-            ? input.imageUrl
-            : null;
-      if (imageUrl) {
-        const saved = await persistProcessedImage(user.id, imageUrl, {
-          action,
-          jobId,
-          workspaceId,
-          sourceAssetId:
-            typeof input.assetId === "string" ? input.assetId : undefined,
-        });
-        if (saved) {
-          output = {
-            ...output,
-            assetId: saved.assetId,
-            imageUrl: saved.signedUrl ?? imageUrl,
-            savedToLibrary: true,
-          };
-        }
-      }
-    }
-
-    if (admin && jobId) {
-      await admin
-        .from("ai_jobs")
-        .update({ status: "succeeded", output_payload: output })
-        .eq("id", jobId);
-    }
-
-    if (user.email) {
-      const tpl = aiJobCompletedEmail(action);
-      void sendEmail({ to: user.email, ...tpl });
-    }
-    void triggerMakeWebhook("ai.job.completed", {
-      userId: user.id,
-      jobId,
-      action,
-      mock: result.mock,
-    });
-
+    const result = await processAIJob(jobParams);
     return NextResponse.json({
       jobId,
       mock: result.mock,
-      output,
-      creditCost: deduction.ok ? cost : 0,
-      creditWarning: deduction.ok ? undefined : deduction.reason,
+      output: result.output,
+      creditCost: result.creditCost,
     });
-  } catch (error) {
-    await logError(`ai:${action}`, error, { jobId }, user.id);
-
-    if (creditsDeducted) {
-      await addCredits(user.id, cost, "AI_REFUND", `Refund for failed ${action}`);
-    }
-
-    if (admin && jobId) {
-      await admin
-        .from("ai_jobs")
-        .update({ status: "failed", error_message: "Processing failed" })
-        .eq("id", jobId);
-    }
-
-    if (user.email) {
-      const tpl = aiJobFailedEmail(action);
-      void sendEmail({ to: user.email, ...tpl });
-    }
-    void triggerMakeWebhook("ai.job.failed", { userId: user.id, jobId, action });
-
+  } catch {
     return NextResponse.json({ error: "processing_failed" }, { status: 502 });
   }
 }

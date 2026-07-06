@@ -327,6 +327,9 @@
     },
     "searchPlaceholder": "Cari aset...",
     "noResults": "Tidak ada aset yang cocok.",
+    "prevPage": "Sebelumnya",
+    "nextPage": "Berikutnya",
+    "pageOf": "Halaman {page} dari {total}",
     "deleted": "Aset dihapus.",
     "renamed": "Aset diganti nama.",
     "detailSubtitle": "Detail dan tindakan aset.",
@@ -393,7 +396,11 @@
     "memberEmail": "Email anggota",
     "memberRole": "Peran",
     "sendInvite": "Kirim undangan",
-    "workspaceName": "Nama workspace"
+    "workspaceName": "Nama workspace",
+    "liteMode": "Mode ringan",
+    "liteModeHint": "Mengurangi efek visual dan membatasi pemrosesan berat untuk perangkat lama atau spesifikasi rendah.",
+    "liteModeOn": "Ringan aktif",
+    "liteModeOff": "Ringan nonaktif"
   },
   "credits": {
     "balance": "Saldo kredit",

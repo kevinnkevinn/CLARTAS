@@ -338,6 +338,9 @@
     },
     "searchPlaceholder": "Search assets...",
     "noResults": "No assets match your search.",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "pageOf": "Page {page} of {total}",
     "deleted": "Asset deleted.",
     "renamed": "Asset renamed.",
     "detailSubtitle": "Asset details and actions.",
@@ -405,7 +408,11 @@
     "sendInvite": "Send invite",
     "workspaceName": "Workspace name",
     "languageSwitcherHint": "Switch the app interface language instantly.",
-    "workspaceManageHint": "Create workspaces, invite members, and manage roles on the Workspace page."
+    "workspaceManageHint": "Create workspaces, invite members, and manage roles on the Workspace page.",
+    "liteMode": "Lite mode",
+    "liteModeHint": "Reduces visual effects and limits heavy processing for older or low-spec devices.",
+    "liteModeOn": "Lite on",
+    "liteModeOff": "Lite off"
   },
   "credits": {
     "balance": "Credit balance",

@@ -7,13 +7,13 @@ import {
 } from "@/lib/ai/schemas";
 
 describe("rate limit @integration", () => {
-  it("TC-AI-007: mengizinkan 30 request dalam window", () => {
+  it("TC-AI-007: mengizinkan 30 request dalam window", async () => {
     const key = `test-${Date.now()}`;
     for (let i = 0; i < 30; i++) {
-      const r = checkRateLimit(key, 30, 60_000);
+      const r = await checkRateLimit(key, 30, 60_000);
       expect(r.ok).toBe(true);
     }
-    const blocked = checkRateLimit(key, 30, 60_000);
+    const blocked = await checkRateLimit(key, 30, 60_000);
     expect(blocked.ok).toBe(false);
     expect(blocked.remaining).toBe(0);
   });
