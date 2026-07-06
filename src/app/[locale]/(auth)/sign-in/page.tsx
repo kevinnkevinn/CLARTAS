@@ -3,7 +3,7 @@ import { isValidLocale, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { SignInForm } from "@/features/auth/sign-in-form";
-import { GoogleSignInButton } from "@/features/auth/google-sign-in-button";
+import { SocialSignInButtons } from "@/features/auth/social-sign-in-buttons";
 
 export default async function SignInPage({
   params,
@@ -31,7 +31,7 @@ export default async function SignInPage({
             <span className="bg-card px-2 text-muted-foreground">or</span>
           </div>
         </div>
-        <GoogleSignInButton />
+        <SocialSignInButtons />
         <p className="mt-4 text-center text-sm">
           <Link href="/forgot-password" className="text-primary hover:underline">
             {t("forgotPassword")}

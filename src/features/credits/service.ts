@@ -2,6 +2,8 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { DEFAULT_FREE_CREDITS } from "@/lib/constants";
 import { DEMO_CREDITS, isDemoMode } from "@/lib/demo/config";
+import { cachedValue } from "@/lib/rate-limit";
+import { cacheDelete } from "@/lib/cache";
 
 /**
  * Credit service. Balance reads go through the user-scoped client (RLS), while
@@ -9,20 +11,28 @@ import { DEMO_CREDITS, isDemoMode } from "@/lib/demo/config";
  * atomic and tamper-proof.
  */
 
+const CREDIT_CACHE_TTL = 30;
+
+function creditCacheKey(userId: string): string {
+  return `credits:${userId}`;
+}
+
 /** Read the current user's AI credit balance. Falls back to mock when unconfigured. */
 export async function getCreditBalance(userId: string): Promise<number> {
   if (isDemoMode()) return DEMO_CREDITS;
 
-  const supabase = await createClient();
-  if (!supabase) return DEFAULT_FREE_CREDITS;
+  return cachedValue(creditCacheKey(userId), CREDIT_CACHE_TTL, async () => {
+    const supabase = await createClient();
+    if (!supabase) return DEFAULT_FREE_CREDITS;
 
-  const { data } = await supabase
-    .from("profiles")
-    .select("ai_credits")
-    .eq("id", userId)
-    .maybeSingle();
+    const { data } = await supabase
+      .from("profiles")
+      .select("ai_credits")
+      .eq("id", userId)
+      .maybeSingle();
 
-  return data?.ai_credits ?? 0;
+    return data?.ai_credits ?? 0;
+  });
 }
 
 export interface DeductResult {
@@ -52,7 +62,9 @@ export async function deductCredits(
   });
 
   if (error) return { ok: false, reason: "error" };
-  return data === true ? { ok: true } : { ok: false, reason: "insufficient" };
+  const ok = data === true;
+  if (ok) await cacheDelete(creditCacheKey(userId));
+  return ok ? { ok: true } : { ok: false, reason: "insufficient" };
 }
 
 /** Add / refund / top-up credits. Returns the new balance or null on failure. */
@@ -75,6 +87,7 @@ export async function addCredits(
   });
 
   if (error) return null;
+  await cacheDelete(creditCacheKey(userId));
   return data as number;
 }
 

@@ -3,6 +3,9 @@
  * Produces real visual output without external AI APIs.
  */
 
+import { capCanvasSize } from "./downscale";
+import { FULL_LIMITS, LITE_LIMITS } from "@/lib/lite-mode/config";
+
 export interface FilterOptions {
   brightness?: number;
   contrast?: number;
@@ -27,14 +30,27 @@ function canvasToDataUrl(canvas: HTMLCanvasElement, type = "image/png"): string 
   return canvas.toDataURL(type, 0.92);
 }
 
+function resolveMaxPixels(): number {
+  if (typeof window !== "undefined" && localStorage.getItem("clartas-lite-mode") === "true") {
+    return LITE_LIMITS.maxCanvasPixels;
+  }
+  return FULL_LIMITS.maxCanvasPixels;
+}
+
+function capDimensions(width: number, height: number): { width: number; height: number } {
+  const capped = capCanvasSize(width, height, resolveMaxPixels());
+  return { width: capped.width, height: capped.height };
+}
+
 export async function applyFilters(
   imageUrl: string,
   opts: FilterOptions,
 ): Promise<string> {
   const img = await loadImage(imageUrl);
+  const { width, height } = capDimensions(img.width, img.height);
   const canvas = document.createElement("canvas");
-  canvas.width = img.width;
-  canvas.height = img.height;
+  canvas.width = width;
+  canvas.height = height;
   const ctx = canvas.getContext("2d")!;
   const b = opts.brightness ?? 100;
   const c = opts.contrast ?? 100;
@@ -44,7 +60,7 @@ export async function applyFilters(
   const e = opts.exposure ?? 100;
   const satBoost = s + (v - 100) * 0.5;
   ctx.filter = `brightness(${b}%) contrast(${c}%) saturate(${satBoost}%) hue-rotate(${h}deg) brightness(${e}%)`;
-  ctx.drawImage(img, 0, 0);
+  ctx.drawImage(img, 0, 0, width, height);
   if ((opts.sharpness ?? 0) > 0) {
     applySharpen(ctx, canvas.width, canvas.height, (opts.sharpness ?? 0) / 100);
   }
@@ -78,11 +94,12 @@ function applySharpen(ctx: CanvasRenderingContext2D, w: number, h: number, amoun
 /** Simple chroma-style background removal using corner color sampling. */
 export async function removeBackground(imageUrl: string, threshold = 40): Promise<string> {
   const img = await loadImage(imageUrl);
+  const { width, height } = capDimensions(img.width, img.height);
   const canvas = document.createElement("canvas");
-  canvas.width = img.width;
-  canvas.height = img.height;
+  canvas.width = width;
+  canvas.height = height;
   const ctx = canvas.getContext("2d")!;
-  ctx.drawImage(img, 0, 0);
+  ctx.drawImage(img, 0, 0, width, height);
   const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const d = data.data;
   const corners = [

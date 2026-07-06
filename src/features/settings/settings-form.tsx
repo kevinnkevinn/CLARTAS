@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { useTranslations } from "next-intl";
 import { CheckCircle2, AlertCircle } from "lucide-react";
 import { updateProfileAction, type SettingsResult } from "./actions";
+import { LiteModeToggle } from "@/components/lite-mode-toggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -55,6 +56,8 @@ export function SettingsForm({ email, fullName, preferredLocale }: SettingsFormP
           ))}
         </Select>
       </div>
+
+      <LiteModeToggle />
 
       <Button type="submit" disabled={pending}>
         {t("saveChanges")}

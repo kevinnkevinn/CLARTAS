@@ -1,8 +1,13 @@
+import dynamic from "next/dynamic";
 import { setRequestLocale } from "next-intl/server";
 import { isValidLocale, type Locale } from "@/i18n/routing";
 import { requireUser } from "@/features/auth/guards";
 import { PageHeader } from "@/components/page-header";
-import { VideoEditorStudio } from "@/features/video/video-editor-studio";
+
+const VideoEditorStudio = dynamic(
+  () => import("@/features/video/video-editor-studio").then((m) => m.VideoEditorStudio),
+  { loading: () => <div className="h-64 animate-pulse rounded-xl bg-muted" /> },
+);
 
 export default async function VideoEditorPage({
   params,

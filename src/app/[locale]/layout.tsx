@@ -15,6 +15,19 @@ export const metadata: Metadata = {
   },
   description:
     "CLARTAS turns raw product photos into sales-ready content with AI photo editing, video generation, copywriting, and e-commerce automation.",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "CLARTAS",
+  },
+  icons: {
+    icon: [{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }],
+    apple: [{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }],
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
 };
 
 export function generateStaticParams() {

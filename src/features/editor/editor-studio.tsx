@@ -20,6 +20,9 @@ import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { env } from "@/lib/env";
+import { pollAIJob } from "@/lib/ai/poll-job";
+import { useLiteMode } from "@/lib/lite-mode/context";
+import { LITE_EDITOR_TOOL_IDS } from "@/lib/lite-mode/config";
 import { uploadMediaFile } from "@/lib/upload-client";
 import { runClientAI, playTextToSpeech, type ClientAIAction } from "@/features/lab/client-ai";
 import { addDemoAssetFromUrl } from "@/features/demo/local-assets";
@@ -44,6 +47,7 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
   const tt = useTranslations("editor.tool");
   const tf = useTranslations("editor.fields");
   const tCredits = useTranslations("credits");
+  const { lite } = useLiteMode();
 
   const [tool, setTool] = useState<EditorTool>(getToolById(initialTool));
   const [uploading, setUploading] = useState(false);
@@ -69,10 +73,11 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
     }
   }, [inputUrl]);
 
-  const filteredTools = useMemo(
-    () => EDITOR_TOOLS.filter((t) => t.category === category),
-    [category],
-  );
+  const filteredTools = useMemo(() => {
+    const inCategory = EDITOR_TOOLS.filter((toolItem) => toolItem.category === category);
+    if (!lite) return inCategory;
+    return inCategory.filter((toolItem) => LITE_EDITOR_TOOL_IDS.has(toolItem.id));
+  }, [category, lite]);
 
   const displayUrl = previewUrl ?? inputUrl;
   const onAdjustPreview = useCallback((url: string) => setPreviewUrl(url), []);
@@ -196,7 +201,11 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(buildPayload()),
       });
-      const data = await res.json();
+      let data = await res.json();
+      if (res.status === 202 && data.pollUrl) {
+        const polled = await pollAIJob(data.pollUrl as string);
+        data = { ...data, output: polled.output, mock: polled.mock };
+      }
       if (res.status === 402) {
         setError(
           tCredits("insufficientMessage", {
@@ -206,7 +215,7 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
         );
         return;
       }
-      if (!res.ok) {
+      if (!res.ok && res.status !== 202) {
         setError(data.error ?? "processing_failed");
         return;
       }

@@ -1,8 +1,13 @@
+import dynamic from "next/dynamic";
 import { setRequestLocale } from "next-intl/server";
 import { isValidLocale, type Locale } from "@/i18n/routing";
 import { requireUser } from "@/features/auth/guards";
 import { PageHeader } from "@/components/page-header";
-import { BatchPhotographyStudio } from "@/features/photography/batch-photography";
+
+const BatchPhotographyStudio = dynamic(
+  () => import("@/features/photography/batch-photography").then((m) => m.BatchPhotographyStudio),
+  { loading: () => <div className="h-64 animate-pulse rounded-xl bg-muted" /> },
+);
 
 export default async function PhotographyPage({
   params,

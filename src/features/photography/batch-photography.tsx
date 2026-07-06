@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { FileDropzone } from "@/components/file-dropzone";
+import { useLiteMode } from "@/lib/lite-mode/context";
 import { runClientAI } from "@/features/lab/client-ai";
 import { addDemoAssetFromUrl } from "@/features/demo/local-assets";
 
@@ -16,6 +17,7 @@ const BATCH_OPTIONS = [
 ];
 
 export function BatchPhotographyStudio() {
+  const { lite, limits } = useLiteMode();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [batchSize, setBatchSize] = useState("12");
   const [results, setResults] = useState<string[]>([]);
@@ -52,14 +54,14 @@ export function BatchPhotographyStudio() {
         <div>
           <Label>Skala produksi</Label>
           <Select value={batchSize} onChange={(e) => setBatchSize(e.target.value)}>
-            {BATCH_OPTIONS.map((o) => (
+            {BATCH_OPTIONS.filter((o) => !lite || o.count <= limits.pageSize / 2).map((o) => (
               <option key={o.count} value={String(o.count)}>
                 {o.label}
               </option>
             ))}
           </Select>
         </div>
-        <Button onClick={generate} disabled={!imageUrl || loading}>
+        <Button onClick={generate} disabled={!imageUrl || loading || (lite && !limits.batchVariationsEnabled)}>
           {loading ? (
             <>
               <Loader2 className="mr-2 size-4 animate-spin" /> {progress}%

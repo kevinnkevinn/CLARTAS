@@ -35,12 +35,22 @@ next-env.d.ts
 !.vscode/extensions.json
 .idea/
 
-# capacitor native projects (generated; keep config but ignore platforms)
+# capacitor native projects (generated at repo root legacy path)
 /ios
 /android
+
+# keep mobile native projects in version control
+!/mobile/android/
+!/mobile/ios/
 
 # vercel
 .vercel
 
 # misc
 /coverage
+
+# QA automation artifacts
+/test-results/
+/playwright-report/
+/blob-report/
+/docs/qa/reports/

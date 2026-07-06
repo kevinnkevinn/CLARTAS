@@ -28,6 +28,12 @@ const mobileConfig: NextConfig = {
   },
 };
 
-const nextConfig: NextConfig = isMobileBuild ? mobileConfig : baseConfig;
+let nextConfig: NextConfig = isMobileBuild ? mobileConfig : baseConfig;
+
+if (process.env.ANALYZE === "true") {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const withBundleAnalyzer = require("@next/bundle-analyzer")({ enabled: true });
+  nextConfig = withBundleAnalyzer(nextConfig);
+}
 
 export default withNextIntl(nextConfig);

@@ -1,0 +1,46 @@
+{
+  "name": "CLARTAS — AI E-Commerce Content Factory",
+  "short_name": "CLARTAS",
+  "description": "AI photo editing, video generation, copywriting, and e-commerce automation for global sellers.",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#050505",
+  "theme_color": "#a855f7",
+  "lang": "en",
+  "categories": ["business", "productivity", "photo"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [],
+  "prefer_related_applications": true,
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.clartas.app",
+      "id": "com.clartas.app"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://apps.apple.com/app/clartas/id0000000000"
+    }
+  ]
+}

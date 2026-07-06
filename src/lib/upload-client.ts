@@ -1,5 +1,6 @@
 import { addDemoAsset } from "@/features/demo/local-assets";
 import { env } from "@/lib/env";
+import { downscaleImageFile } from "@/lib/image/downscale";
 import { resolveFileMimeType } from "@/lib/mime";
 import { validateUpload } from "@/lib/upload-validation";
 
@@ -28,8 +29,13 @@ export async function uploadMediaFile(
     };
   }
 
+  let uploadFile = file;
+  if (validation.kind === "image") {
+    uploadFile = await downscaleImageFile(file);
+  }
+
   if (env.demoMode) {
-    const asset = await addDemoAsset(file);
+    const asset = await addDemoAsset(uploadFile);
     return {
       ok: true,
       data: { signedUrl: asset.url, assetId: asset.id, kind: validation.kind },
@@ -37,7 +43,7 @@ export async function uploadMediaFile(
   }
 
   const fd = new FormData();
-  fd.append("file", file);
+  fd.append("file", uploadFile);
   const res = await fetch("/api/upload", { method: "POST", body: fd });
   const data = (await res.json()) as { error?: UploadErrorCode; signedUrl?: string; asset?: { id: string } };
   if (!res.ok || !data.signedUrl) {

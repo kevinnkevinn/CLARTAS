@@ -3,15 +3,49 @@ import { STORAGE_BUCKETS } from "@/lib/constants";
 import type { Asset } from "@/lib/supabase/types";
 
 export async function getAssets(userId: string, limit = 50): Promise<Asset[]> {
+  const page = await getAssetsPage(userId, 1, limit);
+  return page.items;
+}
+
+export interface AssetsPageResult {
+  items: Asset[];
+  total: number;
+  page: number;
+  pageSize: number;
+  hasMore: boolean;
+}
+
+export async function getAssetsPage(
+  userId: string,
+  page = 1,
+  pageSize = 24,
+): Promise<AssetsPageResult> {
   const supabase = await createClient();
-  if (!supabase) return [];
-  const { data } = await supabase
+  if (!supabase) {
+    return { items: [], total: 0, page, pageSize, hasMore: false };
+  }
+
+  const safePage = Math.max(1, page);
+  const safeSize = Math.min(100, Math.max(1, pageSize));
+  const from = (safePage - 1) * safeSize;
+  const to = from + safeSize - 1;
+
+  const { data, count } = await supabase
     .from("assets")
-    .select("*")
+    .select("*", { count: "exact" })
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
-    .limit(limit);
-  return (data as Asset[]) ?? [];
+    .range(from, to);
+
+  const items = (data as Asset[]) ?? [];
+  const total = count ?? items.length;
+  return {
+    items,
+    total,
+    page: safePage,
+    pageSize: safeSize,
+    hasMore: from + items.length < total,
+  };
 }
 
 export async function getRecentAssets(userId: string, limit = 6): Promise<Asset[]> {

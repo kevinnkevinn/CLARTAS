@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+    />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#050505" />
+    <title>CLARTAS</title>
+    <style>
+      :root {
+        --primary: #a855f7;
+        --bg: #050505;
+        --text: #f5f5f5;
+        --muted: #a1a1aa;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family:
+          "Inter",
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          sans-serif;
+        margin: 0;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg);
+        color: var(--text);
+        text-align: center;
+        padding: max(24px, env(safe-area-inset-top)) 24px
+          max(24px, env(safe-area-inset-bottom));
+      }
+      .logo {
+        width: 72px;
+        height: 72px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #a855f7, #7c3aed);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        margin-bottom: 20px;
+        box-shadow: 0 0 40px rgba(168, 85, 247, 0.35);
+      }
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0 0 8px;
+        letter-spacing: -0.02em;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 0.875rem;
+        max-width: 300px;
+        line-height: 1.5;
+        margin: 0 0 24px;
+      }
+      .spinner {
+        width: 28px;
+        height: 28px;
+        border: 3px solid rgba(168, 85, 247, 0.2);
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      a.btn {
+        display: inline-block;
+        margin-top: 16px;
+        padding: 12px 24px;
+        border-radius: 12px;
+        background: var(--primary);
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.875rem;
+      }
+      code {
+        font-size: 0.75rem;
+        background: rgba(255, 255, 255, 0.06);
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="logo" aria-hidden="true">✦</div>
+    <h1>CLARTAS</h1>
+    <p class="muted" id="status">Memuat platform AI e-commerce…</p>
+    <div class="spinner" id="spinner" aria-label="Loading"></div>
+    <a class="btn" id="retry" href="#" style="display: none">Coba lagi</a>
+    <script>
+      (function () {
+        var serverUrl = "%CAP_SERVER_URL%";
+        var status = document.getElementById("status");
+        var spinner = document.getElementById("spinner");
+        var retry = document.getElementById("retry");
+
+        function go(url) {
+          window.location.replace(url);
+        }
+
+        if (serverUrl && serverUrl.indexOf("http") === 0) {
+          go(serverUrl);
+          return;
+        }
+
+        spinner.style.display = "none";
+        status.textContent =
+          "Backend belum dikonfigurasi. Set CAP_SERVER_URL ke URL CLARTAS yang sudah di-deploy, lalu jalankan npx cap sync.";
+        retry.style.display = "inline-block";
+        retry.addEventListener("click", function (e) {
+          e.preventDefault();
+          spinner.style.display = "block";
+          status.textContent = "Memuat…";
+          setTimeout(function () {
+            spinner.style.display = "none";
+            status.textContent = "Masih offline. Konfigurasi CAP_SERVER_URL terlebih dahulu.";
+          }, 1500);
+        });
+      })();
+    </script>
+  </body>
+</html>
