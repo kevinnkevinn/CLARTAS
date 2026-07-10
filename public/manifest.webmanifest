@@ -1,7 +1,7 @@
 {
-  "name": "CLARTAS — AI E-Commerce Content Factory",
+  "name": "CLARTAS — Commerce Content OS",
   "short_name": "CLARTAS",
-  "description": "AI photo editing, video generation, copywriting, and e-commerce automation for global sellers.",
+  "description": "AI photo editing, listing copy, video ads, and multi-marketplace export for global sellers.",
   "start_url": "/dashboard",
   "scope": "/",
   "display": "standalone",
@@ -31,7 +31,7 @@
     }
   ],
   "screenshots": [],
-  "prefer_related_applications": true,
+  "prefer_related_applications": false,
   "related_applications": [
     {
       "platform": "play",

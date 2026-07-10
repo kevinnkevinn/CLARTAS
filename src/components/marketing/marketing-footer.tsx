@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { Sparkles } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 
 export async function MarketingFooter() {
   const t = await getTranslations("common");
@@ -12,7 +13,15 @@ export async function MarketingFooter() {
           CLARTAS
         </div>
         <p className="text-xs text-muted-foreground">{t("tagline")}</p>
-        <p className="text-xs text-muted-foreground">© {year} CLARTAS</p>
+        <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
+          <Link href="/privacy" className="hover:text-foreground hover:underline">
+            Privacy
+          </Link>
+          <Link href="/terms" className="hover:text-foreground hover:underline">
+            Terms
+          </Link>
+          <span>© {year} CLARTAS</span>
+        </div>
       </div>
     </footer>
   );

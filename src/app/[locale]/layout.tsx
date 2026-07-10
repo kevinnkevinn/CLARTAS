@@ -8,13 +8,50 @@ import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://clartas.com";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(APP_URL),
   title: {
-    default: "CLARTAS — AI E-Commerce Content Factory",
+    default: "CLARTAS — Commerce Content OS",
     template: "%s · CLARTAS",
   },
   description:
-    "CLARTAS turns raw product photos into sales-ready content with AI photo editing, video generation, copywriting, and e-commerce automation.",
+    "CLARTAS is the Commerce Content OS for global sellers: AI photo editing, listing copy, video ads, compliance checks, and multi-marketplace export.",
+  applicationName: "CLARTAS",
+  keywords: [
+    "e-commerce",
+    "product photography",
+    "AI editor",
+    "Shopee",
+    "Tokopedia",
+    "Amazon",
+    "marketplace listing",
+    "MSME",
+  ],
+  authors: [{ name: "CLARTAS" }],
+  creator: "CLARTAS",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: APP_URL,
+    siteName: "CLARTAS",
+    title: "CLARTAS — Commerce Content OS",
+    description:
+      "From product photo to published listing — AI editing, copy, video, and multi-marketplace export for global sellers.",
+    images: [{ url: "/icons/icon-512.png", width: 512, height: 512, alt: "CLARTAS" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CLARTAS — Commerce Content OS",
+    description:
+      "AI-powered commerce content for marketplace sellers worldwide.",
+    images: ["/icons/icon-512.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,

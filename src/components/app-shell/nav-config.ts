@@ -16,6 +16,8 @@ import {
   Bot,
   Workflow,
   Rocket,
+  CreditCard,
+  Settings,
   type LucideIcon,
 } from "lucide-react";
 
@@ -37,6 +39,7 @@ export const NAV_ITEMS: NavItem[] = [
   { href: "/editor", labelKey: "editor", icon: Wand2, section: "primary" },
   { href: "/content", labelKey: "content", icon: PenLine, section: "primary" },
   { href: "/assets", labelKey: "assets", icon: Images, section: "primary" },
+  { href: "/billing", labelKey: "billing", icon: CreditCard, section: "primary" },
   { href: "/video-editor", labelKey: "videoEditor", icon: Clapperboard, section: "tools" },
   { href: "/photography", labelKey: "photography", icon: Camera, section: "tools" },
   { href: "/design", labelKey: "design", icon: Palette, section: "tools" },
@@ -50,6 +53,7 @@ export const NAV_ITEMS: NavItem[] = [
   { href: "/agents", labelKey: "agents", icon: Bot, section: "advanced", badge: "beta" },
   { href: "/automation", labelKey: "automation", icon: Workflow, section: "advanced" },
   { href: "/workspace", labelKey: "workspace", icon: Users, section: "advanced" },
+  { href: "/settings", labelKey: "settings", icon: Settings, section: "advanced" },
   { href: "/future", labelKey: "future", icon: Rocket, section: "advanced" },
 ];
 

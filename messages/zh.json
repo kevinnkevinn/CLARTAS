@@ -76,9 +76,18 @@
       "title": "一个平台，完整的内容工作流",
       "subtitle": "不再来回切换工具。上传一次，生成销售所需的一切。",
       "items": {
-        "speed": { "title": "为速度而生", "description": "几秒钟即可生成适用于电商平台的素材，而非数天。" },
-        "consistency": { "title": "默认符合品牌", "description": "品牌套件让每个输出都与您的品牌形象保持一致。" },
-        "global": { "title": "从第一天起即面向全球", "description": "四种语言、全球支付和全球税务处理。" }
+        "speed": {
+          "title": "为速度而生",
+          "description": "几秒钟即可生成适用于电商平台的素材，而非数天。"
+        },
+        "consistency": {
+          "title": "默认符合品牌",
+          "description": "品牌套件让每个输出都与您的品牌形象保持一致。"
+        },
+        "global": {
+          "title": "从第一天起即面向全球",
+          "description": "四种语言、全球支付和全球税务处理。"
+        }
       }
     },
     "photoEditor": {
@@ -182,7 +191,9 @@
       "generateStudio": "生成影棚照",
       "writeCopy": "撰写产品文案",
       "uploadAsset": "上传素材",
-      "billingQuick": "账单"
+      "billingQuick": "账单",
+      "listingIntelligence": "Listing Intelligence",
+      "featureHub": "功能中心"
     },
     "usage": {
       "assets": "素材",
@@ -213,14 +224,106 @@
     "creditCost": "费用：{count} 积分",
     "tools": "工具",
     "tool": {
-      "removeBackground": { "name": "背景去除", "description": "去除背景并获得透明 PNG。" },
-      "productStudio": { "name": "产品工作室", "description": "生成影棚级产品场景。" },
-      "objectCleanup": { "name": "杂物清除", "description": "从照片中移除不需要的物体。" },
-      "smartEnhancer": { "name": "智能增强", "description": "提升图片分辨率与画质。" },
-      "cropResize": { "name": "裁剪 / 调整尺寸", "description": "为电商平台和社交媒体调整尺寸和裁剪。" },
-      "videoSlideshow": { "name": "视频幻灯片", "description": "用图片制作短促销视频。" },
-      "voiceover": { "name": "配音", "description": "使用文字转语音生成配音。" },
-      "captionGenerator": { "name": "文案生成器", "description": "生成标题、描述和文案。" }
+      "removeBackground": {
+        "name": "背景去除",
+        "description": "去除背景并获得透明 PNG。"
+      },
+      "productStudio": {
+        "name": "产品工作室",
+        "description": "生成影棚级产品场景。"
+      },
+      "objectCleanup": {
+        "name": "杂物清除",
+        "description": "从照片中移除不需要的物体。"
+      },
+      "smartEnhancer": {
+        "name": "智能增强",
+        "description": "提升图片分辨率与画质。"
+      },
+      "cropResize": {
+        "name": "裁剪 / 调整尺寸",
+        "description": "为电商平台和社交媒体调整尺寸和裁剪。"
+      },
+      "videoSlideshow": {
+        "name": "视频幻灯片",
+        "description": "用图片制作短促销视频。"
+      },
+      "voiceover": {
+        "name": "配音",
+        "description": "使用文字转语音生成配音。"
+      },
+      "captionGenerator": {
+        "name": "文案生成器",
+        "description": "生成标题、描述和文案。"
+      },
+      "adjustments": {
+        "name": "调整",
+        "description": "亮度、对比度、自然饱和度、锐度、色相、曝光。"
+      },
+      "reflectionRemoval": {
+        "name": "去反光",
+        "description": "减少产品表面反光。"
+      },
+      "shadowGenerator": {
+        "name": "阴影生成",
+        "description": "添加真实产品阴影。"
+      },
+      "productRetouch": {
+        "name": "产品精修",
+        "description": "专业产品照片精修。"
+      },
+      "beautyEnhancement": {
+        "name": "美颜增强",
+        "description": "增强人像与美妆照片。"
+      },
+      "faceRestoration": {
+        "name": "面部修复",
+        "description": "修复并锐化面部。"
+      },
+      "noiseReduction": {
+        "name": "降噪",
+        "description": "降低图像噪点。"
+      },
+      "imageRepair": {
+        "name": "图像修复",
+        "description": "修复损坏或低质量图像。"
+      },
+      "colorCorrection": {
+        "name": "色彩校正",
+        "description": "自动色彩平衡与校正。"
+      },
+      "whiteBackground": {
+        "name": "白色背景",
+        "description": "纯白电商背景。"
+      },
+      "luxuryBackground": {
+        "name": "奢华背景",
+        "description": "高端深色奢华场景。"
+      },
+      "studioBackground": {
+        "name": "影棚背景",
+        "description": "干净影棚摄影效果。"
+      },
+      "marketplaceBackground": {
+        "name": "电商背景",
+        "description": "针对 Shopee/Tokopedia 优化。"
+      },
+      "lifestyleScene": {
+        "name": "生活方式摄影",
+        "description": "温馨生活方式产品场景。"
+      },
+      "outdoorScene": {
+        "name": "户外摄影",
+        "description": "自然户外产品场景。"
+      },
+      "customBackground": {
+        "name": "自定义 AI 背景",
+        "description": "根据提示词生成自定义场景。"
+      },
+      "batchVariations": {
+        "name": "批量变体",
+        "description": "生成多种产品照片变体。"
+      }
     },
     "fields": {
       "prompt": "提示词",
@@ -241,7 +344,54 @@
       "title": "图像调整",
       "brightness": "亮度",
       "contrast": "对比度",
-      "saturation": "饱和度"
+      "saturation": "饱和度",
+      "vibrance": "自然饱和度",
+      "sharpness": "锐度",
+      "hue": "色相",
+      "exposure": "曝光",
+      "rotate": "旋转 90°",
+      "flipH": "水平翻转",
+      "flipV": "垂直翻转",
+      "reset": "重置",
+      "presetFree": "自由",
+      "presetSquare": "1:1",
+      "presetTiktok": "9:16 TikTok",
+      "presetInstagram": "4:5 Instagram",
+      "presetYoutube": "16:9 YouTube",
+      "presetShopee": "Shopee 800×800",
+      "presetTokopedia": "Tokopedia 700×700",
+      "presetAmazon": "Amazon 2000×2000",
+      "presetMarketplace": "电商平台"
+    },
+    "category": {
+      "catBasic": "基础",
+      "catAi": "AI 编辑",
+      "catProduct": "产品",
+      "catVideo": "视频",
+      "catContent": "文案"
+    },
+    "copyType": {
+      "title": "标题",
+      "description": "描述",
+      "caption": "文案",
+      "keywords": "关键词",
+      "script": "视频脚本"
+    },
+    "brush": {
+      "title": "蒙版画笔",
+      "hint": "用白色涂抹要移除的区域。黑色 = 保留。",
+      "brushSize": "画笔大小",
+      "clear": "清除蒙版",
+      "applyMask": "应用蒙版"
+    },
+    "videoTools": {
+      "title": "视频工具",
+      "subtitle": "高级编辑将在后续版本接入。",
+      "cut": "剪切",
+      "merge": "合并",
+      "speed": "速度控制",
+      "subtitles": "自动字幕",
+      "motion": "运动跟踪"
     }
   },
   "aiTools": {
@@ -275,7 +425,20 @@
     "detailSubtitle": "素材详情和操作。",
     "type": "类型",
     "size": "大小",
-    "created": "创建时间"
+    "created": "创建时间",
+    "filterText": "Text",
+    "filterStatusAll": "All statuses",
+    "filterByTag": "Filter by tag...",
+    "gridView": "Grid view",
+    "listView": "List view",
+    "tags": "Tags",
+    "tagsPlaceholder": "product, sale, summer",
+    "versionHistory": "Version history",
+    "rename": "Rename",
+    "renameHint": "Enter a new filename.",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "pageOf": "Page {page} of {total}"
   },
   "brandKit": {
     "title": "品牌套件",
@@ -300,10 +463,22 @@
     "invoices": "发票",
     "noInvoices": "暂无发票。",
     "plans": {
-      "free": { "name": "免费", "description": "用于体验 CLARTAS。" },
-      "premium": { "name": "高级", "description": "适合成长中的卖家和创作者。" },
-      "enterprise": { "name": "企业", "description": "适合有定制需求的团队和代理机构。" },
-      "white-label": { "name": "白标", "description": "为代理机构提供定制品牌和转售模式。" }
+      "free": {
+        "name": "免费",
+        "description": "用于体验 CLARTAS。"
+      },
+      "premium": {
+        "name": "高级",
+        "description": "适合成长中的卖家和创作者。"
+      },
+      "enterprise": {
+        "name": "企业",
+        "description": "适合有定制需求的团队和代理机构。"
+      },
+      "white-label": {
+        "name": "白标",
+        "description": "为代理机构提供定制品牌和转售模式。"
+      }
     },
     "status": {
       "active": "有效",
@@ -311,7 +486,8 @@
       "past_due": "逾期",
       "canceled": "已取消",
       "free": "免费"
-    }
+    },
+    "contactSales": "Contact sales"
   },
   "settings": {
     "title": "设置",
@@ -336,7 +512,11 @@
     "memberEmail": "成员邮箱",
     "memberRole": "角色",
     "sendInvite": "发送邀请",
-    "workspaceName": "工作区名称"
+    "workspaceName": "工作区名称",
+    "liteMode": "Lite mode",
+    "liteModeHint": "Reduces visual effects and limits heavy processing for older or low-spec devices.",
+    "liteModeOn": "Lite on",
+    "liteModeOff": "Lite off"
   },
   "credits": {
     "balance": "积分余额",
@@ -370,7 +550,6 @@
     "totalRevenue": "总收入",
     "activeSubscriptions": "有效订阅",
     "workspaces": "工作区",
-    "assets": "素材",
     "searchPlaceholder": "搜索..."
   },
   "workspace": {
@@ -412,7 +591,13 @@
     "conversionRate": "转化率",
     "roi": "投资回报率",
     "revenue": "收入",
-    "notConnected": "连接您的店铺以查看此指标。"
+    "notConnected": "连接您的店铺以查看此指标。",
+    "engagementRate": "Engagement rate",
+    "grossRevenue": "Gross revenue",
+    "netProfit": "Net profit",
+    "campaignPerformance": "Campaign performance",
+    "storageUsage": "Storage used",
+    "totalTransactions": "Transactions"
   },
   "approvals": {
     "title": "审批",
@@ -427,15 +612,34 @@
     "noAssets": "请先上传素材再申请审核。",
     "approve": "通过",
     "reject": "拒绝",
-    "status": { "pending": "待处理", "approved": "已通过", "rejected": "已拒绝" }
+    "status": {
+      "pending": "待处理",
+      "approved": "已通过",
+      "rejected": "已拒绝"
+    }
   },
   "intelligence": {
     "title": "电商智能助手",
     "subtitle": "用于调研、客服和直播销售的 AI 助手。",
-    "marketResearch": { "title": "市场研究", "description": "发现趋势产品、竞品价格和机会评分。", "cta": "打开研究" },
-    "customerService": { "title": "AI 客服", "description": "覆盖 WhatsApp、Telegram、Messenger 和 Instagram 的全渠道聊天助手。", "cta": "配置渠道" },
-    "liveSelling": { "title": "直播销售助手", "description": "为直播生成讲解脚本和互动回复。", "cta": "开始会话" },
+    "marketResearch": {
+      "title": "市场研究",
+      "description": "发现趋势产品、竞品价格和机会评分。",
+      "cta": "打开研究"
+    },
+    "customerService": {
+      "title": "AI 客服",
+      "description": "覆盖 WhatsApp、Telegram、Messenger 和 Instagram 的全渠道聊天助手。",
+      "cta": "配置渠道"
+    },
+    "liveSelling": {
+      "title": "直播销售助手",
+      "description": "为直播生成讲解脚本和互动回复。",
+      "cta": "开始会话"
+    },
     "comingSoonNote": "基础已就绪 — 在下一阶段连接渠道和数据源。"
   },
-  "pricingPage": { "title": "价格", "subtitle": "选择适合您内容工厂的方案。" }
+  "pricingPage": {
+    "title": "价格",
+    "subtitle": "选择适合您内容工厂的方案。"
+  }
 }

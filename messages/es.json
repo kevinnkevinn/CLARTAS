@@ -76,9 +76,18 @@
       "title": "Una plataforma, todo el flujo de contenido",
       "subtitle": "Deja de cambiar de herramienta. Sube una vez y produce todo lo que necesitas para vender.",
       "items": {
-        "speed": { "title": "Hecho para la velocidad", "description": "Genera recursos listos para marketplace en segundos, no en días." },
-        "consistency": { "title": "Fiel a tu marca", "description": "Los kits de marca mantienen cada resultado coherente con tu identidad." },
-        "global": { "title": "Global desde el primer día", "description": "Cuatro idiomas, pagos globales y gestión de impuestos en todo el mundo." }
+        "speed": {
+          "title": "Hecho para la velocidad",
+          "description": "Genera recursos listos para marketplace en segundos, no en días."
+        },
+        "consistency": {
+          "title": "Fiel a tu marca",
+          "description": "Los kits de marca mantienen cada resultado coherente con tu identidad."
+        },
+        "global": {
+          "title": "Global desde el primer día",
+          "description": "Cuatro idiomas, pagos globales y gestión de impuestos en todo el mundo."
+        }
       }
     },
     "photoEditor": {
@@ -182,7 +191,9 @@
       "generateStudio": "Generar toma de estudio",
       "writeCopy": "Escribir texto de producto",
       "uploadAsset": "Subir recurso",
-      "billingQuick": "Facturación"
+      "billingQuick": "Facturación",
+      "listingIntelligence": "Listing Intelligence",
+      "featureHub": "Centro de funciones"
     },
     "usage": {
       "assets": "Recursos",
@@ -213,14 +224,106 @@
     "creditCost": "Costo: {count} créditos",
     "tools": "Herramientas",
     "tool": {
-      "removeBackground": { "name": "Eliminar fondo", "description": "Elimina el fondo y obtén un PNG transparente." },
-      "productStudio": { "name": "Estudio de producto", "description": "Genera una escena de producto con calidad de estudio." },
-      "objectCleanup": { "name": "Limpieza de objetos", "description": "Elimina objetos no deseados de tu foto." },
-      "smartEnhancer": { "name": "Mejorador inteligente", "description": "Aumenta la resolución y mejora la calidad de la imagen." },
-      "cropResize": { "name": "Recortar / Redimensionar", "description": "Redimensiona y recorta para marketplaces y redes sociales." },
-      "videoSlideshow": { "name": "Video presentación", "description": "Crea un video promocional corto a partir de imágenes." },
-      "voiceover": { "name": "Locución", "description": "Genera una locución con texto a voz." },
-      "captionGenerator": { "name": "Generador de textos", "description": "Genera títulos, descripciones y textos." }
+      "removeBackground": {
+        "name": "Eliminar fondo",
+        "description": "Elimina el fondo y obtén un PNG transparente."
+      },
+      "productStudio": {
+        "name": "Estudio de producto",
+        "description": "Genera una escena de producto con calidad de estudio."
+      },
+      "objectCleanup": {
+        "name": "Limpieza de objetos",
+        "description": "Elimina objetos no deseados de tu foto."
+      },
+      "smartEnhancer": {
+        "name": "Mejorador inteligente",
+        "description": "Aumenta la resolución y mejora la calidad de la imagen."
+      },
+      "cropResize": {
+        "name": "Recortar / Redimensionar",
+        "description": "Redimensiona y recorta para marketplaces y redes sociales."
+      },
+      "videoSlideshow": {
+        "name": "Video presentación",
+        "description": "Crea un video promocional corto a partir de imágenes."
+      },
+      "voiceover": {
+        "name": "Locución",
+        "description": "Genera una locución con texto a voz."
+      },
+      "captionGenerator": {
+        "name": "Generador de textos",
+        "description": "Genera títulos, descripciones y textos."
+      },
+      "adjustments": {
+        "name": "Ajustes",
+        "description": "Brillo, contraste, vibrance, nitidez, tono, exposición."
+      },
+      "reflectionRemoval": {
+        "name": "Eliminar reflejos",
+        "description": "Reduce reflejos en superficies del producto."
+      },
+      "shadowGenerator": {
+        "name": "Generador de sombras",
+        "description": "Añade sombra realista al producto."
+      },
+      "productRetouch": {
+        "name": "Retoque de producto",
+        "description": "Retoque profesional de fotos de producto."
+      },
+      "beautyEnhancement": {
+        "name": "Mejora de belleza",
+        "description": "Mejora retratos y fotos de belleza."
+      },
+      "faceRestoration": {
+        "name": "Restauración facial",
+        "description": "Restaura y enfoca rostros."
+      },
+      "noiseReduction": {
+        "name": "Reducción de ruido",
+        "description": "Reduce el ruido de la imagen."
+      },
+      "imageRepair": {
+        "name": "Reparación de imagen",
+        "description": "Repara imágenes dañadas o de baja calidad."
+      },
+      "colorCorrection": {
+        "name": "Corrección de color",
+        "description": "Balance y corrección de color automática."
+      },
+      "whiteBackground": {
+        "name": "Fondo blanco",
+        "description": "Fondo blanco puro para marketplace."
+      },
+      "luxuryBackground": {
+        "name": "Fondo de lujo",
+        "description": "Escena premium oscura de lujo."
+      },
+      "studioBackground": {
+        "name": "Fondo de estudio",
+        "description": "Aspecto limpio de fotografía de estudio."
+      },
+      "marketplaceBackground": {
+        "name": "Fondo marketplace",
+        "description": "Optimizado para Shopee/Tokopedia."
+      },
+      "lifestyleScene": {
+        "name": "Fotografía lifestyle",
+        "description": "Escena lifestyle cálida del producto."
+      },
+      "outdoorScene": {
+        "name": "Fotografía exterior",
+        "description": "Escena natural exterior del producto."
+      },
+      "customBackground": {
+        "name": "Fondo IA personalizado",
+        "description": "Escena personalizada desde un prompt."
+      },
+      "batchVariations": {
+        "name": "Variaciones por lote",
+        "description": "Genera muchas variaciones de fotos de producto."
+      }
     },
     "fields": {
       "prompt": "Indicación",
@@ -241,7 +344,54 @@
       "title": "Ajustes de imagen",
       "brightness": "Brillo",
       "contrast": "Contraste",
-      "saturation": "Saturación"
+      "saturation": "Saturación",
+      "vibrance": "Vibrance",
+      "sharpness": "Nitidez",
+      "hue": "Tono",
+      "exposure": "Exposición",
+      "rotate": "Rotar 90°",
+      "flipH": "Voltear H",
+      "flipV": "Voltear V",
+      "reset": "Restablecer",
+      "presetFree": "Libre",
+      "presetSquare": "1:1",
+      "presetTiktok": "9:16 TikTok",
+      "presetInstagram": "4:5 Instagram",
+      "presetYoutube": "16:9 YouTube",
+      "presetShopee": "Shopee 800×800",
+      "presetTokopedia": "Tokopedia 700×700",
+      "presetAmazon": "Amazon 2000×2000",
+      "presetMarketplace": "Marketplace"
+    },
+    "category": {
+      "catBasic": "Básico",
+      "catAi": "Edición IA",
+      "catProduct": "Producto",
+      "catVideo": "Video",
+      "catContent": "Contenido"
+    },
+    "copyType": {
+      "title": "Título",
+      "description": "Descripción",
+      "caption": "Texto",
+      "keywords": "Palabras clave",
+      "script": "Guion de video"
+    },
+    "brush": {
+      "title": "Pincel de máscara",
+      "hint": "Pinta de blanco las áreas a eliminar. Negro = conservar.",
+      "brushSize": "Tamaño del pincel",
+      "clear": "Borrar máscara",
+      "applyMask": "Aplicar máscara"
+    },
+    "videoTools": {
+      "title": "Herramientas de video",
+      "subtitle": "La edición avanzada se conectará en la próxima versión.",
+      "cut": "Cortar",
+      "merge": "Combinar",
+      "speed": "Control de velocidad",
+      "subtitles": "Subtítulos automáticos",
+      "motion": "Seguimiento de movimiento"
     }
   },
   "aiTools": {
@@ -275,7 +425,20 @@
     "detailSubtitle": "Detalles y acciones del activo.",
     "type": "Tipo",
     "size": "Tamaño",
-    "created": "Creado"
+    "created": "Creado",
+    "filterText": "Text",
+    "filterStatusAll": "All statuses",
+    "filterByTag": "Filter by tag...",
+    "gridView": "Grid view",
+    "listView": "List view",
+    "tags": "Tags",
+    "tagsPlaceholder": "product, sale, summer",
+    "versionHistory": "Version history",
+    "rename": "Rename",
+    "renameHint": "Enter a new filename.",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "pageOf": "Page {page} of {total}"
   },
   "brandKit": {
     "title": "Kit de marca",
@@ -300,10 +463,22 @@
     "invoices": "Facturas",
     "noInvoices": "Aún no hay facturas.",
     "plans": {
-      "free": { "name": "Gratis", "description": "Para probar CLARTAS." },
-      "premium": { "name": "Premium", "description": "Para vendedores y creadores en crecimiento." },
-      "enterprise": { "name": "Enterprise", "description": "Para equipos y agencias con necesidades personalizadas." },
-      "white-label": { "name": "Marca blanca", "description": "Marca personalizada y modelo de reventa para agencias." }
+      "free": {
+        "name": "Gratis",
+        "description": "Para probar CLARTAS."
+      },
+      "premium": {
+        "name": "Premium",
+        "description": "Para vendedores y creadores en crecimiento."
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "description": "Para equipos y agencias con necesidades personalizadas."
+      },
+      "white-label": {
+        "name": "Marca blanca",
+        "description": "Marca personalizada y modelo de reventa para agencias."
+      }
     },
     "status": {
       "active": "Activo",
@@ -311,7 +486,8 @@
       "past_due": "Vencido",
       "canceled": "Cancelado",
       "free": "Gratis"
-    }
+    },
+    "contactSales": "Contact sales"
   },
   "settings": {
     "title": "Ajustes",
@@ -336,7 +512,11 @@
     "memberEmail": "Correo del miembro",
     "memberRole": "Rol",
     "sendInvite": "Enviar invitación",
-    "workspaceName": "Nombre del espacio"
+    "workspaceName": "Nombre del espacio",
+    "liteMode": "Lite mode",
+    "liteModeHint": "Reduces visual effects and limits heavy processing for older or low-spec devices.",
+    "liteModeOn": "Lite on",
+    "liteModeOff": "Lite off"
   },
   "credits": {
     "balance": "Saldo de créditos",
@@ -353,7 +533,7 @@
     "title": "Panel de administración",
     "subtitle": "Operaciones y supervisión de la plataforma.",
     "users": "Usuarios",
-    "assets": "Recursos",
+    "assets": "Activos",
     "jobs": "Trabajos IA",
     "transactions": "Transacciones",
     "subscriptions": "Suscripciones",
@@ -370,7 +550,6 @@
     "totalRevenue": "Ingresos totales",
     "activeSubscriptions": "Suscripciones activas",
     "workspaces": "Espacios de trabajo",
-    "assets": "Activos",
     "searchPlaceholder": "Buscar..."
   },
   "workspace": {
@@ -412,7 +591,13 @@
     "conversionRate": "Tasa de conversión",
     "roi": "ROI",
     "revenue": "Ingresos",
-    "notConnected": "Conecta tu tienda para ver esta métrica."
+    "notConnected": "Conecta tu tienda para ver esta métrica.",
+    "engagementRate": "Engagement rate",
+    "grossRevenue": "Gross revenue",
+    "netProfit": "Net profit",
+    "campaignPerformance": "Campaign performance",
+    "storageUsage": "Storage used",
+    "totalTransactions": "Transactions"
   },
   "approvals": {
     "title": "Aprobaciones",
@@ -427,15 +612,34 @@
     "noAssets": "Sube un recurso primero para solicitar aprobación.",
     "approve": "Aprobar",
     "reject": "Rechazar",
-    "status": { "pending": "Pendiente", "approved": "Aprobado", "rejected": "Rechazado" }
+    "status": {
+      "pending": "Pendiente",
+      "approved": "Aprobado",
+      "rejected": "Rechazado"
+    }
   },
   "intelligence": {
     "title": "Inteligencia E-Commerce",
     "subtitle": "Asistentes IA para investigación, atención al cliente y venta en vivo.",
-    "marketResearch": { "title": "Investigación de mercado", "description": "Descubre productos en tendencia, precios de competidores y puntuaciones de oportunidad.", "cta": "Abrir investigación" },
-    "customerService": { "title": "Atención al cliente IA", "description": "Asistente omnicanal para WhatsApp, Telegram, Messenger e Instagram.", "cta": "Configurar canales" },
-    "liveSelling": { "title": "Asistente de venta en vivo", "description": "Genera guiones de presentación y respuestas interactivas para transmisiones en vivo.", "cta": "Iniciar sesión" },
+    "marketResearch": {
+      "title": "Investigación de mercado",
+      "description": "Descubre productos en tendencia, precios de competidores y puntuaciones de oportunidad.",
+      "cta": "Abrir investigación"
+    },
+    "customerService": {
+      "title": "Atención al cliente IA",
+      "description": "Asistente omnicanal para WhatsApp, Telegram, Messenger e Instagram.",
+      "cta": "Configurar canales"
+    },
+    "liveSelling": {
+      "title": "Asistente de venta en vivo",
+      "description": "Genera guiones de presentación y respuestas interactivas para transmisiones en vivo.",
+      "cta": "Iniciar sesión"
+    },
     "comingSoonNote": "Base lista — conecta canales y fuentes de datos en la siguiente fase de integración."
   },
-  "pricingPage": { "title": "Precios", "subtitle": "Elige el plan que se adapte a tu fábrica de contenido." }
+  "pricingPage": {
+    "title": "Precios",
+    "subtitle": "Elige el plan que se adapte a tu fábrica de contenido."
+  }
 }
