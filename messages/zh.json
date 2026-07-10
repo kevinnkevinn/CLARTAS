@@ -51,7 +51,11 @@
     "ecommerce": "电商助手",
     "agents": "AI 智能体",
     "automation": "自动化",
-    "future": "未来科技"
+    "future": "未来科技",
+    "listingIntelligence": "Listing Intelligence",
+    "navSectionPrimary": "销售",
+    "navSectionTools": "工具",
+    "navSectionAdvanced": "高级"
   },
   "demo": {
     "banner": "演示模式已开启 — 无需登录。上传照片/视频并测试所有功能。积分无限。"

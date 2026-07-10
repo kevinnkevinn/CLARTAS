@@ -10,7 +10,12 @@ const imageInput = z.object({
 export const removeBackgroundSchema = imageInput;
 
 export const productStudioSchema = imageInput.extend({
-  prompt: z.string().min(3).max(1000),
+  prompt: z
+    .string()
+    .min(3)
+    .max(1000)
+    .optional()
+    .default("Professional product studio photography, clean lighting, commercial quality"),
   scene: z.string().max(100).optional(),
 });
 
@@ -31,12 +36,28 @@ export const generateCopySchema = z.object({
   tone: z.string().max(50).optional(),
   brandVoice: z.string().max(500).optional(),
   language: z.string().max(10).optional().default("en"),
-  type: z.enum(["title", "description", "caption", "script", "keywords"]).optional().default("description"),
+  type: z
+    .enum([
+      "title",
+      "description",
+      "caption",
+      "script",
+      "keywords",
+      "seo",
+      "facebook_ads",
+      "google_ads",
+      "tiktok_ads",
+      "instagram_ads",
+      "hashtag",
+      "cta",
+    ])
+    .optional()
+    .default("description"),
 });
 
 export const videoSlideshowSchema = z.object({
   imageUrls: z.array(z.string().url()).min(1).max(20),
-  aspectRatio: z.enum(["9:16", "1:1", "16:9"]).optional().default("9:16"),
+  aspectRatio: z.enum(["9:16", "1:1", "16:9", "4:5"]).optional().default("9:16"),
   music: z.string().max(100).optional(),
 });
 

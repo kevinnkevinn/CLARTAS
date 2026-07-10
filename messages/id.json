@@ -1,7 +1,7 @@
 {
   "common": {
     "appName": "CLARTAS",
-    "tagline": "Pabrik konten e-commerce bertenaga AI",
+    "tagline": "Commerce Content OS untuk penjual global",
     "loading": "Memuat...",
     "save": "Simpan",
     "cancel": "Batal",
@@ -51,7 +51,11 @@
     "ecommerce": "Asisten E-Commerce",
     "agents": "Agen AI",
     "automation": "Otomasi",
-    "future": "Teknologi Masa Depan"
+    "future": "Teknologi Masa Depan",
+    "listingIntelligence": "Listing Intelligence",
+    "navSectionPrimary": "Jual",
+    "navSectionTools": "Alat",
+    "navSectionAdvanced": "Lanjutan"
   },
   "demo": {
     "banner": "Mode demo aktif — tanpa login. Upload foto/video dan uji semua fitur. Kredit unlimited."
@@ -62,9 +66,9 @@
   },
   "landing": {
     "hero": {
-      "badge": "Pabrik Konten E-Commerce AI",
-      "title": "Ubah foto produk mentah menjadi konten siap jual",
-      "subtitle": "CLARTAS menggabungkan editing foto AI, pembuatan video, copywriting, manajemen brand, dan otomasi e-commerce dalam satu platform untuk penjual global.",
+      "badge": "Commerce Content OS",
+      "title": "Dari foto produk ke listing siap publish — dalam hitungan menit",
+      "subtitle": "CLARTAS adalah Commerce Content OS all-in-one: editing foto AI, copy listing, video iklan, pemeriksaan kepatuhan, dan ekspor multi-marketplace untuk penjual global.",
       "ctaPrimary": "Mulai gratis",
       "ctaSecondary": "Lihat harga"
     },
@@ -178,7 +182,8 @@
       "generateStudio": "Buat foto studio",
       "writeCopy": "Tulis teks produk",
       "uploadAsset": "Unggah aset",
-      "billingQuick": "Tagihan"
+      "billingQuick": "Tagihan",
+      "listingIntelligence": "Listing Intelligence"
     },
     "usage": {
       "assets": "Aset",
@@ -298,6 +303,9 @@
       "presetTiktok": "9:16 TikTok",
       "presetInstagram": "4:5 Instagram",
       "presetYoutube": "16:9 YouTube",
+      "presetShopee": "Shopee 800×800",
+      "presetTokopedia": "Tokopedia 700×700",
+      "presetAmazon": "Amazon 2000×2000",
       "presetMarketplace": "Marketplace"
     }
   },

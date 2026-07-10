@@ -51,7 +51,11 @@
     "ecommerce": "Asistente de e-commerce",
     "agents": "Agentes IA",
     "automation": "Automatización",
-    "future": "Tecnología futura"
+    "future": "Tecnología futura",
+    "listingIntelligence": "Listing Intelligence",
+    "navSectionPrimary": "Vender",
+    "navSectionTools": "Herramientas",
+    "navSectionAdvanced": "Avanzado"
   },
   "demo": {
     "banner": "Modo demo activo — sin inicio de sesión. Sube fotos/videos y prueba todas las funciones. Créditos ilimitados."

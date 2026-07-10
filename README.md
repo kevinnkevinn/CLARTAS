@@ -1,8 +1,8 @@
 # CLARTAS
 
-**The AI-powered e-commerce content factory.**
+**The Commerce Content OS for global sellers.**
 
-CLARTAS turns raw product photos and videos into sales-ready content: AI photo
+CLARTAS turns raw product photos and videos into sales-ready listings: AI photo
 editing, video generation, copywriting, brand management, digital asset
 management, and e-commerce automation — in one platform, for global sellers.
 
@@ -239,10 +239,9 @@ and `.env.local` is git-ignored.
 
 ## 16. Known limitations
 
-- Crop/Resize is a client-side placeholder (no AI credit cost).
 - Intelligence modules (market research, omnichannel CS, live selling) have UI foundations; external channel APIs must be connected in production.
+- Marketplace publish OAuth (Shopee/Tokopedia direct upload) is planned; multi-marketplace export ZIP is available via Listing Intelligence.
 - Konsta UI is optional for mobile polish — Capacitor WebView uses the responsive Tailwind layout by default.
-- Tests cover pure logic (validation, credits, webhook signing); add integration tests against a Supabase test project for full coverage.
 
 ## 17. Next recommended improvements
 

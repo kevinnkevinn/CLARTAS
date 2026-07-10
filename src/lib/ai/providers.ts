@@ -1,10 +1,12 @@
 import { getFalKey, getReplicateToken, isAiMockMode } from "@/lib/env";
 import type { AIAction } from "@/lib/constants";
+import { buildCopyPrompt } from "@/lib/ai/copy-prompt";
+import { normalizeAIOutput } from "@/lib/ai/normalize-output";
+import { generateCopyText } from "@/lib/ai/fallback-copy";
 
 /**
- * Thin AI provider layer. All calls happen SERVER-SIDE only; keys never reach
- * the client. When no provider key is configured we run in MOCK mode and return
- * clearly-labeled simulated output instead of failing — useful for local dev.
+ * Lapisan provider AI. Semua panggilan SERVER-SIDE; kunci tidak pernah ke klien.
+ * Mode mock aktif jika tidak ada kunci provider.
  */
 
 export interface AIResult {
@@ -13,7 +15,7 @@ export interface AIResult {
 }
 
 const FAL_ENDPOINTS: Partial<Record<AIAction, string>> = {
-  "remove-background": "fal-ai/birefnet/bg-removal",
+  "remove-background": "fal-ai/birefnet",
   "product-studio": "fal-ai/flux/dev",
   "object-cleanup": "fal-ai/flux/dev/image-to-image",
   "video-slideshow": "fal-ai/ltx-video",
@@ -21,10 +23,10 @@ const FAL_ENDPOINTS: Partial<Record<AIAction, string>> = {
 
 const REPLICATE_MODELS: Partial<Record<AIAction, string>> = {
   "enhance-image": "nightmareai/real-esrgan",
+  "generate-copy": "meta/meta-llama-3-8b-instruct",
   "text-to-speech": "jaaari/kokoro-82m",
 };
 
-/** Call fal.ai REST queue API with the server key. */
 async function callFal(endpoint: string, input: Record<string, unknown>): Promise<unknown> {
   const res = await fetch(`https://fal.run/${endpoint}`, {
     method: "POST",
@@ -35,12 +37,12 @@ async function callFal(endpoint: string, input: Record<string, unknown>): Promis
     body: JSON.stringify(input),
   });
   if (!res.ok) {
-    throw new Error(`fal.ai request failed with status ${res.status}`);
+    const err = await res.text().catch(() => "");
+    throw new Error(`fal.ai gagal (${res.status}): ${err.slice(0, 200)}`);
   }
   return res.json();
 }
 
-/** Call Replicate's synchronous-ish predictions API with the server token. */
 async function callReplicate(
   model: string,
   input: Record<string, unknown>,
@@ -55,12 +57,81 @@ async function callReplicate(
     body: JSON.stringify({ input }),
   });
   if (!res.ok) {
-    throw new Error(`Replicate request failed with status ${res.status}`);
+    const err = await res.text().catch(() => "");
+    throw new Error(`Replicate gagal (${res.status}): ${err.slice(0, 200)}`);
   }
   return res.json();
 }
 
-/** Build a deterministic mock output so the UI flow can be tested end-to-end. */
+function buildFalInput(action: AIAction, input: Record<string, unknown>): Record<string, unknown> {
+  const imageUrl = input.imageUrl as string | undefined;
+  switch (action) {
+    case "remove-background":
+      return { image_url: imageUrl };
+    case "product-studio":
+      return {
+        image_url: imageUrl,
+        prompt: input.prompt ?? "Professional product studio photography, clean white background, commercial lighting",
+        num_images: 1,
+      };
+    case "object-cleanup":
+      return {
+        image_url: imageUrl,
+        prompt: input.prompt ?? "Remove unwanted objects, clean product photo, professional e-commerce quality",
+        strength: 0.85,
+      };
+    case "video-slideshow": {
+      const urls = (input.imageUrls as string[]) ?? (imageUrl ? [imageUrl] : []);
+      return {
+        prompt: "Smooth product showcase video, professional e-commerce advertising",
+        image_url: urls[0],
+        aspect_ratio: mapAspectRatio(input.aspectRatio as string),
+      };
+    }
+    default:
+      return input;
+  }
+}
+
+function buildReplicateInput(action: AIAction, input: Record<string, unknown>): Record<string, unknown> {
+  switch (action) {
+    case "enhance-image":
+      return {
+        image: input.imageUrl,
+        scale: input.scale ?? 2,
+        face_enhance: false,
+      };
+    case "generate-copy":
+      return {
+        prompt: buildCopyPrompt({
+          productName: String(input.productName ?? "Product"),
+          details: input.details as string | undefined,
+          keywords: input.keywords as string | undefined,
+          marketplace: input.marketplace as string | undefined,
+          tone: input.tone as string | undefined,
+          brandVoice: input.brandVoice as string | undefined,
+          language: input.language as string | undefined,
+          type: input.type as string | undefined,
+        }),
+        max_tokens: 1024,
+        temperature: 0.7,
+      };
+    case "text-to-speech":
+      return {
+        text: input.text,
+        voice: input.voice ?? "af_bella",
+      };
+    default:
+      return input;
+  }
+}
+
+function mapAspectRatio(ratio?: string): string {
+  if (ratio === "1:1") return "1:1";
+  if (ratio === "16:9") return "16:9";
+  return "9:16";
+}
+
 function mockOutput(action: AIAction, input: Record<string, unknown>): AIResult {
   const base = { mock: true as const };
   switch (action) {
@@ -68,28 +139,26 @@ function mockOutput(action: AIAction, input: Record<string, unknown>): AIResult 
       return {
         ...base,
         output: {
-          text: `[MOCK] Sample ${String(input.type ?? "description")} for "${String(
-            input.productName ?? "your product",
-          )}". Configure REPLICATE_API_TOKEN for real AI copy.`,
+          text: generateCopyText(input),
+          note: "Mode mock — konfigurasi REPLICATE_API_TOKEN untuk AI copy nyata.",
         },
       };
     case "text-to-speech":
-      return { ...base, output: { audioUrl: null, note: "Mock TTS — no audio generated." } };
+      return { ...base, output: { audioUrl: null, note: "Mock TTS — konfigurasi REPLICATE_API_TOKEN." } };
     case "video-slideshow":
-      return { ...base, output: { videoUrl: null, note: "Mock video — configure FAL_KEY." } };
+      return { ...base, output: { videoUrl: null, note: "Mock video — konfigurasi FAL_KEY." } };
     default:
-      // Image actions echo the input image so the editor preview still works.
       return {
         ...base,
         output: {
           imageUrl: input.imageUrl ?? null,
-          note: "Mock result — configure FAL_KEY / REPLICATE_API_TOKEN for real processing.",
+          note: "Hasil mock — konfigurasi FAL_KEY / REPLICATE_API_TOKEN untuk pemrosesan nyata.",
         },
       };
   }
 }
 
-/** Run an AI action, dispatching to the right provider or mock mode. */
+/** Jalankan aksi AI, dispatch ke provider atau mode mock. */
 export async function runAIAction(
   action: AIAction,
   provider: "fal" | "replicate",
@@ -102,12 +171,12 @@ export async function runAIAction(
   if (provider === "fal") {
     const endpoint = FAL_ENDPOINTS[action];
     if (!endpoint || !getFalKey()) return mockOutput(action, input);
-    const raw = await callFal(endpoint, input);
-    return { mock: false, output: { raw } };
+    const raw = await callFal(endpoint, buildFalInput(action, input));
+    return { mock: false, output: normalizeAIOutput(action, raw, input) };
   }
 
   const model = REPLICATE_MODELS[action];
   if (!model || !getReplicateToken()) return mockOutput(action, input);
-  const raw = await callReplicate(model, input);
-  return { mock: false, output: { raw } };
+  const raw = await callReplicate(model, buildReplicateInput(action, input));
+  return { mock: false, output: normalizeAIOutput(action, raw, input) };
 }

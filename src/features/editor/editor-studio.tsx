@@ -129,7 +129,7 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
           imageUrl: inputUrl ?? undefined,
           assetId: assetId ?? undefined,
           maskUrl: maskUrl ?? undefined,
-          prompt: fields.prompt || undefined,
+          prompt: fields.prompt || "Remove unwanted objects, clean product photo",
         };
       case "text-to-speech":
         return { text: fields.text ?? "", voice: fields.voice || "default" };
@@ -142,10 +142,14 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
         let scene = fields.scene || undefined;
         if (tool.id === "lifestyle-scene") scene = "lifestyle";
         if (tool.id === "outdoor-scene") scene = "outdoor";
+        const defaultPrompt =
+          tool.action === "product-studio"
+            ? `Professional ${scene ?? "studio"} product photography, clean commercial lighting, e-commerce quality`
+            : undefined;
         return {
           imageUrl: inputUrl ?? undefined,
           assetId: assetId ?? undefined,
-          prompt: fields.prompt || scene || undefined,
+          prompt: fields.prompt || defaultPrompt || scene || "Professional product photo",
           scene,
           scale: Number(fields.scale) || 2,
           count: Number(fields.count) || 12,
