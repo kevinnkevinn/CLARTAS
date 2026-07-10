@@ -38,25 +38,34 @@ export function UserMenu({ email, fullName }: { email: string; fullName?: string
               </div>
             </div>
             <div className="my-1 h-px bg-border" />
-            {env.demoMode ? (
-              <Link
-                href="/settings"
-                onClick={() => setOpen(false)}
-                className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-accent"
-              >
-                <Settings className="size-4" />
-                {t("settings")}
-              </Link>
-            ) : (
-              <button
-                disabled={isPending}
-                onClick={() => startTransition(() => signOutAction(locale))}
-                className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-destructive hover:bg-destructive/10"
-              >
-                <LogOut className="size-4" />
-                {t("signOut")}
-              </button>
-            )}
+            <Link
+              href="/settings"
+              onClick={() => setOpen(false)}
+              className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-accent"
+            >
+              <Settings className="size-4" />
+              {t("settings")}
+            </Link>
+            <Link
+              href="/billing"
+              onClick={() => setOpen(false)}
+              className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-accent"
+            >
+              {t("billing")}
+            </Link>
+            {!env.demoMode ? (
+              <>
+                <div className="my-1 h-px bg-border" />
+                <button
+                  disabled={isPending}
+                  onClick={() => startTransition(() => signOutAction(locale))}
+                  className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-destructive hover:bg-destructive/10"
+                >
+                  <LogOut className="size-4" />
+                  {t("signOut")}
+                </button>
+              </>
+            ) : null}
           </div>
         </>
       ) : null}

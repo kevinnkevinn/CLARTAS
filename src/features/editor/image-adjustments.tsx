@@ -42,10 +42,12 @@ interface ImageAdjustmentsProps {
 const PRESETS = [
   { id: "free", labelKey: "presetFree" },
   { id: "1:1", labelKey: "presetSquare" },
+  { id: "shopee", labelKey: "presetShopee" },
+  { id: "tokopedia", labelKey: "presetTokopedia" },
+  { id: "amazon", labelKey: "presetAmazon" },
   { id: "9:16", labelKey: "presetTiktok" },
   { id: "4:5", labelKey: "presetInstagram" },
   { id: "16:9", labelKey: "presetYoutube" },
-  { id: "1200x628", labelKey: "presetMarketplace" },
 ] as const;
 
 export function ImageAdjustments({

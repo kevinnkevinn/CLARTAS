@@ -11,6 +11,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/states/empty-state";
 import { formatDate } from "@/lib/utils";
+import { PersonaBanner } from "@/features/persona/persona-banner";
+import { QuickStartPanel } from "@/features/home/quick-start-panel";
+import { JobHub } from "@/features/home/job-hub";
 
 export default async function DashboardPage({
   params,
@@ -37,6 +40,7 @@ export default async function DashboardPage({
   const name = user.profile?.full_name?.split(" ")[0];
 
   const quickActions = [
+    { href: "/listing-intelligence", labelKey: "listingIntelligence", icon: Sparkles },
     { href: "/editor?tool=remove-background", labelKey: "removeBackground", icon: Wand2 },
     { href: "/editor?tool=product-studio", labelKey: "generateStudio", icon: Sparkles },
     { href: "/editor?tool=caption-generator", labelKey: "writeCopy", icon: PenLine },
@@ -71,7 +75,9 @@ export default async function DashboardPage({
         </div>
       ) : null}
 
-      {/* Stats */}
+      <PersonaBanner />
+      <QuickStartPanel />
+      <JobHub />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex-row items-center justify-between space-y-0 pb-2">

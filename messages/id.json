@@ -1,7 +1,7 @@
 {
   "common": {
     "appName": "CLARTAS",
-    "tagline": "Pabrik konten e-commerce bertenaga AI",
+    "tagline": "Commerce Content OS untuk penjual global",
     "loading": "Memuat...",
     "save": "Simpan",
     "cancel": "Batal",
@@ -51,7 +51,11 @@
     "ecommerce": "Asisten E-Commerce",
     "agents": "Agen AI",
     "automation": "Otomasi",
-    "future": "Teknologi Masa Depan"
+    "future": "Teknologi Masa Depan",
+    "listingIntelligence": "Listing Intelligence",
+    "navSectionPrimary": "Jual",
+    "navSectionTools": "Alat",
+    "navSectionAdvanced": "Lanjutan"
   },
   "demo": {
     "banner": "Mode demo aktif — tanpa login. Upload foto/video dan uji semua fitur. Kredit unlimited."
@@ -62,9 +66,9 @@
   },
   "landing": {
     "hero": {
-      "badge": "Pabrik Konten E-Commerce AI",
-      "title": "Ubah foto produk mentah menjadi konten siap jual",
-      "subtitle": "CLARTAS menggabungkan editing foto AI, pembuatan video, copywriting, manajemen brand, dan otomasi e-commerce dalam satu platform untuk penjual global.",
+      "badge": "Commerce Content OS",
+      "title": "Dari foto produk ke listing siap publish — dalam hitungan menit",
+      "subtitle": "CLARTAS adalah Commerce Content OS all-in-one: editing foto AI, copy listing, video iklan, pemeriksaan kepatuhan, dan ekspor multi-marketplace untuk penjual global.",
       "ctaPrimary": "Mulai gratis",
       "ctaSecondary": "Lihat harga"
     },
@@ -72,9 +76,18 @@
       "title": "Satu platform, seluruh alur kerja konten",
       "subtitle": "Berhenti berpindah-pindah alat. Unggah sekali, hasilkan semua yang Anda butuhkan untuk berjualan.",
       "items": {
-        "speed": { "title": "Dirancang untuk kecepatan", "description": "Buat aset siap marketplace dalam hitungan detik, bukan hari." },
-        "consistency": { "title": "Selalu sesuai brand", "description": "Brand kit menjaga setiap output konsisten dengan identitas Anda." },
-        "global": { "title": "Global sejak awal", "description": "Empat bahasa, pembayaran global, dan penanganan pajak dunia." }
+        "speed": {
+          "title": "Dirancang untuk kecepatan",
+          "description": "Buat aset siap marketplace dalam hitungan detik, bukan hari."
+        },
+        "consistency": {
+          "title": "Selalu sesuai brand",
+          "description": "Brand kit menjaga setiap output konsisten dengan identitas Anda."
+        },
+        "global": {
+          "title": "Global sejak awal",
+          "description": "Empat bahasa, pembayaran global, dan penanganan pajak dunia."
+        }
       }
     },
     "photoEditor": {
@@ -178,7 +191,9 @@
       "generateStudio": "Buat foto studio",
       "writeCopy": "Tulis teks produk",
       "uploadAsset": "Unggah aset",
-      "billingQuick": "Tagihan"
+      "billingQuick": "Tagihan",
+      "listingIntelligence": "Listing Intelligence",
+      "featureHub": "Buka Pusat Fitur"
     },
     "usage": {
       "assets": "Aset",
@@ -216,31 +231,106 @@
       "catContent": "Konten"
     },
     "tool": {
-      "adjustments": { "name": "Penyesuaian", "description": "Kecerahan, kontras, vibrance, ketajaman, hue, exposure." },
-      "removeBackground": { "name": "Hapus Latar Belakang", "description": "Hapus latar belakang dan dapatkan PNG transparan." },
-      "productStudio": { "name": "Product Studio", "description": "Buat scene produk berkualitas studio." },
-      "objectCleanup": { "name": "Bersihkan Objek", "description": "Hapus objek yang tidak diinginkan dari foto Anda." },
-      "reflectionRemoval": { "name": "Hapus Refleksi", "description": "Kurangi pantulan pada permukaan produk." },
-      "shadowGenerator": { "name": "Generator Bayangan", "description": "Tambahkan bayangan produk yang realistis." },
-      "productRetouch": { "name": "Retouch Produk", "description": "Retouch foto produk profesional." },
-      "beautyEnhancement": { "name": "Beauty Enhancement", "description": "Perbaiki foto portrait dan beauty." },
-      "faceRestoration": { "name": "Restorasi Wajah", "description": "Pulihkan dan pertajam wajah." },
-      "smartEnhancer": { "name": "Smart Enhancer / Upscale", "description": "Tingkatkan resolusi dan kualitas gambar." },
-      "noiseReduction": { "name": "Reduksi Noise", "description": "Kurangi noise pada gambar." },
-      "imageRepair": { "name": "Perbaikan Gambar", "description": "Perbaiki gambar rusak atau berkualitas rendah." },
-      "colorCorrection": { "name": "Koreksi Warna", "description": "Keseimbangan dan koreksi warna otomatis." },
-      "whiteBackground": { "name": "Latar Putih", "description": "Latar belakang putih untuk marketplace." },
-      "luxuryBackground": { "name": "Latar Luxury", "description": "Scene premium gelap mewah." },
-      "studioBackground": { "name": "Latar Studio", "description": "Tampilan fotografi studio bersih." },
-      "marketplaceBackground": { "name": "Latar Marketplace", "description": "Dioptimalkan untuk Shopee/Tokopedia." },
-      "lifestyleScene": { "name": "Fotografi Lifestyle", "description": "Scene produk lifestyle hangat." },
-      "outdoorScene": { "name": "Fotografi Outdoor", "description": "Scene produk alam terbuka." },
-      "customBackground": { "name": "Latar AI Kustom", "description": "Scene kustom dari prompt." },
-      "batchVariations": { "name": "Variasi Massal", "description": "Buat banyak variasi foto produk." },
-      "cropResize": { "name": "Crop / Resize", "description": "Ubah ukuran dan potong untuk marketplace dan media sosial." },
-      "videoSlideshow": { "name": "Video Slideshow", "description": "Buat video promosi pendek dari gambar." },
-      "voiceover": { "name": "Voiceover", "description": "Buat voiceover dengan text-to-speech." },
-      "captionGenerator": { "name": "Generator Caption", "description": "Buat judul, deskripsi, dan caption." }
+      "adjustments": {
+        "name": "Penyesuaian",
+        "description": "Kecerahan, kontras, vibrance, ketajaman, hue, exposure."
+      },
+      "removeBackground": {
+        "name": "Hapus Latar Belakang",
+        "description": "Hapus latar belakang dan dapatkan PNG transparan."
+      },
+      "productStudio": {
+        "name": "Product Studio",
+        "description": "Buat scene produk berkualitas studio."
+      },
+      "objectCleanup": {
+        "name": "Bersihkan Objek",
+        "description": "Hapus objek yang tidak diinginkan dari foto Anda."
+      },
+      "reflectionRemoval": {
+        "name": "Hapus Refleksi",
+        "description": "Kurangi pantulan pada permukaan produk."
+      },
+      "shadowGenerator": {
+        "name": "Generator Bayangan",
+        "description": "Tambahkan bayangan produk yang realistis."
+      },
+      "productRetouch": {
+        "name": "Retouch Produk",
+        "description": "Retouch foto produk profesional."
+      },
+      "beautyEnhancement": {
+        "name": "Beauty Enhancement",
+        "description": "Perbaiki foto portrait dan beauty."
+      },
+      "faceRestoration": {
+        "name": "Restorasi Wajah",
+        "description": "Pulihkan dan pertajam wajah."
+      },
+      "smartEnhancer": {
+        "name": "Smart Enhancer / Upscale",
+        "description": "Tingkatkan resolusi dan kualitas gambar."
+      },
+      "noiseReduction": {
+        "name": "Reduksi Noise",
+        "description": "Kurangi noise pada gambar."
+      },
+      "imageRepair": {
+        "name": "Perbaikan Gambar",
+        "description": "Perbaiki gambar rusak atau berkualitas rendah."
+      },
+      "colorCorrection": {
+        "name": "Koreksi Warna",
+        "description": "Keseimbangan dan koreksi warna otomatis."
+      },
+      "whiteBackground": {
+        "name": "Latar Putih",
+        "description": "Latar belakang putih untuk marketplace."
+      },
+      "luxuryBackground": {
+        "name": "Latar Luxury",
+        "description": "Scene premium gelap mewah."
+      },
+      "studioBackground": {
+        "name": "Latar Studio",
+        "description": "Tampilan fotografi studio bersih."
+      },
+      "marketplaceBackground": {
+        "name": "Latar Marketplace",
+        "description": "Dioptimalkan untuk Shopee/Tokopedia."
+      },
+      "lifestyleScene": {
+        "name": "Fotografi Lifestyle",
+        "description": "Scene produk lifestyle hangat."
+      },
+      "outdoorScene": {
+        "name": "Fotografi Outdoor",
+        "description": "Scene produk alam terbuka."
+      },
+      "customBackground": {
+        "name": "Latar AI Kustom",
+        "description": "Scene kustom dari prompt."
+      },
+      "batchVariations": {
+        "name": "Variasi Massal",
+        "description": "Buat banyak variasi foto produk."
+      },
+      "cropResize": {
+        "name": "Crop / Resize",
+        "description": "Ubah ukuran dan potong untuk marketplace dan media sosial."
+      },
+      "videoSlideshow": {
+        "name": "Video Slideshow",
+        "description": "Buat video promosi pendek dari gambar."
+      },
+      "voiceover": {
+        "name": "Voiceover",
+        "description": "Buat voiceover dengan text-to-speech."
+      },
+      "captionGenerator": {
+        "name": "Generator Caption",
+        "description": "Buat judul, deskripsi, dan caption."
+      }
     },
     "fields": {
       "prompt": "Prompt",
@@ -298,6 +388,9 @@
       "presetTiktok": "9:16 TikTok",
       "presetInstagram": "4:5 Instagram",
       "presetYoutube": "16:9 YouTube",
+      "presetShopee": "Shopee 800×800",
+      "presetTokopedia": "Tokopedia 700×700",
+      "presetAmazon": "Amazon 2000×2000",
       "presetMarketplace": "Marketplace"
     }
   },
@@ -335,7 +428,17 @@
     "detailSubtitle": "Detail dan tindakan aset.",
     "type": "Tipe",
     "size": "Ukuran",
-    "created": "Dibuat"
+    "created": "Dibuat",
+    "filterText": "Text",
+    "filterStatusAll": "All statuses",
+    "filterByTag": "Filter by tag...",
+    "gridView": "Grid view",
+    "listView": "List view",
+    "tags": "Tags",
+    "tagsPlaceholder": "product, sale, summer",
+    "versionHistory": "Version history",
+    "rename": "Rename",
+    "renameHint": "Enter a new filename."
   },
   "brandKit": {
     "title": "Brand Kit",
@@ -360,10 +463,22 @@
     "invoices": "Invoice",
     "noInvoices": "Belum ada invoice.",
     "plans": {
-      "free": { "name": "Gratis", "description": "Untuk mencoba CLARTAS." },
-      "premium": { "name": "Premium", "description": "Untuk penjual dan kreator yang berkembang." },
-      "enterprise": { "name": "Enterprise", "description": "Untuk tim dan agensi dengan kebutuhan khusus." },
-      "white-label": { "name": "White Label", "description": "Branding kustom dan model reseller untuk agensi." }
+      "free": {
+        "name": "Gratis",
+        "description": "Untuk mencoba CLARTAS."
+      },
+      "premium": {
+        "name": "Premium",
+        "description": "Untuk penjual dan kreator yang berkembang."
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "description": "Untuk tim dan agensi dengan kebutuhan khusus."
+      },
+      "white-label": {
+        "name": "White Label",
+        "description": "Branding kustom dan model reseller untuk agensi."
+      }
     },
     "status": {
       "active": "Aktif",
@@ -371,7 +486,8 @@
       "past_due": "Jatuh tempo",
       "canceled": "Dibatalkan",
       "free": "Gratis"
-    }
+    },
+    "contactSales": "Contact sales"
   },
   "settings": {
     "title": "Pengaturan",
@@ -434,7 +550,6 @@
     "totalRevenue": "Total pendapatan",
     "activeSubscriptions": "Langganan aktif",
     "workspaces": "Workspace",
-    "assets": "Aset",
     "searchPlaceholder": "Cari..."
   },
   "workspace": {
@@ -476,7 +591,13 @@
     "conversionRate": "Tingkat konversi",
     "roi": "ROI",
     "revenue": "Pendapatan",
-    "notConnected": "Hubungkan toko Anda untuk melihat metrik ini."
+    "notConnected": "Hubungkan toko Anda untuk melihat metrik ini.",
+    "engagementRate": "Engagement rate",
+    "grossRevenue": "Gross revenue",
+    "netProfit": "Net profit",
+    "campaignPerformance": "Campaign performance",
+    "storageUsage": "Storage used",
+    "totalTransactions": "Transactions"
   },
   "approvals": {
     "title": "Persetujuan",
@@ -491,15 +612,34 @@
     "noAssets": "Unggah aset terlebih dahulu untuk meminta persetujuan.",
     "approve": "Setujui",
     "reject": "Tolak",
-    "status": { "pending": "Menunggu", "approved": "Disetujui", "rejected": "Ditolak" }
+    "status": {
+      "pending": "Menunggu",
+      "approved": "Disetujui",
+      "rejected": "Ditolak"
+    }
   },
   "intelligence": {
     "title": "Inteligensi E-Commerce",
     "subtitle": "Asisten AI untuk riset, layanan pelanggan, dan live selling.",
-    "marketResearch": { "title": "Riset Pasar", "description": "Temukan produk tren, harga kompetitor, dan skor peluang.", "cta": "Buka riset" },
-    "customerService": { "title": "Layanan Pelanggan AI", "description": "Asisten chat omnichannel untuk WhatsApp, Telegram, Messenger, dan Instagram.", "cta": "Konfigurasi saluran" },
-    "liveSelling": { "title": "Asisten Live Selling", "description": "Buat skrip presentasi dan respons interaktif untuk live stream.", "cta": "Mulai sesi" },
+    "marketResearch": {
+      "title": "Riset Pasar",
+      "description": "Temukan produk tren, harga kompetitor, dan skor peluang.",
+      "cta": "Buka riset"
+    },
+    "customerService": {
+      "title": "Layanan Pelanggan AI",
+      "description": "Asisten chat omnichannel untuk WhatsApp, Telegram, Messenger, dan Instagram.",
+      "cta": "Konfigurasi saluran"
+    },
+    "liveSelling": {
+      "title": "Asisten Live Selling",
+      "description": "Buat skrip presentasi dan respons interaktif untuk live stream.",
+      "cta": "Mulai sesi"
+    },
     "comingSoonNote": "Fondasi siap — hubungkan saluran dan sumber data pada fase integrasi berikutnya."
   },
-  "pricingPage": { "title": "Harga", "subtitle": "Pilih paket yang sesuai dengan pabrik konten Anda." }
+  "pricingPage": {
+    "title": "Harga",
+    "subtitle": "Pilih paket yang sesuai dengan pabrik konten Anda."
+  }
 }

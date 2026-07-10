@@ -31,7 +31,8 @@ const FEATURE_LINKS: Record<string, string> = {
   assetLibrary: "/assets",
 };
 
-export async function MarketingLanding({ locale: _locale }: { locale: string }) {
+export async function MarketingLanding({ locale }: { locale: string }) {
+  void locale;
   const t = await getTranslations("landing");
   const tc = await getTranslations("common");
   const tb = await getTranslations("billing.plans");

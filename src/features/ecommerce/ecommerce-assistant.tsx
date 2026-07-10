@@ -77,7 +77,7 @@ export function EcommerceAssistant() {
           <div className="rounded-xl border bg-card p-4">
             <h3 className="mb-2 font-semibold">Kompetitor</h3>
             <ul className="space-y-2 text-sm">
-              {analysis.competitors.map((c) => (
+              {analysis.competitors.map((c: { name: string; price: number; rating: number }) => (
                 <li key={c.name} className="flex justify-between border-b pb-1">
                   <span>{c.name}</span>
                   <span>

@@ -1,7 +1,7 @@
 {
   "common": {
     "appName": "CLARTAS",
-    "tagline": "The AI-powered e-commerce content factory",
+    "tagline": "The Commerce Content OS for global sellers",
     "loading": "Loading...",
     "save": "Save",
     "cancel": "Cancel",
@@ -51,7 +51,11 @@
     "ecommerce": "E-Commerce Assistant",
     "agents": "AI Agents",
     "automation": "Automation",
-    "future": "Future Tech"
+    "future": "Future Tech",
+    "listingIntelligence": "Listing Intelligence",
+    "navSectionPrimary": "Sell",
+    "navSectionTools": "Tools",
+    "navSectionAdvanced": "Advanced"
   },
   "demo": {
     "banner": "Demo mode aktif — tanpa login. Upload foto/video dan uji semua fitur. Kredit unlimited."
@@ -62,9 +66,9 @@
   },
   "landing": {
     "hero": {
-      "badge": "AI E-Commerce Content Factory",
-      "title": "Turn raw product photos into sales-ready content",
-      "subtitle": "CLARTAS combines AI photo editing, video generation, copywriting, brand management, and e-commerce automation in one platform for global sellers.",
+      "badge": "Commerce Content OS",
+      "title": "From product photo to published listing — in minutes",
+      "subtitle": "CLARTAS is the all-in-one Commerce Content OS: AI photo editing, listing copy, video ads, compliance checks, and multi-marketplace export for sellers worldwide.",
       "ctaPrimary": "Start free",
       "ctaSecondary": "View pricing"
     },
@@ -179,6 +183,7 @@
       "writeCopy": "Write product copy",
       "uploadAsset": "Upload asset",
       "billingQuick": "Billing",
+      "listingIntelligence": "Listing Intelligence",
       "featureHub": "Open Feature Hub"
     },
     "usage": {
@@ -299,6 +304,9 @@
       "presetTiktok": "9:16 TikTok",
       "presetInstagram": "4:5 Instagram",
       "presetYoutube": "16:9 YouTube",
+      "presetShopee": "Shopee 800×800",
+      "presetTokopedia": "Tokopedia 700×700",
+      "presetAmazon": "Amazon 2000×2000",
       "presetMarketplace": "Marketplace"
     }
   },

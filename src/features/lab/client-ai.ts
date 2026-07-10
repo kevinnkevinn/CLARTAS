@@ -45,35 +45,9 @@ export interface ClientAIResult {
   output: Record<string, unknown>;
 }
 
+import { generateCopyText } from "@/lib/ai/fallback-copy";
+
 const MARKETPLACES = ["Shopee", "Tokopedia", "TikTok Shop", "Amazon", "Lazada", "Etsy"];
-
-function generateCopyText(input: Record<string, unknown>): string {
-  const name = String(input.productName ?? "Produk Premium");
-  const marketplace = String(input.marketplace ?? "Shopee");
-  const type = String(input.type ?? "description");
-  const keywords = String(input.keywords ?? "murah, original, garansi");
-  const tone = String(input.tone ?? "professional");
-
-  const templates: Record<string, string> = {
-    title: `[${marketplace}] ${name} — ${keywords.split(",")[0]?.trim()} | Gratis Ongkir`,
-    description: `${name} — solusi terbaik untuk kebutuhan Anda di ${marketplace}.\n\n✅ Kualitas premium\n✅ Pengiriman cepat\n✅ Garansi resmi\n\n${keywords}\n\nTone: ${tone}`,
-    caption: `🔥 ${name} sudah ready stock!\n\n${keywords.split(",").map((k) => `#${k.trim().replace(/\s+/g, "")}`).join(" ")}\n\nBeli sekarang di ${marketplace}! 👇`,
-    script: `[OPENING]\nHalo semua! Hari ini aku mau review ${name}.\n\n[BODY]\nFitur utama: ${keywords}.\nHarga terbaik di ${marketplace}.\n\n[CTA]\nLink di bio — jangan sampai kehabisan!`,
-    keywords: keywords,
-    seo: `Beli ${name} di ${marketplace}. ${keywords}. Gratis ongkir, garansi, review 4.9★.`,
-    facebook_ads: `🛒 ${name}\n\nTransform your routine with ${name}. Limited offer on ${marketplace}!\n\nCTA: Shop Now`,
-    google_ads: `${name} | Best Price ${marketplace} | Free Shipping | Buy ${name} Today`,
-    tiktok_ads: `POV: You found ${name} 😍 #fyp #${marketplace.toLowerCase().replace(/\s/g, "")}`,
-    instagram_ads: `New drop ✨ ${name}\n\nTap to shop → ${marketplace}`,
-    hashtag: keywords
-      .split(",")
-      .map((k) => `#${k.trim().replace(/\s+/g, "")}`)
-      .join(" "),
-    cta: `Beli ${name} sekarang — diskon terbatas di ${marketplace}!`,
-  };
-
-  return templates[type] ?? templates.description!;
-}
 
 export async function runClientAI(
   action: ClientAIAction,
