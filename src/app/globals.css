@@ -68,7 +68,7 @@
   }
 
   .gradient-bg {
-    @apply bg-gradient-to-br from-primary/12 via-orange-400/5 to-transparent;
+    @apply bg-gradient-to-br from-primary/15 via-orange-400/5 to-transparent;
   }
 
   .glass-panel {
