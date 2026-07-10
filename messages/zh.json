@@ -65,12 +65,59 @@
     "switch": "切换语言"
   },
   "landing": {
+    "nav": {
+      "why": "为什么选择 CLARTAS？",
+      "platform": "平台",
+      "solutions": "解决方案",
+      "bookDemo": "预约演示"
+    },
     "hero": {
-      "badge": "AI 电商内容工厂",
-      "title": "将原始产品照片转化为可直接销售的内容",
-      "subtitle": "CLARTAS 将 AI 图片编辑、视频生成、文案撰写、品牌管理和电商自动化整合到一个面向全球卖家的平台。",
-      "ctaPrimary": "免费开始",
-      "ctaSecondary": "查看价格"
+      "badge": "Commerce Content OS",
+      "title": "面向现代电商的内容操作系统",
+      "subtitle": "CLARTAS 将图片编辑、商品文案、视频广告与多平台导出集中到一条清晰工作流，服务全球卖家。",
+      "ctaPrimary": "开始 14 天试用",
+      "ctaSecondary": "查看定价"
+    },
+    "heroVisual": {
+      "spendLabel": "$434 / 700 (62.2%)",
+      "spendStatus": "上架额度已启用",
+      "protectionTitle": "品牌安全发布",
+      "protectionStatus": "合规检查已启用",
+      "activate": "启用"
+    },
+    "stack": {
+      "title": "与您的技术栈无缝协作",
+      "description": "在一个工作区连接产品照片、品牌套件与电商渠道——从 Shopee、Tokopedia 到 Amazon。"
+    },
+    "featuresTitle": "发布所需的一切",
+    "featuresSubtitle": "为电商卖家打造的 AI 工具，而非通用设计套件。",
+    "preview": {
+      "title": "为清晰而生的工作区",
+      "subtitle": "余额、素材、审批与发布流程，尽在一个未来感控制界面。",
+      "greeting": "你好，Alex",
+      "balanceLabel": "+ $13,432 总余额",
+      "transfer": "转账",
+      "add": "添加",
+      "notifications": "通知",
+      "contacts": "9 位常用联系人",
+      "missedCalls": "未接来电 (2)",
+      "lastChats": "最近聊天 (1)",
+      "withdrawal": "提现 · 第 2 步",
+      "youSend": "您将发送",
+      "withdrawCta": "提现 {amount} USDT",
+      "settingsTitle": "账户设置",
+      "settings": {
+        "twoFa": "Google 2FA",
+        "twoFaSub": "尚未启用",
+        "personal": "个人信息",
+        "personalSub": "电话、邮箱",
+        "privacy": "隐私",
+        "privacySub": "密码",
+        "notifications": "通知",
+        "notificationsSub": "10 条新消息",
+        "affiliate": "联盟",
+        "affiliateSub": "推荐链接"
+      }
     },
     "value": {
       "title": "一个平台，完整的内容工作流",

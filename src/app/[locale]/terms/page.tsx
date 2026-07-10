@@ -3,6 +3,7 @@ import { isValidLocale, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { MarketingNav } from "@/components/marketing/marketing-nav";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
+import { MarketingProviders } from "@/features/marketing/marketing-providers";
 
 export default async function TermsPage({
   params,
@@ -14,6 +15,7 @@ export default async function TermsPage({
   setRequestLocale(safeLocale);
 
   return (
+    <MarketingProviders>
     <div className="flex min-h-screen flex-col">
       <MarketingNav />
       <main className="container max-w-3xl flex-1 py-12">
@@ -50,5 +52,6 @@ export default async function TermsPage({
       </main>
       <MarketingFooter />
     </div>
+    </MarketingProviders>
   );
 }

@@ -65,12 +65,59 @@
     "switch": "Ganti bahasa"
   },
   "landing": {
+    "nav": {
+      "why": "Mengapa CLARTAS?",
+      "platform": "Platform",
+      "solutions": "Solusi",
+      "bookDemo": "Jadwalkan demo"
+    },
     "hero": {
       "badge": "Commerce Content OS",
-      "title": "Dari foto produk ke listing siap publish — dalam hitungan menit",
-      "subtitle": "CLARTAS adalah Commerce Content OS all-in-one: editing foto AI, copy listing, video iklan, pemeriksaan kepatuhan, dan ekspor multi-marketplace untuk penjual global.",
-      "ctaPrimary": "Mulai gratis",
+      "title": "Content OS untuk commerce modern",
+      "subtitle": "CLARTAS menyatukan editing foto, copy listing, video iklan, dan ekspor marketplace dalam satu alur kerja yang jelas untuk penjual global.",
+      "ctaPrimary": "Mulai uji coba 14 hari",
       "ctaSecondary": "Lihat harga"
+    },
+    "heroVisual": {
+      "spendLabel": "$434 / 700 (62.2%)",
+      "spendStatus": "Kredit listing aktif",
+      "protectionTitle": "Publikasi aman brand",
+      "protectionStatus": "Pemeriksaan kepatuhan aktif",
+      "activate": "Aktifkan"
+    },
+    "stack": {
+      "title": "Gunakan CLARTAS dengan stack Anda",
+      "description": "Hubungkan foto produk, brand kit, dan kanal marketplace — dari Shopee dan Tokopedia hingga Amazon — dalam satu workspace."
+    },
+    "featuresTitle": "Semua yang Anda butuhkan untuk publish",
+    "featuresSubtitle": "Alat AI untuk penjual marketplace, bukan suite desain generik.",
+    "preview": {
+      "title": "Workspace yang dibangun untuk kejelasan",
+      "subtitle": "Saldo, aset, persetujuan, dan alur publish dalam satu permukaan kontrol futuristik.",
+      "greeting": "Hai, Alex",
+      "balanceLabel": "+ $13,432 total saldo",
+      "transfer": "Transfer",
+      "add": "Tambah",
+      "notifications": "Notifikasi",
+      "contacts": "9 kontak favorit",
+      "missedCalls": "Panggilan terlewat (2)",
+      "lastChats": "Chat terakhir (1)",
+      "withdrawal": "Penarikan. Langkah 2",
+      "youSend": "Anda kirim",
+      "withdrawCta": "Tarik {amount} USDT",
+      "settingsTitle": "Pengaturan Akun",
+      "settings": {
+        "twoFa": "Google 2FA",
+        "twoFaSub": "Belum diaktifkan",
+        "personal": "Info Pribadi",
+        "personalSub": "Telepon, Email",
+        "privacy": "Privasi",
+        "privacySub": "Kata sandi",
+        "notifications": "Notifikasi",
+        "notificationsSub": "10 Baru",
+        "affiliate": "Afiliasi",
+        "affiliateSub": "Tautan referral"
+      }
     },
     "value": {
       "title": "Satu platform, seluruh alur kerja konten",

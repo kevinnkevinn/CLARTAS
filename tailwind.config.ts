@@ -18,6 +18,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "var(--font-sans)", "ui-sans-serif", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -49,11 +50,18 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        teal: {
+          DEFAULT: "hsl(var(--teal))",
+          bright: "hsl(var(--teal-bright))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        "2xl": "1.25rem",
+        "3xl": "1.75rem",
+        "4xl": "2rem",
       },
       keyframes: {
         "fade-in": {
@@ -63,6 +71,9 @@ const config: Config = {
       },
       animation: {
         "fade-in": "fade-in 0.4s ease-out",
+      },
+      screens: {
+        xs: "400px",
       },
     },
   },

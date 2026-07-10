@@ -3,6 +3,7 @@ import { isValidLocale, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { MarketingNav } from "@/components/marketing/marketing-nav";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
+import { MarketingProviders } from "@/features/marketing/marketing-providers";
 
 export default async function PrivacyPage({
   params,
@@ -14,6 +15,7 @@ export default async function PrivacyPage({
   setRequestLocale(safeLocale);
 
   return (
+    <MarketingProviders>
     <div className="flex min-h-screen flex-col">
       <MarketingNav />
       <main className="container max-w-3xl flex-1 py-12 prose prose-invert">
@@ -62,5 +64,6 @@ export default async function PrivacyPage({
       </main>
       <MarketingFooter />
     </div>
+    </MarketingProviders>
   );
 }

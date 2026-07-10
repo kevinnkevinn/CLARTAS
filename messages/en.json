@@ -65,12 +65,59 @@
     "switch": "Switch language"
   },
   "landing": {
+    "nav": {
+      "why": "Why CLARTAS?",
+      "platform": "Platform",
+      "solutions": "Solutions",
+      "bookDemo": "Book a demo"
+    },
     "hero": {
       "badge": "Commerce Content OS",
-      "title": "From product photo to published listing — in minutes",
-      "subtitle": "CLARTAS is the all-in-one Commerce Content OS: AI photo editing, listing copy, video ads, compliance checks, and multi-marketplace export for sellers worldwide.",
-      "ctaPrimary": "Start free",
+      "title": "The content OS for modern commerce",
+      "subtitle": "CLARTAS centralizes photo editing, listing copy, video ads, and marketplace export into one clear workflow for global sellers.",
+      "ctaPrimary": "Start 14-day trial",
       "ctaSecondary": "View pricing"
+    },
+    "heroVisual": {
+      "spendLabel": "$434 / 700 (62.2%)",
+      "spendStatus": "Listing credits enabled",
+      "protectionTitle": "Brand-safe publishing",
+      "protectionStatus": "Compliance checks enabled",
+      "activate": "Activate"
+    },
+    "stack": {
+      "title": "Use CLARTAS with your stack",
+      "description": "Connect product photos, brand kits, and marketplace channels — from Shopee and Tokopedia to Amazon — in one workspace."
+    },
+    "featuresTitle": "Everything you need to publish",
+    "featuresSubtitle": "AI tools built for marketplace sellers, not generic design suites.",
+    "preview": {
+      "title": "A workspace built for clarity",
+      "subtitle": "Balances, assets, approvals, and publishing flows in one futuristic control surface.",
+      "greeting": "Hi, Alex",
+      "balanceLabel": "+ $13,432 total balance",
+      "transfer": "Transfer",
+      "add": "Add",
+      "notifications": "Notifications",
+      "contacts": "9 favorite contacts",
+      "missedCalls": "Missed Calls (2)",
+      "lastChats": "Last Chats (1)",
+      "withdrawal": "Withdrawal. Step 2",
+      "youSend": "You send",
+      "withdrawCta": "Withdraw {amount} USDT",
+      "settingsTitle": "Account Settings",
+      "settings": {
+        "twoFa": "Google 2FA",
+        "twoFaSub": "Not activated yet",
+        "personal": "Personal Info",
+        "personalSub": "Phone, Email",
+        "privacy": "Privacy",
+        "privacySub": "Passwords",
+        "notifications": "Notifications",
+        "notificationsSub": "10 New",
+        "affiliate": "Affiliate",
+        "affiliateSub": "Referral Link"
+      }
     },
     "value": {
       "title": "One platform, the whole content workflow",

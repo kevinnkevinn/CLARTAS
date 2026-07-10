@@ -65,12 +65,59 @@
     "switch": "Cambiar idioma"
   },
   "landing": {
+    "nav": {
+      "why": "¿Por qué CLARTAS?",
+      "platform": "Plataforma",
+      "solutions": "Soluciones",
+      "bookDemo": "Reservar demo"
+    },
     "hero": {
-      "badge": "Fábrica de contenido e-commerce con IA",
-      "title": "Convierte fotos de producto en bruto en contenido listo para vender",
-      "subtitle": "CLARTAS combina edición de fotos con IA, generación de video, redacción, gestión de marca y automatización de e-commerce en una sola plataforma para vendedores globales.",
-      "ctaPrimary": "Empezar gratis",
+      "badge": "Commerce Content OS",
+      "title": "El content OS para el comercio moderno",
+      "subtitle": "CLARTAS centraliza edición de fotos, copy de listings, video ads y exportación a marketplaces en un flujo claro para vendedores globales.",
+      "ctaPrimary": "Probar 14 días",
       "ctaSecondary": "Ver precios"
+    },
+    "heroVisual": {
+      "spendLabel": "$434 / 700 (62.2%)",
+      "spendStatus": "Créditos de listing activos",
+      "protectionTitle": "Publicación segura de marca",
+      "protectionStatus": "Controles de cumplimiento activos",
+      "activate": "Activar"
+    },
+    "stack": {
+      "title": "Usa CLARTAS con tu stack",
+      "description": "Conecta fotos de producto, brand kits y canales de marketplace — de Shopee y Tokopedia a Amazon — en un solo workspace."
+    },
+    "featuresTitle": "Todo lo que necesitas para publicar",
+    "featuresSubtitle": "Herramientas de IA para vendedores de marketplace, no suites de diseño genéricas.",
+    "preview": {
+      "title": "Un workspace pensado para la claridad",
+      "subtitle": "Saldos, assets, aprobaciones y flujos de publicación en una superficie de control futurista.",
+      "greeting": "Hola, Alex",
+      "balanceLabel": "+ $13,432 saldo total",
+      "transfer": "Transferir",
+      "add": "Añadir",
+      "notifications": "Notificaciones",
+      "contacts": "9 contactos favoritos",
+      "missedCalls": "Llamadas perdidas (2)",
+      "lastChats": "Últimos chats (1)",
+      "withdrawal": "Retiro. Paso 2",
+      "youSend": "Envías",
+      "withdrawCta": "Retirar {amount} USDT",
+      "settingsTitle": "Ajustes de cuenta",
+      "settings": {
+        "twoFa": "Google 2FA",
+        "twoFaSub": "Aún no activado",
+        "personal": "Info personal",
+        "personalSub": "Teléfono, Email",
+        "privacy": "Privacidad",
+        "privacySub": "Contraseñas",
+        "notifications": "Notificaciones",
+        "notificationsSub": "10 nuevas",
+        "affiliate": "Afiliados",
+        "affiliateSub": "Enlace de referido"
+      }
     },
     "value": {
       "title": "Una plataforma, todo el flujo de contenido",
