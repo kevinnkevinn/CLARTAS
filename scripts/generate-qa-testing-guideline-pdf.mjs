@@ -318,17 +318,45 @@ fs.mkdirSync(outDir, { recursive: true });
 const tmpHtml = path.join(outDir, "_guideline-tmp.html");
 fs.writeFileSync(tmpHtml, html, "utf8");
 
-const browser = await chromium.launch({ headless: true });
-const page = await browser.newPage();
-await page.goto(`file://${tmpHtml.replace(/\\/g, "/")}`, { waitUntil: "load" });
-await page.pdf({
-  path: outPdf,
-  format: "A4",
-  printBackground: true,
-  margin: { top: "14mm", right: "12mm", bottom: "14mm", left: "12mm" },
-});
-await browser.close();
-fs.unlinkSync(tmpHtml);
+async function launchBrowser() {
+  const attempts = [
+    { label: "Playwright Chromium", options: { headless: true } },
+    { label: "system Chrome", options: { headless: true, channel: "chrome" } },
+    { label: "system Edge", options: { headless: true, channel: "msedge" } },
+  ];
+
+  let lastError;
+  for (const attempt of attempts) {
+    try {
+      const browser = await chromium.launch(attempt.options);
+      console.log(`Using browser: ${attempt.label}`);
+      return browser;
+    } catch (err) {
+      lastError = err;
+      console.warn(`Launch failed (${attempt.label}): ${err.message.split("\n")[0]}`);
+    }
+  }
+
+  console.error(
+    "\nNo browser available. Install Playwright Chromium, then retry:\n  npx playwright install chromium\n",
+  );
+  throw lastError;
+}
+
+const browser = await launchBrowser();
+try {
+  const page = await browser.newPage();
+  await page.goto(`file://${tmpHtml.replace(/\\/g, "/")}`, { waitUntil: "load" });
+  await page.pdf({
+    path: outPdf,
+    format: "A4",
+    printBackground: true,
+    margin: { top: "14mm", right: "12mm", bottom: "14mm", left: "12mm" },
+  });
+} finally {
+  await browser.close();
+  if (fs.existsSync(tmpHtml)) fs.unlinkSync(tmpHtml);
+}
 
 const sizeKb = Math.round(fs.statSync(outPdf).size / 1024);
 console.log(`Wrote ${outPdf} (${sizeKb} KB)`);
