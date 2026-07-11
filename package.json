@@ -12,6 +12,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:unit": "vitest run --reporter=default --reporter=json --outputFile=test-results/vitest-results.json",
+    "test:browsers": "playwright install chromium",
+    "postinstall": "playwright install chromium",
     "test:e2e": "playwright test",
     "test:smoke": "playwright test --grep @smoke",
     "test:sanity": "playwright test --grep @sanity",
