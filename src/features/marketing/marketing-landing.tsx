@@ -190,7 +190,7 @@ export async function MarketingLanding({ locale }: { locale: string }) {
                 lastChats={t("preview.lastChats")}
                 withdrawalTitle={t("preview.withdrawal")}
                 youSend={t("preview.youSend")}
-                withdrawCta={t("preview.withdrawCta")}
+                withdrawCta={t("preview.withdrawCta", { amount: "{amount}" })}
                 settingsTitle={t("preview.settingsTitle")}
                 settingsItems={settingsItems}
               />
