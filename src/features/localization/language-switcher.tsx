@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { Globe, Check, ChevronDown } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
@@ -20,9 +20,18 @@ export function LanguageSwitcher({ align = "end" }: { align?: "start" | "end" })
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    for (const l of locales) {
+      if (l !== locale) {
+        router.prefetch(pathname, { locale: l });
+      }
+    }
+  }, [locale, pathname, router]);
+
   function onSelect(next: Locale) {
     setOpen(false);
     if (next === locale) return;
+    document.cookie = `NEXT_LOCALE=${next}; Path=/; Max-Age=31536000; SameSite=Lax`;
     startTransition(() => {
       router.replace(pathname, { locale: next });
     });

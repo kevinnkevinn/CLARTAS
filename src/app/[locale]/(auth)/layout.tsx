@@ -5,6 +5,7 @@ import { redirect } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
 import { isDemoMode } from "@/lib/demo/config";
 import { LanguageSwitcher } from "@/features/localization/language-switcher";
+import { AuthThemeToggle } from "@/components/auth-theme-toggle";
 
 export default async function AuthLayout({
   children,
@@ -30,7 +31,10 @@ export default async function AuthLayout({
           </span>
           CLARTAS
         </Link>
-        <LanguageSwitcher />
+        <div className="flex items-center gap-2">
+          <AuthThemeToggle />
+          <LanguageSwitcher />
+        </div>
       </header>
       <div className="flex flex-1 items-center justify-center px-4 py-10">
         <div className="w-full max-w-md">{children}</div>
