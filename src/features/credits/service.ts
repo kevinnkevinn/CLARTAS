@@ -1,7 +1,7 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { DEFAULT_FREE_CREDITS } from "@/lib/constants";
-import { DEMO_CREDITS, isDemoMode } from "@/lib/demo/config";
+import { DEMO_CREDITS, isDemoMode, isFullCreditsMode } from "@/lib/demo/config";
 import { cachedValue } from "@/lib/rate-limit";
 import { cacheDelete } from "@/lib/cache";
 
@@ -19,7 +19,7 @@ function creditCacheKey(userId: string): string {
 
 /** Read the current user's AI credit balance. Falls back to mock when unconfigured. */
 export async function getCreditBalance(userId: string): Promise<number> {
-  if (isDemoMode()) return DEMO_CREDITS;
+  if (isDemoMode() || isFullCreditsMode()) return DEMO_CREDITS;
 
   return cachedValue(creditCacheKey(userId), CREDIT_CACHE_TTL, async () => {
     const supabase = await createClient();
@@ -48,7 +48,7 @@ export async function deductCredits(
   description?: string,
   workspaceId?: string | null,
 ): Promise<DeductResult> {
-  if (isDemoMode()) return { ok: true };
+  if (isDemoMode() || isFullCreditsMode()) return { ok: true };
 
   const admin = createAdminClient();
   if (!admin) return { ok: false, reason: "unconfigured" };

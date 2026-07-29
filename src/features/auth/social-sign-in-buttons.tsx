@@ -1,12 +1,19 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { useTranslations } from "next-intl";
-import { useLocale } from "next-intl";
+import { useState, useTransition, type ReactNode } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { AlertCircle, Loader2 } from "lucide-react";
 import type { Locale } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/client";
-import { signInWithGoogle, signInWithApple, isAppleSignInAvailable } from "@/lib/mobile/native-auth";
+import { signInWithOAuthProvider, isAppleSignInAvailable } from "@/lib/mobile/native-auth";
 import { Button } from "@/components/ui/button";
+
+type OAuthProvider = "google" | "apple" | "facebook";
+type ProviderButton = {
+  provider: OAuthProvider;
+  label: string;
+  icon: ReactNode;
+};
 
 function GoogleIcon() {
   return (
@@ -31,6 +38,14 @@ function GoogleIcon() {
   );
 }
 
+function FacebookIcon() {
+  return (
+    <svg className="size-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M13.5 9H16V6h-2.5C10.7 6 9 7.7 9 10.6V13H7v3h2v5h3v-5h2.5l.5-3H12v-2.4c0-.7.3-1.1 1.5-1.1Z" />
+    </svg>
+  );
+}
+
 function AppleIcon() {
   return (
     <svg className="size-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -43,50 +58,78 @@ export function SocialSignInButtons() {
   const t = useTranslations("auth");
   const locale = useLocale() as Locale;
   const [error, setError] = useState<string | null>(null);
+  const [activeProvider, setActiveProvider] = useState<OAuthProvider | null>(null);
   const [pending, startTransition] = useTransition();
   const showApple = isAppleSignInAvailable();
 
-  function handleProvider(provider: "google" | "apple") {
+  function handleProvider(provider: OAuthProvider) {
     setError(null);
+    setActiveProvider(provider);
     startTransition(async () => {
       const supabase = createClient();
       if (!supabase) {
-        setError(t("notConfigured"));
+        setError(t("notConfigured") || "Authentication is not configured");
+        setActiveProvider(null);
         return;
       }
-      const result =
-        provider === "google"
-          ? await signInWithGoogle(supabase, locale)
-          : await signInWithApple(supabase, locale);
-      if (result.error) setError(result.error);
+
+      try {
+        const result = await signInWithOAuthProvider(supabase, provider, locale);
+        if (result.error) {
+          setError(result.error);
+          setActiveProvider(null);
+        }
+        // On success, the user is redirected automatically
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : t("authError") || "An error occurred. Please try again."
+        );
+        setActiveProvider(null);
+      }
     });
   }
 
+  const providers: ProviderButton[] = [
+    { provider: "google", label: t("signInWithGoogle"), icon: <GoogleIcon /> },
+    { provider: "facebook", label: t("signInWithFacebook"), icon: <FacebookIcon /> },
+    ...(showApple
+      ? [{ provider: "apple" as OAuthProvider, label: t("signInWithApple"), icon: <AppleIcon /> }]
+      : []),
+  ];
+
+  const isLoading = pending && activeProvider !== null;
+
   return (
-    <div className="space-y-2">
-      <Button
-        type="button"
-        variant="outline"
-        className="w-full gap-2"
-        disabled={pending}
-        onClick={() => handleProvider("google")}
-      >
-        <GoogleIcon />
-        {t("signInWithGoogle")}
-      </Button>
-      {showApple ? (
+    <div className="space-y-3">
+      {providers.map(({ provider, label, icon }) => (
         <Button
+          key={provider}
           type="button"
           variant="outline"
           className="w-full gap-2"
           disabled={pending}
-          onClick={() => handleProvider("apple")}
+          onClick={() => handleProvider(provider)}
         >
-          <AppleIcon />
-          {t("signInWithApple")}
+          {activeProvider === provider && isLoading ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            icon
+          )}
+          {activeProvider === provider && isLoading ? (
+            <span>{t("loading") || "Loading..."}</span>
+          ) : (
+            label
+          )}
         </Button>
+      ))}
+      {error ? (
+        <div className="flex items-start gap-2 rounded-md border border-destructive/30 bg-destructive/5 p-2 text-xs text-destructive">
+          <AlertCircle className="mt-0.5 size-3 shrink-0 flex-none" />
+          <span>{error}</span>
+        </div>
       ) : null}
-      {error ? <p className="text-center text-xs text-destructive">{error}</p> : null}
     </div>
   );
 }

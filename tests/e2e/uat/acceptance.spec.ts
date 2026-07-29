@@ -8,9 +8,10 @@ test.describe("UAT @uat", () => {
   test("TC-BILL-001: pengguna demo melihat saldo kredit unlimited", async ({ page }) => {
     await gotoAppRoute(page, "/dashboard");
     await expectCreditsVisible(page);
-    const billingLink = page.locator('a[href="/billing"]').first();
-    const text = await billingLink.textContent();
-    expect(text?.replace(/\D/g, "")).toMatch(/999999/);
+    // Target the topbar credit badge specifically (span inside the header link)
+    const billingBadge = page.locator('header a[href="/billing"] span').first();
+    // Wait for the credit badge text to be populated by the client
+    await expect(billingBadge).toHaveText(/999\.999/, { timeout: 15_000 });
   });
 
   test("TC-CNT-001: generator konten dapat diakses pengguna", async ({ page }) => {
@@ -28,7 +29,14 @@ test.describe("UAT @uat", () => {
   });
 
   test("kriteria UAT: modul video dan e-commerce siap digunakan", async ({ page }) => {
-    const modules = ["/video-editor", "/video-ad", "/ecommerce", "/photography", "/agents", "/automation"];
+    const modules = [
+      "/video-editor",
+      "/video-ad",
+      "/ecommerce",
+      "/photography",
+      "/agents",
+      "/automation",
+    ];
     for (const mod of modules) {
       await gotoAppRoute(page, mod);
       await expect(page.locator("main")).toBeVisible();

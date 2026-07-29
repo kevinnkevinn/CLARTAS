@@ -19,7 +19,7 @@ Use the location that best fits what you need:
 | **HTML summary report** | `docs/qa/reports/laporan-qa-YYYY-MM-DD.html` | After `npm run test:report` |
 | **JSON summary report** | `docs/qa/reports/laporan-qa-YYYY-MM-DD.json` | After `npm run test:report` |
 | **Failed test artifacts** (screenshots, videos) | `test-results/` folder | Only created when a test fails |
-| **Manual test cases** (Excel, 137 cases) | `docs/qa/CLARTAS-Kasus-Uji.xlsx` | For tests not yet automated |
+| **Manual + automation handbook** (PDF, 137 cases) | `docs/qa/CLARTAS-Technical-Testing-Guideline.pdf` | Single QA guide for all features |
 | **How to run tests** | `docs/qa/AUTOMATION.md` and `docs/qa/TEST-PLAN.md` | Setup and suite descriptions |
 | **CI results** (after push to GitHub) | GitHub → Actions → QA workflow → Artifacts | Download `qa-reports` zip |
 
@@ -171,7 +171,7 @@ These tests open a real browser and verify pages load and basic user flows work.
 
 ## Part 3 — Not Yet Automated
 
-The Excel file `docs/qa/CLARTAS-Kasus-Uji.xlsx` lists **137 manual test cases**. Automation currently covers **54** tests. Examples still needing manual testing or future automation:
+The PDF handbook `docs/qa/CLARTAS-Technical-Testing-Guideline.pdf` lists **137 test cases**. Automation currently covers **54** tests. Examples still needing manual testing or future automation:
 
 - Real email/password login and Google sign-in  
 - Paddle payment checkout in sandbox  

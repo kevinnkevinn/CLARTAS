@@ -42,7 +42,7 @@ flowchart LR
 
 ## 4. Traceability
 
-Kasus manual: [`CLARTAS-Kasus-Uji.xlsx`](./CLARTAS-Kasus-Uji.xlsx)  
+Kasus manual + otomatis: [`CLARTAS-Technical-Testing-Guideline.pdf`](./CLARTAS-Technical-Testing-Guideline.pdf)  
 Pemetaan otomasi: [`tests/helpers/traceability.ts`](../../tests/helpers/traceability.ts)
 
 ## 5. Laporan

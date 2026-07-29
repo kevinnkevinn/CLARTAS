@@ -12,8 +12,11 @@ export const env = {
   demoMode: process.env.NEXT_PUBLIC_DEMO_MODE === "true",
 };
 
+const hasValidSupabaseUrl = /^https?:\/\//i.test(env.supabaseUrl.trim());
+const hasLikelyAnonKey = Boolean(env.supabaseAnonKey && env.supabaseAnonKey.startsWith("ey"));
+
 /** True when Supabase public config is present. Used to enable real auth/data. */
-export const isSupabaseConfigured = Boolean(env.supabaseUrl && env.supabaseAnonKey);
+export const isSupabaseConfigured = hasValidSupabaseUrl && hasLikelyAnonKey;
 
 // --- Server-only helpers (do not call from client components) ---------------
 

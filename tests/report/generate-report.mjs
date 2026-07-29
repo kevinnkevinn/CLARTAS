@@ -121,7 +121,7 @@ const html = `<!DOCTYPE html>
     <h2>Analisis & Rekomendasi</h2>
     <p>${analysis.rekomendasi}</p>
     <p>Detail E2E interaktif: buka <code>playwright-report/index.html</code></p>
-    <p>Traceability kasus manual: <code>docs/qa/CLARTAS-Kasus-Uji.xlsx</code></p>
+    <p>Traceability kasus manual: <code>docs/qa/CLARTAS-Technical-Testing-Guideline.pdf</code></p>
   </div>
   ${
     pw.tests.length

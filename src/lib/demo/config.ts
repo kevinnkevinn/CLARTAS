@@ -27,4 +27,9 @@ export function isDemoMode(): boolean {
   return process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 }
 
+/** Temporary full-credits mode while keeping real auth/app flows enabled. */
+export function isFullCreditsMode(): boolean {
+  return process.env.NEXT_PUBLIC_FULL_CREDITS_MODE === "true";
+}
+
 export const DEMO_CREDITS = 999_999;

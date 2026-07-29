@@ -10,5 +10,17 @@ import { env, isSupabaseConfigured } from "@/lib/env";
  */
 export function createClient() {
   if (!isSupabaseConfigured) return null;
-  return createBrowserClient(env.supabaseUrl, env.supabaseAnonKey);
+
+  try {
+    const hasValidUrl = /^https?:\/\//i.test(env.supabaseUrl);
+    const hasKey = Boolean(env.supabaseAnonKey && env.supabaseAnonKey.startsWith("ey"));
+
+    if (!hasValidUrl || !hasKey) {
+      return null;
+    }
+
+    return createBrowserClient(env.supabaseUrl, env.supabaseAnonKey);
+  } catch {
+    return null;
+  }
 }

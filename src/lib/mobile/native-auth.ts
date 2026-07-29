@@ -4,6 +4,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { getAppPlatform, getOAuthRedirectUrl, isCapacitorNative } from "./platform";
 
 type AuthResult = { error?: string };
+type OAuthProvider = "google" | "apple" | "facebook" | "github";
 
 async function signInWithGoogleNative(
   supabase: SupabaseClient,
@@ -58,45 +59,68 @@ async function signInWithAppleNative(
 
 async function signInWithOAuthWeb(
   supabase: SupabaseClient,
-  provider: "google" | "apple",
+  provider: OAuthProvider,
   locale: string,
 ): Promise<AuthResult> {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? window.location.origin;
   const redirectTo = `${appUrl}/auth/callback?next=/${locale}/dashboard`;
+
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
       redirectTo,
-      ...(provider === "apple" ? { scopes: "name email" } : {}),
+      scopes:
+        provider === "facebook"
+          ? "email,public_profile"
+          : provider === "github"
+            ? "read:user user:email"
+            : undefined,
     },
   });
+
   if (error) return { error: error.message };
   if (data.url) window.location.href = data.url;
   return {};
+}
+
+export async function signInWithOAuthProvider(
+  supabase: SupabaseClient,
+  provider: OAuthProvider,
+  locale: string,
+): Promise<AuthResult> {
+  if (provider === "google") {
+    if (isCapacitorNative()) {
+      return signInWithGoogleNative(supabase, locale);
+    }
+    return signInWithOAuthWeb(supabase, provider, locale);
+  }
+
+  if (provider === "apple") {
+    const platform = getAppPlatform();
+    if (platform === "ios" || (platform === "web" && !isCapacitorNative())) {
+      if (platform === "ios" && isCapacitorNative()) {
+        return signInWithAppleNative(supabase, locale);
+      }
+      return signInWithOAuthWeb(supabase, provider, locale);
+    }
+    return signInWithOAuthWeb(supabase, provider, locale);
+  }
+
+  return signInWithOAuthWeb(supabase, provider, locale);
 }
 
 export async function signInWithGoogle(
   supabase: SupabaseClient,
   locale: string,
 ): Promise<AuthResult> {
-  if (isCapacitorNative()) {
-    return signInWithGoogleNative(supabase, locale);
-  }
-  return signInWithOAuthWeb(supabase, "google", locale);
+  return signInWithOAuthProvider(supabase, "google", locale);
 }
 
 export async function signInWithApple(
   supabase: SupabaseClient,
   locale: string,
 ): Promise<AuthResult> {
-  const platform = getAppPlatform();
-  if (platform === "ios" || (platform === "web" && !isCapacitorNative())) {
-    if (platform === "ios" && isCapacitorNative()) {
-      return signInWithAppleNative(supabase, locale);
-    }
-    return signInWithOAuthWeb(supabase, "apple", locale);
-  }
-  return signInWithOAuthWeb(supabase, "apple", locale);
+  return signInWithOAuthProvider(supabase, "apple", locale);
 }
 
 export function isAppleSignInAvailable(): boolean {

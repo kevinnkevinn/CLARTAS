@@ -3,8 +3,9 @@ import Link from "next/link";
 /** Global 404 for paths outside the locale segment. */
 export default function GlobalNotFound() {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         style={{
           fontFamily: "ui-sans-serif, system-ui, sans-serif",
           display: "flex",

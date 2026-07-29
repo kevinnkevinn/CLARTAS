@@ -39,7 +39,13 @@ export function SignUpForm() {
 
       <div className="space-y-2">
         <Label htmlFor="fullName">{t("fullName")}</Label>
-        <Input id="fullName" name="fullName" type="text" autoComplete="name" />
+        <Input
+          id="fullName"
+          name="fullName"
+          type="text"
+          autoComplete="name"
+          required
+        />
       </div>
 
       <div className="space-y-2">
@@ -61,7 +67,20 @@ export function SignUpForm() {
           name="password"
           type="password"
           required
-          minLength={6}
+          minLength={12}
+          autoComplete="new-password"
+          placeholder={t("passwordPlaceholder")}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="confirmPassword">{t("confirmPassword")}</Label>
+        <Input
+          id="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          required
+          minLength={12}
           autoComplete="new-password"
           placeholder={t("passwordPlaceholder")}
         />

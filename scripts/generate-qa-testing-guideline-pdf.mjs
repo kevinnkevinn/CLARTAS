@@ -1,6 +1,7 @@
 /**
  * Generates docs/qa/CLARTAS-Technical-Testing-Guideline.pdf
- * Source: FULL-TEST-RESULTS.md + TEST-PLAN.md + CLARTAS-Kasus-Uji data
+ * Source: scripts/qa-test-data.mjs + docs/qa automation notes
+ * Output: docs/qa/CLARTAS-Technical-Testing-Guideline.pdf
  */
 import fs from "fs";
 import path from "path";
@@ -201,8 +202,8 @@ const html = `<!DOCTYPE html>
   <p>
     This guideline defines how to test every CLARTAS feature end-to-end: public marketing pages,
     authentication, app modules, AI APIs, billing, security, and mobile packaging.
-    It consolidates <code>docs/qa/FULL-TEST-RESULTS.md</code>, <code>TEST-PLAN.md</code>,
-    <code>AUTOMATION.md</code>, and the Excel catalog <code>CLARTAS-Kasus-Uji.xlsx</code>.
+    It consolidates feature requirements, scenarios, and 137 test cases from
+    <code>scripts/qa-test-data.mjs</code> with automation commands from <code>docs/qa/AUTOMATION.md</code>.
   </p>
   <div class="callout">
     <strong>Pass criteria for release:</strong> Smoke + Sanity 100% · Regression ≥ 95% ·
@@ -262,7 +263,7 @@ const html = `<!DOCTYPE html>
       <tr><td><span class="badge p3">P3</span></td><td>Cosmetic / nice-to-have</td><td>Backlog</td></tr>
     </tbody>
   </table>
-  <p>Excel status values: <strong>Belum</strong> / <strong>Jalankan</strong> / <strong>Lulus</strong> / <strong>Gagal</strong> / <strong>Blokir</strong>.</p>
+  <p>Manual case status values: <strong>Belum</strong> / <strong>Jalankan</strong> / <strong>Lulus</strong> / <strong>Gagal</strong> / <strong>Blokir</strong>.</p>
 
   <h2>5. Recommended execution order</h2>
   <ol class="compact">
@@ -281,13 +282,13 @@ const html = `<!DOCTYPE html>
       <tr><td>Unit &amp; integration</td><td>Vitest</td><td>18</td><td>100% passed</td></tr>
       <tr><td>Browser E2E</td><td>Playwright</td><td>36</td><td>100% passed</td></tr>
       <tr><td><strong>Total automated</strong></td><td>—</td><td><strong>54</strong></td><td><strong>100%</strong></td></tr>
-      <tr><td>Manual catalog</td><td>Excel</td><td>137</td><td>Execute gaps below</td></tr>
+      <tr><td>Manual catalog</td><td>This PDF</td><td>137</td><td>Execute gaps below</td></tr>
     </tbody>
   </table>
   <p class="note">Still primarily manual: real login/OAuth, Paddle sandbox checkout, exact upload boundaries, all 33 editor tools with live AI, RLS with two users, Capacitor mobile builds.</p>
 
   <h2>7. Feature modules — full test catalog</h2>
-  <p>Use each table as the technical checklist for that module. Steps and expected results come from the official Excel case set.</p>
+  <p>Use each table as the technical checklist for that module. Steps and expected results are the official manual case set.</p>
   ${moduleSections}
 
   <h2>8. Cross-cutting checks</h2>

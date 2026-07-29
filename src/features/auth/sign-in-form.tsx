@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Info } from "lucide-react";
 import type { Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { signInAction, type AuthResult } from "./actions";
@@ -28,6 +28,11 @@ export function SignInForm() {
           <span>{state.error}</span>
         </div>
       ) : null}
+
+      <div className="flex items-start gap-2 rounded-md border border-blue-200 bg-blue-50 p-3 text-sm text-blue-800">
+        <Info className="mt-0.5 size-4 shrink-0 flex-none" />
+        <span>{t("signInTip") || "Gunakan akun Google, Facebook, atau email Anda"}</span>
+      </div>
 
       <div className="space-y-2">
         <Label htmlFor="email">{t("email")}</Label>

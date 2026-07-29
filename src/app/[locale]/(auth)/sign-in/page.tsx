@@ -22,27 +22,44 @@ export default async function SignInPage({
         <CardDescription>{t("signInSubtitle")}</CardDescription>
       </CardHeader>
       <CardContent>
-        <SignInForm />
-        <div className="relative my-6">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
+        <div className="space-y-6">
+          {/* OAuth buttons first - more convenient for most users */}
+          <div>
+            <p className="mb-3 text-sm font-medium text-muted-foreground">{t("signInWith") || "Login dengan:"}</p>
+            <SocialSignInButtons />
           </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-card px-2 text-muted-foreground">or</span>
+
+          {/* Divider */}
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground">or</span>
+            </div>
+          </div>
+
+          {/* Email/Password form as fallback */}
+          <div>
+            <p className="mb-4 text-sm font-medium text-muted-foreground">{t("signInEmail") || "Atau gunakan email:"}</p>
+            <SignInForm />
           </div>
         </div>
-        <SocialSignInButtons />
-        <p className="mt-4 text-center text-sm">
-          <Link href="/forgot-password" className="text-primary hover:underline">
-            {t("forgotPassword")}
-          </Link>
-        </p>
-        <p className="mt-6 text-center text-sm text-muted-foreground">
-          {t("noAccount")}{" "}
-          <Link href="/sign-up" className="font-medium text-primary hover:underline">
-            {t("signUpButton")}
-          </Link>
-        </p>
+
+        {/* Help links */}
+        <div className="mt-6 space-y-2 text-center text-sm">
+          <p>
+            <Link href="/forgot-password" className="text-primary hover:underline">
+              {t("forgotPassword")}
+            </Link>
+          </p>
+          <p className="text-muted-foreground">
+            {t("noAccount")}{" "}
+            <Link href="/sign-up" className="font-medium text-primary hover:underline">
+              {t("signUpButton")}
+            </Link>
+          </p>
+        </div>
       </CardContent>
     </Card>
   );

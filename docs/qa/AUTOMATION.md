@@ -15,9 +15,12 @@ tests/
   report/           generator laporan HTML/JSON
 src/lib/__tests__/  Vitest — credits, upload, paddle
 docs/qa/
-  CLARTAS-Kasus-Uji.xlsx
+  CLARTAS-Technical-Testing-Guideline.pdf  — handbook QA (manual + otomatis)
   TEST-PLAN.md
   reports/          output laporan (generated)
+scripts/
+  qa-test-data.mjs                         — katalog 137 kasus uji
+  generate-qa-testing-guideline-pdf.mjs    — regenerasi PDF
 playwright.config.ts
 ```
 
@@ -37,11 +40,11 @@ npm run test:plan          # Unit + E2E + laporan QA
 ## Prasyarat
 
 1. Node.js 22+
-2. `npx playwright install chromium` (sekali)
+2. Browser Chromium Playwright — terpasang otomatis via `postinstall`, atau manual: `npm run test:browsers`
 3. Mode demo aktif untuk E2E lokal (default)
 
-## Regenerasi Excel Kasus Uji
+## Regenerasi PDF Guideline QA
 
 ```bash
-node scripts/generate-clartas-qa-excel.mjs
+node scripts/generate-qa-testing-guideline-pdf.mjs
 ```
