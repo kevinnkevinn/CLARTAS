@@ -64,11 +64,12 @@ export async function POST(request: Request) {
 
   const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 80);
   const path = `${user.id}/${crypto.randomUUID()}-${safeName}`;
+  const resolvedMime = resolveFileMimeType(file);
 
   try {
     const { error: uploadError } = await supabase.storage
       .from(STORAGE_BUCKETS.raw)
-      .upload(path, file, { contentType: file.type, upsert: false });
+      .upload(path, file, { contentType: resolvedMime || file.type, upsert: false });
 
     if (uploadError) {
       await logError("upload", uploadError, { path }, user.id);

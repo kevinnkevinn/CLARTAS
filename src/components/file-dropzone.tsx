@@ -6,6 +6,36 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { uploadMediaFile } from "@/lib/upload-client";
 
+const MIME_LABEL: Record<string, string> = {
+  "image/jpeg": "JPG",
+  "image/png": "PNG",
+  "image/webp": "WebP",
+  "image/gif": "GIF",
+  "video/mp4": "MP4",
+  "video/quicktime": "MOV",
+  "video/webm": "WebM",
+};
+
+function getUploadErrorMessage(code: string, accept: string): string {
+  const formats = accept
+    .split(",")
+    .map((t) => MIME_LABEL[t.trim()] ?? t.trim())
+    .filter(Boolean)
+    .join(", ");
+
+  switch (code) {
+    case "invalid_file_type":
+      return `Format tidak didukung. Gunakan: ${formats}`;
+    case "file_too_large":
+      return "File terlalu besar. Foto maks. 10 MB, video maks. 100 MB";
+    case "Unauthorized":
+      return "Sesi habis. Silakan login kembali";
+    case "upload_failed":
+    default:
+      return "Upload gagal. Periksa koneksi internet dan coba lagi";
+  }
+}
+
 interface FileDropzoneProps {
   accept?: string;
   multiple?: boolean;
@@ -35,17 +65,17 @@ export function FileDropzone({
       try {
         const result = await uploadMediaFile(file);
         if (!result.ok) {
-          setError(errorLabels[result.error] ?? result.error);
+          setError(errorLabels[result.error] ?? getUploadErrorMessage(result.error, accept));
           return;
         }
         onUpload(result.data.signedUrl, file, result.data.assetId);
       } catch {
-        setError(errorLabels.upload_failed ?? "upload_failed");
+        setError(errorLabels.upload_failed ?? getUploadErrorMessage("upload_failed", accept));
       } finally {
         setUploading(false);
       }
     },
-    [errorLabels, onUpload],
+    [accept, errorLabels, onUpload],
   );
 
   function handleDrop(e: React.DragEvent) {
