@@ -5,36 +5,7 @@ import { Upload, Loader2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { uploadMediaFile } from "@/lib/upload-client";
-
-const MIME_LABEL: Record<string, string> = {
-  "image/jpeg": "JPG",
-  "image/png": "PNG",
-  "image/webp": "WebP",
-  "image/gif": "GIF",
-  "video/mp4": "MP4",
-  "video/quicktime": "MOV",
-  "video/webm": "WebM",
-};
-
-function getUploadErrorMessage(code: string, accept: string): string {
-  const formats = accept
-    .split(",")
-    .map((t) => MIME_LABEL[t.trim()] ?? t.trim())
-    .filter(Boolean)
-    .join(", ");
-
-  switch (code) {
-    case "invalid_file_type":
-      return `Format tidak didukung. Gunakan: ${formats}`;
-    case "file_too_large":
-      return "File terlalu besar. Foto maks. 10 MB, video maks. 100 MB";
-    case "Unauthorized":
-      return "Sesi habis. Silakan login kembali";
-    case "upload_failed":
-    default:
-      return "Upload gagal. Periksa koneksi internet dan coba lagi";
-  }
-}
+import { getUploadErrorMessage } from "@/lib/upload-errors";
 
 interface FileDropzoneProps {
   accept?: string;
@@ -54,6 +25,7 @@ export function FileDropzone({
   errorLabels = {},
 }: FileDropzoneProps) {
   const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const ref = useRef<HTMLInputElement>(null);
@@ -62,17 +34,28 @@ export function FileDropzone({
     async (file: File) => {
       setError(null);
       setUploading(true);
+      setProgress(0);
+
+      // Synthetic progress feedback for current fetch-based upload pipeline.
+      // Keeps UX responsive while server processes multipart upload.
+      const ticker = window.setInterval(() => {
+        setProgress((prev) => (prev >= 90 ? prev : prev + 5));
+      }, 120);
+
       try {
         const result = await uploadMediaFile(file);
         if (!result.ok) {
           setError(errorLabels[result.error] ?? getUploadErrorMessage(result.error, accept));
           return;
         }
+        setProgress(100);
         onUpload(result.data.signedUrl, file, result.data.assetId);
       } catch {
         setError(errorLabels.upload_failed ?? getUploadErrorMessage("upload_failed", accept));
       } finally {
+        window.clearInterval(ticker);
         setUploading(false);
+        window.setTimeout(() => setProgress(0), 250);
       }
     },
     [accept, errorLabels, onUpload],
@@ -122,7 +105,16 @@ export function FileDropzone({
         }}
       />
       {uploading ? (
-        <Loader2 className="size-8 animate-spin text-primary" />
+        <>
+          <Loader2 className="size-8 animate-spin text-primary" />
+          <p className="mt-3 text-xs font-medium text-primary">Uploading {progress}%</p>
+          <div className="mt-2 h-1.5 w-full max-w-xs overflow-hidden rounded-full bg-muted">
+            <div
+              className="h-full bg-primary transition-[width] duration-150 ease-linear"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        </>
       ) : (
         <>
           <Upload className="mb-2 size-8 text-primary/70" />
