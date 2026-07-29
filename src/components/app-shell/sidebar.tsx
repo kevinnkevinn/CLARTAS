@@ -1,6 +1,5 @@
 "use client";
 
-import { Sparkles } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { NAV_ITEMS, NAV_SECTIONS } from "./nav-config";
@@ -25,8 +24,8 @@ export function Sidebar({ isAdmin }: { isAdmin: boolean }) {
         href="/dashboard"
         className="relative z-10 flex h-16 items-center gap-2.5 border-b border-border/50 px-6 font-bold hover:opacity-90"
       >
-        <span className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-violet-500 text-primary-foreground glow-ring-sm">
-          <Sparkles className="size-5" />
+        <span className="flex size-9 items-center justify-center overflow-hidden rounded-xl border border-border/60 bg-card glow-ring-sm">
+          <img src="/logo/Logo%20CLARTAS.png" alt="CLARTAS" className="size-7 object-contain" />
         </span>
         <span className="gradient-text text-lg tracking-tight">CLARTAS</span>
       </Link>

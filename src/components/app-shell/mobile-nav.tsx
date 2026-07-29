@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { NAV_ITEMS, NAV_SECTIONS } from "./nav-config";
@@ -35,8 +35,8 @@ export function MobileNav({ isAdmin }: { isAdmin: boolean }) {
           <div className="relative flex w-64 flex-col border-r border-border/50 bg-card/95 backdrop-blur-2xl">
             <div className="flex h-16 items-center justify-between border-b border-border/50 px-4 font-bold">
               <span className="flex items-center gap-2">
-                <span className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-violet-500 text-primary-foreground">
-                  <Sparkles className="size-4" />
+                <span className="flex size-8 items-center justify-center overflow-hidden rounded-lg border border-border/60 bg-card">
+                  <img src="/logo/Logo%20CLARTAS.png" alt="CLARTAS" className="size-6 object-contain" />
                 </span>
                 <span className="gradient-text">CLARTAS</span>
               </span>

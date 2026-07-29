@@ -1,5 +1,4 @@
 import { setRequestLocale } from "next-intl/server";
-import { Sparkles } from "lucide-react";
 import { isValidLocale, type Locale } from "@/i18n/routing";
 import { redirect } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
@@ -26,8 +25,8 @@ export default async function AuthLayout({
     <div className="flex min-h-screen flex-col">
       <header className="flex h-16 items-center justify-between px-6">
         <Link href="/" className="flex items-center gap-2 font-bold">
-          <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Sparkles className="size-5" />
+          <span className="flex size-8 items-center justify-center overflow-hidden rounded-lg border border-border/60 bg-card">
+            <img src="/logo/Logo%20CLARTAS.png" alt="CLARTAS" className="size-6 object-contain" />
           </span>
           CLARTAS
         </Link>

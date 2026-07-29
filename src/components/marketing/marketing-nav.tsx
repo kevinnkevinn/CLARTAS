@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, Sparkles, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { buttonVariants } from "@/components/ui/button";
@@ -27,8 +27,8 @@ export function MarketingNav() {
     <header className="sticky top-0 z-40 border-b border-border/50 bg-background/80 backdrop-blur-xl">
       <div className="container flex h-16 items-center justify-between gap-3 md:h-[4.25rem]">
         <Link href="/" className="group flex items-center gap-2.5 font-bold">
-          <span className="flex size-9 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-[0_8px_24px_-8px_hsl(var(--primary))] transition group-hover:scale-105">
-            <Sparkles className="size-5" />
+          <span className="flex size-9 items-center justify-center overflow-hidden rounded-2xl border border-border/60 bg-card shadow-[0_8px_24px_-8px_hsl(var(--primary))] transition group-hover:scale-105">
+            <img src="/logo/Logo%20CLARTAS.png" alt="CLARTAS" className="size-7 object-contain" />
           </span>
           <span className="font-display text-lg tracking-tight lowercase sm:text-xl">clartas</span>
         </Link>
