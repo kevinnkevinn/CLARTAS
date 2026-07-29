@@ -103,12 +103,15 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className="dark" suppressHydrationWarning>
-      <head>
-        <Script id="clartas-theme-init" strategy="beforeInteractive">
-          {`(function(){try{var t=localStorage.getItem("clartas-theme");if(t==="light")document.documentElement.classList.remove("dark");else document.documentElement.classList.add("dark");}catch(e){}})();`}
-        </Script>
-      </head>
+      <head />
       <body className={bodyClassName} suppressHydrationWarning>
+        <Script
+          id="clartas-theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("clartas-theme");if(t==="light")document.documentElement.classList.remove("dark");else document.documentElement.classList.add("dark");}catch(e){}})();`,
+          }}
+        />
         <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </body>
     </html>
