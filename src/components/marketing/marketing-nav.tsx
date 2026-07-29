@@ -28,7 +28,7 @@ export function MarketingNav() {
       <div className="container flex h-16 items-center justify-between gap-3 md:h-[4.25rem]">
         <Link href="/" className="group flex items-center gap-2.5 font-bold">
           <span className="flex size-9 items-center justify-center overflow-hidden rounded-2xl border border-border/60 bg-card shadow-[0_8px_24px_-8px_hsl(var(--primary))] transition group-hover:scale-105">
-            <img src="/logo/Logo%20CLARTAS.png" alt="CLARTAS" className="size-7 object-contain" />
+            <img src="/logo/Logo%20CLARTAS.png" alt="CLARTAS" className="size-8 object-contain" />
           </span>
           <span className="font-display text-lg tracking-tight lowercase sm:text-xl">clartas</span>
         </Link>
