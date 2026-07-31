@@ -1,0 +1,662 @@
+export type VideoFeatureCategoryId =
+  | "media-management"
+  | "timeline-editing"
+  | "video-transform"
+  | "speed-controls"
+  | "transitions"
+  | "video-effects"
+  | "color-correction"
+  | "masking"
+  | "tracking"
+  | "green-screen-compositing"
+  | "multi-camera"
+  | "motion-graphics"
+  | "text-titles"
+  | "subtitle-transcription"
+  | "audio-editing"
+  | "audio-ai"
+  | "music-features"
+  | "animation"
+  | "ai-features"
+  | "visual-effects"
+  | "collaboration"
+  | "export-delivery"
+  | "mobile-social"
+  | "professional-studio";
+
+export interface VideoFeatureCategory {
+  id: VideoFeatureCategoryId;
+  title: string;
+  summary: string;
+  baseCredits: number;
+  starter: string[];
+  features: string[];
+}
+
+export interface VideoFeatureDefinition {
+  id: string;
+  name: string;
+  categoryId: VideoFeatureCategoryId;
+  categoryTitle: string;
+  level: "starter" | "advanced";
+  credits: number;
+  summary: string;
+}
+
+export interface VideoImportProfile {
+  id:
+    | "video"
+    | "audio"
+    | "image"
+    | "gif"
+    | "psd"
+    | "ai"
+    | "raw"
+    | "hdr"
+    | "subtitle"
+    | "lut";
+  label: string;
+  accept: string;
+  featureName: string;
+}
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+export const VIDEO_IMPORT_PROFILES: VideoImportProfile[] = [
+  { id: "video", label: "Import video", accept: "video/*", featureName: "Import video" },
+  { id: "audio", label: "Import audio", accept: "audio/*", featureName: "Import audio" },
+  {
+    id: "image",
+    label: "Import gambar",
+    accept: "image/png,image/jpeg,image/webp,image/heic,image/heif",
+    featureName: "Import gambar",
+  },
+  { id: "gif", label: "Import GIF", accept: "image/gif", featureName: "Import GIF" },
+  { id: "psd", label: "Import PSD", accept: ".psd", featureName: "Import file PSD" },
+  { id: "ai", label: "Import AI", accept: ".ai,application/postscript,application/pdf", featureName: "Import file AI" },
+  { id: "raw", label: "Import RAW", accept: ".cr2,.cr3,.nef,.arw,.dng,.raw,.orf,.rw2", featureName: "Import file RAW" },
+  { id: "hdr", label: "Import HDR", accept: ".hdr,.exr,.pfm", featureName: "Import file HDR" },
+  { id: "subtitle", label: "Import subtitle", accept: ".srt,.vtt,.ass,.ssa,.sub", featureName: "Import subtitle" },
+  { id: "lut", label: "Import LUT", accept: ".cube,.3dl,.lut", featureName: "Import LUT" },
+];
+
+export const VIDEO_FEATURE_CATEGORIES: VideoFeatureCategory[] = [
+  {
+    id: "media-management",
+    title: "Manajemen Media",
+    summary: "Ingest, organize, browse, and manage source assets before editing.",
+    baseCredits: 1,
+    starter: ["Import video", "Import audio", "Import gambar", "Media Browser", "Media Pool", "Media Search"],
+    features: [
+      "Import video",
+      "Import audio",
+      "Import gambar",
+      "Import GIF",
+      "Import file PSD",
+      "Import file AI",
+      "Import file RAW",
+      "Import file HDR",
+      "Import subtitle",
+      "Import LUT",
+      "Media Browser",
+      "Media Pool",
+      "Asset Manager",
+      "Metadata Editor",
+      "Proxy Media",
+      "Smart Bin",
+      "Media Organization",
+      "Media Tagging",
+      "Media Search",
+      "Duplicate Detection",
+      "Cloud Asset Management",
+    ],
+  },
+  {
+    id: "timeline-editing",
+    title: "Timeline Editing",
+    summary: "Build multi-track edits with trim, cut, sync, and advanced editorial tools.",
+    baseCredits: 2,
+    starter: ["Multi-track timeline", "Drag and drop editing", "Trim clip", "Split clip", "Timeline markers", "Timeline snapping"],
+    features: [
+      "Multi-track timeline",
+      "Drag and drop editing",
+      "Trim clip",
+      "Split clip",
+      "Cut clip",
+      "Razor tool",
+      "Ripple edit",
+      "Rolling edit",
+      "Slip edit",
+      "Slide edit",
+      "Stretch edit",
+      "Gap removal",
+      "Magnetic timeline",
+      "Nested sequence",
+      "Compound clip",
+      "Adjustment layer",
+      "Group clips",
+      "Sync clips",
+      "Linked clips",
+      "Unlink audio-video",
+      "Timeline markers",
+      "Chapter markers",
+      "Timeline zoom",
+      "Timeline snapping",
+      "Timeline locking",
+      "Timeline grouping",
+      "Multi-sequence editing",
+    ],
+  },
+  {
+    id: "video-transform",
+    title: "Video Transform",
+    summary: "Transform framing, motion, and lens geometry for precise composition.",
+    baseCredits: 2,
+    starter: ["Position", "Scale", "Rotation", "Crop", "Flip horizontal", "Flip vertical", "Pan & zoom"],
+    features: [
+      "Position",
+      "Scale",
+      "Rotation",
+      "Anchor point",
+      "Flip horizontal",
+      "Flip vertical",
+      "Crop",
+      "Perspective correction",
+      "Distortion correction",
+      "Lens correction",
+      "Fisheye correction",
+      "Motion blur",
+      "Pan & zoom",
+    ],
+  },
+  {
+    id: "speed-controls",
+    title: "Speed Controls",
+    summary: "Retiming tools for dramatic speed changes and smooth interpolation.",
+    baseCredits: 3,
+    starter: ["Speed up", "Slow motion", "Freeze frame", "Reverse video"],
+    features: [
+      "Speed up",
+      "Slow motion",
+      "Freeze frame",
+      "Reverse video",
+      "Time remapping",
+      "Speed ramping",
+      "Optical flow interpolation",
+      "Frame blending",
+    ],
+  },
+  {
+    id: "transitions",
+    title: "Transitions",
+    summary: "Transition library for editorial, social, and stylized motion design.",
+    baseCredits: 2,
+    starter: ["Fade in", "Fade out", "Cross dissolve", "Slide transition", "Zoom transition"],
+    features: [
+      "Fade in",
+      "Fade out",
+      "Cross dissolve",
+      "Dip to black",
+      "Dip to white",
+      "Wipe",
+      "Slide transition",
+      "Push transition",
+      "Zoom transition",
+      "Spin transition",
+      "Blur transition",
+      "3D transition",
+      "Custom transition",
+    ],
+  },
+  {
+    id: "video-effects",
+    title: "Video Effects",
+    summary: "Stylize footage with cinematic, retro, surreal, and utility effects.",
+    baseCredits: 4,
+    starter: ["Blur", "Sharpen", "Glow", "Vignette", "Film grain", "Cinematic effect"],
+    features: [
+      "Blur",
+      "Gaussian blur",
+      "Directional blur",
+      "Sharpen",
+      "Glow",
+      "Bloom",
+      "Vignette",
+      "Film grain",
+      "Noise effect",
+      "Lens flare",
+      "Glitch",
+      "RGB split",
+      "VHS effect",
+      "Retro effect",
+      "Cinematic effect",
+      "Cartoon effect",
+      "Sketch effect",
+      "Mosaic",
+      "Pixelate",
+      "Posterize",
+      "Emboss",
+      "Mirror effect",
+      "Kaleidoscope",
+      "Distortion",
+      "Warp effect",
+      "Ripple effect",
+      "Liquid effect",
+    ],
+  },
+  {
+    id: "color-correction",
+    title: "Color Correction",
+    summary: "Grade footage from quick balance to advanced HDR and secondary workflows.",
+    baseCredits: 4,
+    starter: ["Brightness", "Contrast", "Saturation", "Exposure", "White balance", "LUT support"],
+    features: [
+      "Brightness",
+      "Contrast",
+      "Saturation",
+      "Exposure",
+      "Highlights",
+      "Shadows",
+      "Whites",
+      "Blacks",
+      "Temperature",
+      "Tint",
+      "White balance",
+      "Color wheels",
+      "RGB curves",
+      "Hue curves",
+      "Luma curves",
+      "HSL controls",
+      "Color matching",
+      "Shot matching",
+      "LUT support",
+      "Custom LUT creation",
+      "HDR grading",
+      "SDR conversion",
+      "Tone mapping",
+      "Film emulation",
+      "Color isolation",
+      "Secondary color correction",
+    ],
+  },
+  {
+    id: "masking",
+    title: "Masking",
+    summary: "Create soft, tracked, and intelligent masks for localized adjustments.",
+    baseCredits: 4,
+    starter: ["Rectangle mask", "Circle mask", "Free draw mask", "AI mask", "Background mask"],
+    features: [
+      "Rectangle mask",
+      "Circle mask",
+      "Free draw mask",
+      "Bezier mask",
+      "AI mask",
+      "Subject mask",
+      "Face mask",
+      "Object mask",
+      "Background mask",
+      "Invert mask",
+      "Feather mask",
+      "Animated mask",
+    ],
+  },
+  {
+    id: "tracking",
+    title: "Tracking",
+    summary: "Follow subjects, objects, surfaces, and cameras across a shot.",
+    baseCredits: 5,
+    starter: ["Motion tracking", "Object tracking", "Face tracking", "AI tracking"],
+    features: [
+      "Motion tracking",
+      "Object tracking",
+      "Face tracking",
+      "Body tracking",
+      "Camera tracking",
+      "Surface tracking",
+      "Planar tracking",
+      "Point tracking",
+      "AI tracking",
+    ],
+  },
+  {
+    id: "green-screen-compositing",
+    title: "Green Screen & Compositing",
+    summary: "Composite layers, isolate subjects, and build screen replacement workflows.",
+    baseCredits: 5,
+    starter: ["Chroma key", "Green screen removal", "Background replacement", "Blend modes"],
+    features: [
+      "Chroma key",
+      "Ultra key",
+      "Green screen removal",
+      "Blue screen removal",
+      "Spill suppression",
+      "Background replacement",
+      "Layer compositing",
+      "Blend modes",
+      "Alpha channel editing",
+      "Matte creation",
+      "Rotoscoping",
+      "Garbage matte",
+    ],
+  },
+  {
+    id: "multi-camera",
+    title: "Multi-Camera",
+    summary: "Synchronize and switch between multiple camera angles efficiently.",
+    baseCredits: 5,
+    starter: ["Multi-camera synchronization", "Camera switching", "Audio sync multicam"],
+    features: [
+      "Multi-camera synchronization",
+      "Camera switching",
+      "Live camera selection",
+      "Audio sync multicam",
+      "Timecode sync",
+    ],
+  },
+  {
+    id: "motion-graphics",
+    title: "Motion Graphics",
+    summary: "Templates and graphic animation layers for explainers and branded content.",
+    baseCredits: 4,
+    starter: ["Motion graphics templates", "Shape layers", "Animated icons", "Lower thirds", "Logo animation"],
+    features: [
+      "Motion graphics templates",
+      "Shape layers",
+      "Vector graphics",
+      "Infographics",
+      "Animated icons",
+      "Animated overlays",
+      "Lower thirds",
+      "Broadcast graphics",
+      "Logo animation",
+      "Kinetic typography",
+    ],
+  },
+  {
+    id: "text-titles",
+    title: "Text & Titles",
+    summary: "Build captions, titles, credits, and kinetic text systems.",
+    baseCredits: 2,
+    starter: ["Static text", "Animated text", "Title editor", "Subtitle editor", "Text presets"],
+    features: [
+      "Static text",
+      "Animated text",
+      "Title editor",
+      "Subtitle editor",
+      "Open captions",
+      "Closed captions",
+      "Multi-language captions",
+      "Karaoke text",
+      "Scrolling text",
+      "Rolling credits",
+      "Text presets",
+      "Text templates",
+      "Text effects",
+      "Text tracking",
+      "Text shadow",
+      "Text stroke",
+      "Text background",
+    ],
+  },
+  {
+    id: "subtitle-transcription",
+    title: "Subtitle & Transcription",
+    summary: "Transcribe, sync, style, translate, and correct spoken dialogue.",
+    baseCredits: 3,
+    starter: ["Speech-to-text", "Auto subtitle generation", "Subtitle synchronization", "Subtitle styling"],
+    features: [
+      "Speech-to-text",
+      "Auto subtitle generation",
+      "Subtitle translation",
+      "Subtitle synchronization",
+      "Subtitle styling",
+      "Auto caption correction",
+      "Transcript editing",
+    ],
+  },
+  {
+    id: "audio-editing",
+    title: "Audio Editing",
+    summary: "Trim, mix, automate, and polish dialogue, music, and sound design.",
+    baseCredits: 3,
+    starter: ["Audio trimming", "Audio fade", "Audio mixer", "Volume automation", "EQ"],
+    features: [
+      "Audio trimming",
+      "Audio fade",
+      "Audio transitions",
+      "Audio mixer",
+      "Volume automation",
+      "Pan control",
+      "EQ",
+      "Compressor",
+      "Limiter",
+      "Gate",
+      "Reverb",
+      "Delay",
+      "Chorus",
+      "Flanger",
+      "Pitch shift",
+      "Audio normalization",
+      "Audio ducking",
+      "Loudness correction",
+      "Surround sound mixing",
+      "3D audio editing",
+    ],
+  },
+  {
+    id: "audio-ai",
+    title: "Audio AI",
+    summary: "AI-powered cleanup and enhancement for dialogue and location sound.",
+    baseCredits: 4,
+    starter: ["Voice enhancement", "Noise reduction", "Noise removal", "Speech clarity enhancement"],
+    features: [
+      "Voice enhancement",
+      "Voice isolation",
+      "Noise reduction",
+      "Noise removal",
+      "Echo removal",
+      "Hum removal",
+      "Wind noise removal",
+      "Speech clarity enhancement",
+      "Auto audio cleanup",
+    ],
+  },
+  {
+    id: "music-features",
+    title: "Music Features",
+    summary: "Music discovery, beat analysis, and rhythm-aware editorial tools.",
+    baseCredits: 2,
+    starter: ["Music library", "Beat detection", "Beat synchronization", "Music looping"],
+    features: [
+      "Music library",
+      "Beat detection",
+      "Beat synchronization",
+      "Auto beat cuts",
+      "Royalty-free music access",
+      "Music looping",
+      "Music matching",
+    ],
+  },
+  {
+    id: "animation",
+    title: "Animation",
+    summary: "Animate properties and camera motion with keyframes and curves.",
+    baseCredits: 3,
+    starter: ["Keyframes", "Ease in", "Ease out", "Object animation", "Text animation"],
+    features: [
+      "Keyframes",
+      "Auto keyframes",
+      "Curve editor",
+      "Ease in",
+      "Ease out",
+      "Motion paths",
+      "Object animation",
+      "Text animation",
+      "Camera animation",
+    ],
+  },
+  {
+    id: "ai-features",
+    title: "AI Features",
+    summary: "High-value AI tools for smart editing, generation, enhancement, and discovery.",
+    baseCredits: 5,
+    starter: ["AI auto cut", "AI scene detection", "AI smart reframe", "AI speech-to-text", "AI thumbnail generation"],
+    features: [
+      "AI auto cut",
+      "AI highlight detection",
+      "AI scene detection",
+      "AI smart reframe",
+      "AI object selection",
+      "AI object removal",
+      "AI background removal",
+      "AI sky replacement",
+      "AI relighting",
+      "AI face enhancement",
+      "AI beauty filter",
+      "AI portrait enhancement",
+      "AI image upscaling",
+      "AI video upscaling",
+      "AI frame interpolation",
+      "AI colorization",
+      "AI voice cloning",
+      "AI text-to-speech",
+      "AI speech-to-text",
+      "AI script generation",
+      "AI video generation",
+      "AI thumbnail generation",
+      "AI content tagging",
+      "AI search",
+      "AI recommendation",
+    ],
+  },
+  {
+    id: "visual-effects",
+    title: "Visual Effects (VFX)",
+    summary: "High-end compositing, atmospheric effects, and 3D-oriented finishing.",
+    baseCredits: 6,
+    starter: ["Particle system", "Camera shake", "Lens effects", "Light rays", "3D text"],
+    features: [
+      "Particle system",
+      "Smoke effects",
+      "Fire effects",
+      "Rain effects",
+      "Snow effects",
+      "Explosion effects",
+      "Volumetric lighting",
+      "Light rays",
+      "Lens effects",
+      "Camera shake",
+      "3D compositing",
+      "3D text",
+      "3D models",
+      "3D tracking",
+      "Match moving",
+      "CGI integration",
+    ],
+  },
+  {
+    id: "collaboration",
+    title: "Collaboration",
+    summary: "Coordinate reviews, approvals, and distributed editorial workflows.",
+    baseCredits: 4,
+    starter: ["Shared projects", "Review comments", "Approval workflow"],
+    features: [
+      "Shared projects",
+      "Team projects",
+      "Cloud collaboration",
+      "Version control",
+      "Review comments",
+      "Approval workflow",
+      "Remote editing",
+    ],
+  },
+  {
+    id: "export-delivery",
+    title: "Export & Delivery",
+    summary: "Deliver projects across formats, platforms, and rendering pipelines.",
+    baseCredits: 2,
+    starter: ["MP4 export", "GIF export", "H.264 export", "Preset export", "YouTube export", "TikTok export"],
+    features: [
+      "MP4 export",
+      "MOV export",
+      "AVI export",
+      "MKV export",
+      "GIF export",
+      "H.264 export",
+      "H.265 export",
+      "ProRes export",
+      "DNxHR export",
+      "HDR export",
+      "Batch export",
+      "Background rendering",
+      "Hardware acceleration",
+      "GPU rendering",
+      "Preset export",
+      "YouTube export",
+      "TikTok export",
+      "Instagram export",
+      "Facebook export",
+      "Vimeo export",
+      "Broadcast export",
+    ],
+  },
+  {
+    id: "mobile-social",
+    title: "Mobile & Social Media",
+    summary: "Create platform-native edits with fast resizing and social-first formats.",
+    baseCredits: 2,
+    starter: ["Vertical video editing", "Square video editing", "Shorts editing", "Reels editing", "Auto resize"],
+    features: [
+      "Vertical video editing",
+      "Square video editing",
+      "Story format editing",
+      "Shorts editing",
+      "Reels editing",
+      "TikTok editing",
+      "Social media templates",
+      "Auto resize",
+      "Multi-platform adaptation",
+    ],
+  },
+  {
+    id: "professional-studio",
+    title: "Profesional & Studio Features",
+    summary: "Enterprise-grade pipelines for finishing, grading, sound, and broadcast workflows.",
+    baseCredits: 6,
+    starter: ["Node-based compositing", "Node-based color grading", "Fusion workflow", "Fairlight workflow"],
+    features: [
+      "Node-based compositing",
+      "Node-based color grading",
+      "Fusion workflow",
+      "Fairlight workflow",
+      "Broadcast workflow",
+      "Film workflow",
+      "HDR workflow",
+      "Dolby Vision workflow",
+      "ACES workflow",
+      "RAW workflow",
+      "Collaborative workflow",
+    ],
+  },
+];
+
+export const VIDEO_FEATURES: VideoFeatureDefinition[] = VIDEO_FEATURE_CATEGORIES.flatMap((category) =>
+  category.features.map((featureName) => ({
+    id: `${category.id}-${slugify(featureName)}`,
+    name: featureName,
+    categoryId: category.id,
+    categoryTitle: category.title,
+    level: category.starter.includes(featureName) ? "starter" : "advanced",
+    credits: category.baseCredits + (category.starter.includes(featureName) ? 0 : 2),
+    summary: `${featureName} workflow inside ${category.title.toLowerCase()}.`,
+  })),
+);
+
+export const VIDEO_FEATURE_COUNT = VIDEO_FEATURES.length;
+export const VIDEO_STARTER_FEATURE_COUNT = VIDEO_FEATURES.filter((feature) => feature.level === "starter").length;
