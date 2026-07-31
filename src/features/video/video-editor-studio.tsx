@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Play, Pause, Scissors, Merge, Download, Loader2 } from "lucide-react";
+import { Play, Pause, Scissors, Merge, Download, Loader2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { FileDropzone } from "@/components/file-dropzone";
 import { runClientAI } from "@/features/lab/client-ai";
-import { loadPendingMedia } from "@/lib/pending-media";
+import { clearPendingMedia, loadPendingMedia } from "@/lib/pending-media";
 
 interface Clip {
   id: string;
@@ -51,20 +51,29 @@ export function VideoEditorStudio() {
   }, [clips]);
 
   useEffect(() => {
-    const pending = loadPendingMedia("video");
-    if (!pending || clips.length > 0) return;
+    if (clips.length > 0) return;
 
-    const clip: Clip = {
-      id: crypto.randomUUID(),
-      url: pending,
-      name: "Uploaded media",
-      start: 0,
-      end: 10,
-      speed: 1,
+    let active = true;
+
+    void loadPendingMedia("video").then((pending) => {
+      if (!active || !pending) return;
+
+      const clip: Clip = {
+        id: crypto.randomUUID(),
+        url: pending,
+        name: "Uploaded media",
+        start: 0,
+        end: 10,
+        speed: 1,
+      };
+
+      setClips([clip]);
+      setSelected(clip.id);
+    });
+
+    return () => {
+      active = false;
     };
-
-    setClips([clip]);
-    setSelected(clip.id);
   }, [clips.length]);
 
   useEffect(() => {
@@ -126,6 +135,18 @@ export function VideoEditorStudio() {
       setPlayhead((current) => Math.min(Math.max(current, active.start), active.end));
     }
     setIsPlaying((p) => !p);
+  }
+
+  async function removeSelectedClip() {
+    if (!selected) return;
+
+    setClips((prev) => {
+      const nextClips = prev.filter((clip) => clip.id !== selected);
+      setSelected(nextClips[0]?.id ?? null);
+      return nextClips;
+    });
+    setOutputUrl(null);
+    await clearPendingMedia("video");
   }
 
   async function exportVideo() {
@@ -198,8 +219,13 @@ export function VideoEditorStudio() {
           <div className="space-y-3 rounded-xl border bg-card p-4">
             <div className="flex items-center justify-between">
               <h3 className="font-semibold">Preview</h3>
-              <div className="text-xs text-muted-foreground">
-                {formatTime(playhead)} / {formatTime(active.end)}
+              <div className="flex items-center gap-2">
+                <div className="text-xs text-muted-foreground">
+                  {formatTime(playhead)} / {formatTime(active.end)}
+                </div>
+                <Button type="button" variant="ghost" size="sm" onClick={() => void removeSelectedClip()}>
+                  <Trash2 className="mr-1 size-3.5" /> Hapus media
+                </Button>
               </div>
             </div>
             {activeIsVideo ? (

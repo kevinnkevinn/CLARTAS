@@ -23,7 +23,9 @@ import { env } from "@/lib/env";
 import { pollAIJob } from "@/lib/ai/poll-job";
 import { useLiteMode } from "@/lib/lite-mode/context";
 import { LITE_EDITOR_TOOL_IDS } from "@/lib/lite-mode/config";
+import { clearPendingMedia, loadPendingMedia } from "@/lib/pending-media";
 import { uploadMediaFile } from "@/lib/upload-client";
+import { getUploadErrorMessage } from "@/lib/upload-errors";
 import { runClientAI, playTextToSpeech, type ClientAIAction } from "@/features/lab/client-ai";
 import { addDemoAssetFromUrl } from "@/features/demo/local-assets";
 import { ImageAdjustments } from "./image-adjustments";
@@ -66,11 +68,19 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const pending = sessionStorage.getItem("clartas-pending-image");
-    if (pending && !inputUrl) {
+    if (inputUrl) return;
+
+    let active = true;
+
+    void loadPendingMedia("image").then((pending) => {
+      if (!active || !pending) return;
       setInputUrl(pending);
       setInputKind("image");
-    }
+    });
+
+    return () => {
+      active = false;
+    };
   }, [inputUrl]);
 
   const filteredTools = useMemo(() => {
@@ -81,6 +91,7 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
 
   const displayUrl = previewUrl ?? inputUrl;
   const onAdjustPreview = useCallback((url: string) => setPreviewUrl(url), []);
+  const uploadAccept = "image/jpeg,image/png,image/webp,image/gif,video/mp4,video/quicktime,video/webm";
 
   const needsImage = tool.inputType === "image" || tool.inputType === "images";
   const setField = (k: string, v: string) => setFields((p) => ({ ...p, [k]: v }));
@@ -91,7 +102,7 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
     try {
       const result = await uploadMediaFile(file);
       if (!result.ok) {
-        setError(result.error);
+        setError(getUploadErrorMessage(result.error, uploadAccept));
         return;
       }
       setInputUrl(result.data.signedUrl);
@@ -99,10 +110,21 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
       setAssetId(result.data.assetId ?? null);
       setPreviewUrl(null);
     } catch {
-      setError("upload_failed");
+      setError(getUploadErrorMessage("upload_failed", uploadAccept));
     } finally {
       setUploading(false);
     }
+  }
+
+  async function clearUploadedMedia() {
+    setInputUrl(null);
+    setInputKind(null);
+    setAssetId(null);
+    setPreviewUrl(null);
+    setMaskUrl(null);
+    setOutput(null);
+    setError(null);
+    await clearPendingMedia("image");
   }
 
   function handleFileDrop(e: React.DragEvent) {
@@ -155,8 +177,8 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
         const defaultPrompt =
           tool.action === "product-studio"
             ? fields.prompt ||
-              scenePrompts[scene ?? ""] ||
-              `Professional ${scene ?? "studio"} product photography, clean commercial lighting, e-commerce quality`
+            scenePrompts[scene ?? ""] ||
+            `Professional ${scene ?? "studio"} product photography, clean commercial lighting, e-commerce quality`
             : undefined;
         return {
           imageUrl: inputUrl ?? undefined,
@@ -373,6 +395,20 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
               <p className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
                 <Loader2 className="size-3 animate-spin" /> {t("processing")}
               </p>
+            ) : null}
+            {inputUrl ? (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="mt-3"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  void clearUploadedMedia();
+                }}
+              >
+                Hapus media
+              </Button>
             ) : null}
           </div>
         ) : null}
