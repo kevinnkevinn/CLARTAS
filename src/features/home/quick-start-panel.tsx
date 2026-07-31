@@ -18,6 +18,7 @@ import { runClientAI } from "@/features/lab/client-ai";
 import { addDemoAssetFromUrl } from "@/features/demo/local-assets";
 import { env } from "@/lib/env";
 import { pollAIJob } from "@/lib/ai/poll-job";
+import { savePendingMedia } from "@/lib/pending-media";
 
 const QUICK_ACTIONS = [
   { href: "/editor?tool=remove-background", icon: Scissors, label: "Hapus background" },
@@ -48,12 +49,18 @@ export function QuickStartPanel() {
   const router = useRouter();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [assetId, setAssetId] = useState<string | null>(null);
+  const [assetKind, setAssetKind] = useState<"image" | "video">("image");
+  const [imageBroken, setImageBroken] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function quickRemoveBg() {
     if (!imageUrl) return;
+    if (assetKind !== "image") {
+      setError("Hapus background hanya tersedia untuk foto.");
+      return;
+    }
     setRunning(true);
     setError(null);
     try {
@@ -70,9 +77,7 @@ export function QuickStartPanel() {
   }
 
   function go(href: string) {
-    if (imageUrl && typeof window !== "undefined") {
-      sessionStorage.setItem("clartas-pending-image", imageUrl);
-    }
+    if (imageUrl) savePendingMedia(imageUrl, assetKind);
     router.push(href);
   }
 
@@ -84,11 +89,17 @@ export function QuickStartPanel() {
       </p>
       <FileDropzone
         label="Upload foto atau video produk Anda di sini"
-        onUpload={(url, _file, id) => {
+        onUpload={(url, file, id) => {
+          const nextAssetKind = file.type.startsWith("video/") ? "video" : "image";
+
           setImageUrl(url);
           setAssetId(id ?? null);
+          setAssetKind(nextAssetKind);
+          setImageBroken(false);
           setPreview(null);
-          sessionStorage.setItem("clartas-pending-image", url);
+          setError(null);
+          savePendingMedia(url, nextAssetKind);
+          router.push(nextAssetKind === "video" ? "/video-editor" : "/editor?tool=adjustments");
         }}
       />
 

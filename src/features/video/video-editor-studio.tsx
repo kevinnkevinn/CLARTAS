@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { FileDropzone } from "@/components/file-dropzone";
 import { runClientAI } from "@/features/lab/client-ai";
+import { loadPendingMedia } from "@/lib/pending-media";
 
 interface Clip {
   id: string;
@@ -48,6 +49,23 @@ export function VideoEditorStudio() {
   const timelineDuration = useMemo(() => {
     return clips.reduce((acc, clip) => acc + Math.max(clip.end - clip.start, 0), 0);
   }, [clips]);
+
+  useEffect(() => {
+    const pending = loadPendingMedia("video");
+    if (!pending || clips.length > 0) return;
+
+    const clip: Clip = {
+      id: crypto.randomUUID(),
+      url: pending,
+      name: "Uploaded media",
+      start: 0,
+      end: 10,
+      speed: 1,
+    };
+
+    setClips([clip]);
+    setSelected(clip.id);
+  }, [clips.length]);
 
   useEffect(() => {
     if (!active) {
