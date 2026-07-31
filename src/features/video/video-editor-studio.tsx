@@ -184,6 +184,27 @@ export function VideoEditorStudio() {
     });
   }, [catalogQuery, selectedCategory, workspaceMode]);
 
+  const categoryCoverage = useMemo(
+    () =>
+      VIDEO_FEATURE_CATEGORIES.map((category) => {
+        const all = VIDEO_FEATURES.filter((feature) => feature.categoryId === category.id);
+        const starter = all.filter((feature) => feature.level === "starter").length;
+        return {
+          id: category.id,
+          title: category.title,
+          total: all.length,
+          starter,
+          advanced: all.length - starter,
+        };
+      }),
+    [],
+  );
+
+  const totalCreditsSpent = useMemo(
+    () => creditEvents.reduce((acc, event) => acc + event.credits, 0),
+    [creditEvents],
+  );
+
   const groupedFeatures = useMemo(
     () =>
       VIDEO_FEATURE_CATEGORIES.map((category) => ({
@@ -436,6 +457,38 @@ export function VideoEditorStudio() {
     }
   }
 
+  function simulateFeatureBatch(features: VideoFeatureDefinition[], label: string) {
+    if (!features.length) {
+      setFeatureMessage("Tidak ada fitur yang cocok untuk disimulasikan pada filter saat ini.");
+      return;
+    }
+
+    const totalDebit = features.reduce((acc, feature) => acc + feature.credits, 0);
+    if (simulatedCredits < totalDebit) {
+      setFeatureMessage(
+        `Kredit simulasi tidak cukup untuk batch ${label}. Butuh ${totalDebit} kredit.`,
+      );
+      return;
+    }
+
+    const now = Date.now();
+    const events: CreditEvent[] = features
+      .slice()
+      .reverse()
+      .map((feature, index) => ({
+        id: crypto.randomUUID(),
+        featureId: feature.id,
+        featureName: feature.name,
+        credits: feature.credits,
+        at: now - index,
+      }));
+
+    setSimulatedCredits((prev) => prev - totalDebit);
+    setCreditEvents((prev) => [...events, ...prev].slice(0, 40));
+    setActiveFeatureId(features[features.length - 1]?.id ?? null);
+    setFeatureMessage(`${label} disimulasikan (${features.length} fitur). Kredit berkurang ${totalDebit}.`);
+  }
+
   const selectedImportProfile = VIDEO_IMPORT_PROFILES.find((profile) => profile.id === pendingImportProfileId)!;
 
   return (
@@ -489,6 +542,9 @@ export function VideoEditorStudio() {
                 <Coins className="size-7 text-amber-500" />
                 {simulatedCredits.toLocaleString("id-ID")}
               </div>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Total kredit terpakai: {totalCreditsSpent.toLocaleString("id-ID")}
+              </p>
               <div className="mt-2 flex gap-2">
                 <Button type="button" size="sm" variant="outline" onClick={() => setSimulatedCredits(DEFAULT_SIM_CREDITS)}>
                   Isi ulang
@@ -895,6 +951,29 @@ export function VideoEditorStudio() {
               <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input value={catalogQuery} onChange={(event) => setCatalogQuery(event.target.value)} placeholder="Cari fitur video, AI, audio, VFX..." className="pl-9" />
             </div>
+            <div className="grid gap-2">
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  simulateFeatureBatch(
+                    VIDEO_FEATURES.filter((feature) => feature.categoryId === selectedCategory),
+                    `Semua fitur ${VIDEO_FEATURE_CATEGORIES.find((category) => category.id === selectedCategory)?.title ?? "kategori"}`,
+                  )
+                }
+              >
+                Simulasi semua fitur kategori aktif
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                onClick={() => simulateFeatureBatch(VIDEO_FEATURES, "Seluruh katalog fitur video")}
+              >
+                Simulasi seluruh fitur
+              </Button>
+            </div>
             <div className="space-y-2">
               {VIDEO_FEATURE_CATEGORIES.map((category) => {
                 const total = VIDEO_FEATURES.filter((feature) => feature.categoryId === category.id).length;
@@ -917,6 +996,16 @@ export function VideoEditorStudio() {
                   </button>
                 );
               })}
+            </div>
+            <div className="rounded-lg border p-3 text-xs text-muted-foreground">
+              <p className="font-medium text-foreground">Ringkasan Cakupan Fitur</p>
+              <div className="mt-2 space-y-1">
+                {categoryCoverage.map((item) => (
+                  <p key={item.id}>
+                    {item.title}: {item.total} fitur ({item.starter} starter, {item.advanced} studio)
+                  </p>
+                ))}
+              </div>
             </div>
           </CardContent>
         </Card>
