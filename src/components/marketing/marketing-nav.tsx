@@ -17,28 +17,54 @@ const NAV_LINKS = [
   { href: "/pricing", key: "pricing" as const },
 ];
 
-export function MarketingNav() {
+export function MarketingNav({ variant = "default" }: { variant?: "default" | "hero" }) {
   const t = useTranslations("nav");
   const tm = useTranslations("landing.nav");
   const demo = isDemoMode();
   const [open, setOpen] = useState(false);
 
+  const isHero = variant === "hero";
+
   return (
-    <header className="sticky top-0 z-40 border-b border-border/50 bg-background/80 backdrop-blur-xl">
-      <div className="container flex h-16 items-center justify-between gap-3 md:h-[4.25rem]">
+    <header
+      className={cn(
+        "z-40 backdrop-blur-2xl",
+        isHero
+          ? "absolute inset-x-0 top-0 bg-transparent"
+          : "sticky top-0 bg-background/80 shadow-[0_1px_0_0_rgba(0,0,0,0.04)]",
+      )}
+    >
+      <div className={cn("container flex h-16 items-center justify-between gap-3 md:h-[4.5rem]", isHero && "text-foreground dark:text-white")}>
         <Link href="/" className="group flex items-center gap-2.5 font-bold">
-          <span className="flex size-9 items-center justify-center overflow-hidden rounded-2xl border border-border/60 bg-card shadow-[0_8px_24px_-8px_hsl(var(--primary))] transition group-hover:scale-105">
+          <span
+            className={cn(
+              "flex size-9 items-center justify-center overflow-hidden rounded-2xl transition group-hover:scale-105",
+              isHero
+                ? "border border-border/70 bg-background/70 shadow-[0_10px_24px_-10px_rgba(0,0,0,0.12)] dark:border-white/15 dark:bg-white/10 dark:shadow-[0_10px_24px_-10px_rgba(255,255,255,0.15)]"
+                : "border border-border/60 bg-card shadow-[0_10px_24px_-10px_hsl(var(--primary)/0.5)]",
+            )}
+          >
             <img src="/logo/Logo%20CLARTAS.png" alt="CLARTAS" className="size-full object-contain" />
           </span>
           <span className="font-display text-lg tracking-tight lowercase sm:text-xl">clartas</span>
         </Link>
 
-        <nav className="hidden items-center gap-7 text-sm text-muted-foreground lg:flex">
+        <nav
+          className={cn(
+            "hidden items-center gap-1 rounded-full p-1 text-sm lg:flex",
+            isHero
+              ? "border border-border/70 bg-background/70 text-foreground/85 dark:border-white/15 dark:bg-white/10 dark:text-white/85"
+              : "border border-border/60 bg-card/70 text-muted-foreground",
+          )}
+        >
           {NAV_LINKS.map((link) => (
             <Link
               key={link.key}
               href={demo && link.href.startsWith("/#") ? "/dashboard" : link.href}
-              className="transition-colors hover:text-foreground"
+              className={cn(
+                "rounded-full px-4 py-2 transition-colors",
+                isHero ? "hover:bg-muted hover:text-foreground dark:hover:bg-white/10 dark:hover:text-white" : "hover:bg-muted hover:text-foreground",
+              )}
             >
               {link.key === "pricing" ? t("pricing") : tm(link.key)}
             </Link>
@@ -58,7 +84,11 @@ export function MarketingNav() {
             <>
               <Link
                 href="/sign-in"
-                className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "hidden rounded-full sm:inline-flex")}
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "sm" }),
+                  "hidden rounded-full sm:inline-flex",
+                  isHero && "text-foreground hover:bg-muted hover:text-foreground dark:text-white dark:hover:bg-white/10 dark:hover:text-white",
+                )}
               >
                 {t("signIn")}
               </Link>
@@ -66,7 +96,10 @@ export function MarketingNav() {
                 href="/sign-up"
                 className={cn(
                   buttonVariants({ size: "sm" }),
-                  "hidden rounded-full border border-border bg-card text-foreground shadow-none hover:bg-muted sm:inline-flex",
+                  "hidden rounded-full border shadow-none sm:inline-flex",
+                  isHero
+                    ? "border-border/70 bg-background text-foreground hover:bg-muted dark:border-white/15 dark:bg-white dark:text-[#060b17] dark:hover:bg-[#f0f5ff]"
+                    : "border-border/70 bg-card text-foreground hover:bg-muted",
                 )}
               >
                 {tm("bookDemo")}
@@ -75,7 +108,10 @@ export function MarketingNav() {
           )}
           <button
             type="button"
-            className="inline-flex size-9 items-center justify-center rounded-full border border-border/60 lg:hidden"
+            className={cn(
+              "inline-flex size-9 items-center justify-center rounded-full lg:hidden",
+              isHero ? "border border-border/70 bg-background/70 text-foreground dark:border-white/15 dark:bg-white/10 dark:text-white" : "border border-border/60 bg-card/80",
+            )}
             aria-expanded={open}
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => setOpen((v) => !v)}
@@ -86,33 +122,44 @@ export function MarketingNav() {
       </div>
 
       {open ? (
-        <div className="border-t border-border/50 bg-background lg:hidden">
+        <div className={cn("lg:hidden", isHero ? "bg-background/95 text-foreground dark:bg-[#060b17]/95 dark:text-white" : "border-t border-border/50 bg-background/95")}>
           <nav className="container flex flex-col gap-1 py-3">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.key}
                 href={demo && link.href.startsWith("/#") ? "/dashboard" : link.href}
-                className="rounded-xl px-3 py-2.5 text-sm text-muted-foreground transition hover:bg-muted hover:text-foreground"
+                className={cn(
+                  "rounded-2xl px-3 py-2.5 text-sm transition",
+                  isHero ? "text-foreground/75 hover:bg-muted hover:text-foreground dark:text-white/75 dark:hover:bg-white/10 dark:hover:text-white" : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                )}
                 onClick={() => setOpen(false)}
               >
                 {link.key === "pricing" ? t("pricing") : tm(link.key)}
               </Link>
             ))}
-            <div className="mt-2 flex flex-col gap-2 border-t border-border/50 pt-3 xs:hidden">
+            <div className={cn("mt-2 flex flex-col gap-2 pt-3 xs:hidden", isHero ? "border-t border-border/60 dark:border-white/10" : "border-t border-border/50")}>
               <LanguageSwitcher />
             </div>
             {!demo ? (
               <div className="mt-1 flex gap-2 pb-1">
                 <Link
                   href="/sign-in"
-                  className={cn(buttonVariants({ variant: "outline", size: "sm" }), "flex-1 rounded-full")}
+                  className={cn(
+                    buttonVariants({ variant: "outline", size: "sm" }),
+                    "flex-1 rounded-full",
+                    isHero && "border-border/70 bg-transparent text-foreground hover:bg-muted dark:border-white/15 dark:text-white dark:hover:bg-white/10",
+                  )}
                   onClick={() => setOpen(false)}
                 >
                   {t("signIn")}
                 </Link>
                 <Link
                   href="/sign-up"
-                  className={cn(buttonVariants({ size: "sm" }), "flex-1 rounded-full")}
+                  className={cn(
+                    buttonVariants({ size: "sm" }),
+                    "flex-1 rounded-full",
+                    isHero && "bg-foreground text-background hover:bg-foreground/90 dark:bg-white dark:text-[#060b17] dark:hover:bg-[#f0f5ff]",
+                  )}
                   onClick={() => setOpen(false)}
                 >
                   {tm("bookDemo")}
