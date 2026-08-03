@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  ChevronRight,
   Coins,
   Download,
   Film,
@@ -38,6 +39,7 @@ import {
 
 type WorkspaceMode = "beginner" | "studio";
 type ClipKind = "video" | "image" | "audio" | "gif";
+type FlowStep = "import" | "timeline" | "polish" | "export";
 
 interface Clip {
   id: string;
@@ -141,6 +143,9 @@ export function VideoEditorStudio() {
   const [featureMessage, setFeatureMessage] = useState(
     "Mode Beginner aktif. Fitur dasar diprioritaskan, semua fitur tetap tersedia lewat Studio mode.",
   );
+  const [showAdvancedPanels, setShowAdvancedPanels] = useState(false);
+  const [focusedStep, setFocusedStep] = useState<FlowStep>("import");
+  const [timelineReviewed, setTimelineReviewed] = useState(false);
   const [assets, setAssets] = useState<ImportedAsset[]>([]);
   const [pendingImportProfileId, setPendingImportProfileId] = useState<(typeof VIDEO_IMPORT_PROFILES)[number]["id"]>("video");
   const importInputRef = useRef<HTMLInputElement>(null);
@@ -205,13 +210,34 @@ export function VideoEditorStudio() {
     [creditEvents],
   );
 
+  const workflowStep = useMemo(() => {
+    if (outputUrl) return 4;
+    if (timelineReviewed && active) return 3;
+    if (clips.length > 0) return 2;
+    if (assets.length > 0) return 1;
+    return 0;
+  }, [active, assets.length, clips.length, outputUrl, timelineReviewed]);
+
+  const recommendedStep = useMemo<FlowStep>(() => {
+    if (!clips.length) return "import";
+    if (!timelineReviewed) return "timeline";
+    if (!active) return "timeline";
+    if (!outputUrl) return "polish";
+    return "export";
+  }, [active, clips.length, outputUrl, timelineReviewed]);
+
+  const visibleFeatureCards = useMemo(() => {
+    if (workspaceMode === "studio") return filteredFeatures;
+    return filteredFeatures.slice(0, 10);
+  }, [filteredFeatures, workspaceMode]);
+
   const groupedFeatures = useMemo(
     () =>
       VIDEO_FEATURE_CATEGORIES.map((category) => ({
         category,
-        features: filteredFeatures.filter((feature) => feature.categoryId === category.id),
+        features: visibleFeatureCards.filter((feature) => feature.categoryId === category.id),
       })).filter((group) => group.features.length > 0),
-    [filteredFeatures],
+    [visibleFeatureCards],
   );
 
   const starterGroups = useMemo(
@@ -324,6 +350,7 @@ export function VideoEditorStudio() {
     };
     setClips((prev) => [...prev, clip]);
     setSelected(clip.id);
+    setTimelineReviewed(false);
     setOutputUrl(null);
   }
 
@@ -379,6 +406,7 @@ export function VideoEditorStudio() {
       setSelected(nextClips[0]?.id ?? null);
       return nextClips;
     });
+    setTimelineReviewed(false);
     setOutputUrl(null);
     setFeatureMessage("Media pada timeline dihapus dari sesi aktif.");
     await clearPendingMedia("video");
@@ -386,6 +414,7 @@ export function VideoEditorStudio() {
 
   async function exportVideo() {
     if (!clips.length) return;
+    setTimelineReviewed(true);
     setProcessing(true);
     try {
       const imageUrls = clips
@@ -491,6 +520,91 @@ export function VideoEditorStudio() {
 
   const selectedImportProfile = VIDEO_IMPORT_PROFILES.find((profile) => profile.id === pendingImportProfileId)!;
 
+  const showNavigator = workspaceMode === "studio" || showAdvancedPanels;
+  const isBeginner = workspaceMode === "beginner";
+
+  const showImportPanel = !isBeginner || focusedStep === "import";
+  const showTimelinePanel = !isBeginner || focusedStep === "timeline";
+  const showPolishPanel = !isBeginner || focusedStep === "polish";
+  const showExportPanel = !isBeginner || focusedStep === "export";
+
+  useEffect(() => {
+    if (workspaceMode !== "beginner") return;
+    setFocusedStep(recommendedStep);
+  }, [recommendedStep, workspaceMode]);
+
+  function continueToTimeline() {
+    setFocusedStep("timeline");
+    setFeatureMessage("Media sudah masuk. Tinjau urutan clip di timeline sebelum lanjut ke preview.");
+  }
+
+  function continueToPolish() {
+    if (!selected) {
+      setFeatureMessage("Pilih satu clip di timeline terlebih dulu sebelum lanjut ke preview.");
+      return;
+    }
+
+    setTimelineReviewed(true);
+    setFocusedStep("polish");
+    setFeatureMessage("Masuk ke tahap preview. Sekarang Anda bisa trim, split, dan atur speed clip aktif.");
+  }
+
+  function continueToExport() {
+    setFocusedStep("export");
+    setFeatureMessage("Masuk ke tahap export. Pilih format lalu render hasil video.");
+  }
+
+  const workflowSteps = [
+    {
+      id: "step-import",
+      title: "Import",
+      subtitle: "Masukkan media",
+    },
+    {
+      id: "step-timeline",
+      title: "Timeline",
+      subtitle: "Susun klip",
+    },
+    {
+      id: "step-polish",
+      title: "Polish",
+      subtitle: "Preview & perapihan",
+    },
+    {
+      id: "step-export",
+      title: "Export",
+      subtitle: "Render hasil",
+    },
+  ] as const;
+
+  const selectedCategoryMeta =
+    VIDEO_FEATURE_CATEGORIES.find((category) => category.id === selectedCategory) ?? VIDEO_FEATURE_CATEGORIES[0];
+
+  const focusedStepMeta = workflowSteps.find((step) => {
+    if (focusedStep === "import") return step.id === "step-import";
+    if (focusedStep === "timeline") return step.id === "step-timeline";
+    if (focusedStep === "polish") return step.id === "step-polish";
+    return step.id === "step-export";
+  });
+
+  const workspaceStages = [
+    {
+      title: "1. Import",
+      description: "Masukkan video, foto, atau audio ke project bin.",
+      active: focusedStep === "import" || workflowStep === 0,
+    },
+    {
+      title: "2. Susun",
+      description: "Atur clip di timeline dan pilih item yang mau dipoles.",
+      active: focusedStep === "timeline" || focusedStep === "polish" || workflowStep === 2,
+    },
+    {
+      title: "3. Selesai",
+      description: "Preview hasil, lalu render atau export final.",
+      active: focusedStep === "export" || workflowStep === 4,
+    },
+  ] as const;
+
   return (
     <div className="space-y-6">
       <input
@@ -505,17 +619,46 @@ export function VideoEditorStudio() {
         }}
       />
 
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1.5fr)_360px]">
-        <Card>
-          <CardHeader className="pb-4">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
-                <CardTitle>Video Studio Workspace</CardTitle>
-                <CardDescription>
-                  Semua fitur video editor tersedia, tetapi mode pemula tetap jadi default supaya onboarding tidak berat.
-                </CardDescription>
+      <Card className="overflow-hidden border-border/70 bg-background/95 shadow-[0_24px_60px_-40px_rgba(0,0,0,0.18)]">
+        <CardContent className="p-0">
+          <div className="border-b bg-gradient-to-br from-muted/30 via-background to-muted/10 px-4 py-4 md:px-6 md:py-5">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+              <div className="max-w-2xl space-y-3">
+                <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.24em] text-muted-foreground">
+                  <span>Editing Workspace</span>
+                  <span className="rounded-full border bg-background px-2 py-0.5 tracking-[0.18em]">Guided</span>
+                </div>
+                <div>
+                  <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">Video Studio Workspace</h2>
+                  <p className="mt-1 text-sm text-muted-foreground md:text-base">
+                    Mulai dari import, susun clip, poles hasil, lalu export. Fitur tetap lengkap, tapi urutannya dibuat lebih jelas.
+                  </p>
+                </div>
+                <div className="grid gap-2 sm:grid-cols-3">
+                  {workspaceStages.map((stage) => (
+                    <div
+                      key={stage.title}
+                      className={cn(
+                        "rounded-2xl border px-3 py-3 transition",
+                        stage.active
+                          ? "border-primary/30 bg-primary/10 shadow-[0_12px_24px_-20px_rgba(234,88,12,0.55)]"
+                          : "border-border/60 bg-background/80",
+                      )}
+                    >
+                      <p className="text-sm font-semibold">{stage.title}</p>
+                      <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{stage.description}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="flex gap-2">
+
+              <div className="flex flex-wrap items-center gap-2 lg:justify-end">
+                <Badge variant="outline">{VIDEO_FEATURE_COUNT} fitur</Badge>
+                <Badge variant="outline">{VIDEO_STARTER_FEATURE_COUNT} starter</Badge>
+                <Badge variant="secondary" className="gap-1">
+                  <Coins className="size-3.5 text-amber-500" />
+                  {simulatedCredits.toLocaleString("id-ID")}
+                </Badge>
                 <Button type="button" variant={workspaceMode === "beginner" ? "default" : "outline"} onClick={() => setWorkspaceMode("beginner")}>
                   Beginner mode
                 </Button>
@@ -524,568 +667,662 @@ export function VideoEditorStudio() {
                 </Button>
               </div>
             </div>
-          </CardHeader>
-          <CardContent className="grid gap-4 md:grid-cols-3">
-            <div className="rounded-xl border bg-muted/30 p-4">
-              <p className="text-xs uppercase text-muted-foreground">Feature coverage</p>
-              <p className="mt-2 text-3xl font-semibold">{VIDEO_FEATURE_COUNT}</p>
-              <p className="mt-1 text-sm text-muted-foreground">Fitur video terdaftar di workspace ini.</p>
-            </div>
-            <div className="rounded-xl border bg-muted/30 p-4">
-              <p className="text-xs uppercase text-muted-foreground">Starter features</p>
-              <p className="mt-2 text-3xl font-semibold">{VIDEO_STARTER_FEATURE_COUNT}</p>
-              <p className="mt-1 text-sm text-muted-foreground">Dikurasi agar user baru tetap cepat paham.</p>
-            </div>
-            <div className="rounded-xl border bg-muted/30 p-4">
-              <p className="text-xs uppercase text-muted-foreground">Simulation credits</p>
-              <div className="mt-2 flex items-center gap-2 text-3xl font-semibold">
-                <Coins className="size-7 text-amber-500" />
-                {simulatedCredits.toLocaleString("id-ID")}
-              </div>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Total kredit terpakai: {totalCreditsSpent.toLocaleString("id-ID")}
-              </p>
-              <div className="mt-2 flex gap-2">
-                <Button type="button" size="sm" variant="outline" onClick={() => setSimulatedCredits(DEFAULT_SIM_CREDITS)}>
-                  Isi ulang
-                </Button>
-                <Badge variant="secondary">Simulasi lokal</Badge>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+          </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Quick Start Pemula</CardTitle>
-            <CardDescription>
-              Jalur aman: import, potong, tambahkan subtitle, beri efek, lalu export ke sosial media.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3 text-sm">
-            <div className="rounded-lg border p-3">
-              <p className="font-medium">1. Import media</p>
-              <p className="text-muted-foreground">Video, audio, gambar, GIF, subtitle, LUT, dan aset produksi lain masuk ke media pool.</p>
-            </div>
-            <div className="rounded-lg border p-3">
-              <p className="font-medium">2. Edit timeline</p>
-              <p className="text-muted-foreground">Gunakan trim, split, drag-drop, marker, dan multi-track untuk menyusun edit awal.</p>
-            </div>
-            <div className="rounded-lg border p-3">
-              <p className="font-medium">3. Tingkatkan hasil</p>
-              <p className="text-muted-foreground">Tambahkan color correction, subtitle otomatis, AI reframing, audio cleanup, dan export preset.</p>
-            </div>
-            <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 text-primary">{featureMessage}</div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1.45fr)_360px]">
-        <div className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Import & Ingest</CardTitle>
-              <CardDescription>
-                Dropzone tetap cepat untuk visual media, sementara import profile menangani format studio yang lebih luas.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <FileDropzone
-                accept="video/*,image/*"
-                multiple
-                label="Upload video, foto, atau GIF untuk langsung masuk ke timeline"
-                onUpload={(url, file) => {
-                  const kind = inferClipKind(file);
-                  registerAsset(file, "dropzone");
-                  if (kind) {
-                    appendClip(url, file.name, kind);
-                  }
-                }}
-              />
-
-              <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-5">
-                {VIDEO_IMPORT_PROFILES.map((profile) => (
-                  <Button key={profile.id} type="button" variant="outline" className="h-auto justify-start py-3 text-left" onClick={() => triggerImport(profile.id)}>
-                    <Plus className="mr-2 size-4" /> {profile.label}
-                  </Button>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-4">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <CardTitle>Multi-track Timeline</CardTitle>
-                  <CardDescription>
-                    Track visual dan audio dipisah agar pemula tetap jelas, tetapi pondasinya sudah siap untuk multi-track editing.
-                  </CardDescription>
-                </div>
-                <Badge variant="secondary">Durasi total {formatTime(timelineDuration)}</Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {tracks.length ? (
-                tracks.map((track) => (
-                  <div key={track.track} className="rounded-xl border p-3">
-                    <div className="mb-3 flex items-center justify-between gap-2">
-                      <p className="font-medium">{track.label}</p>
-                      <Badge variant="outline">{track.clips.length} clip</Badge>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {track.clips.map((clip) => (
-                        <button
-                          key={clip.id}
-                          type="button"
-                          onClick={() => setSelected(clip.id)}
-                          className={cn(
-                            "min-w-[160px] rounded-lg border px-3 py-2 text-left text-xs transition",
-                            selected === clip.id ? "border-primary bg-primary/10" : "hover:border-primary/40",
-                          )}
-                        >
-                          <div className="truncate font-medium">{clip.name}</div>
-                          <div className="mt-1 text-[11px] text-muted-foreground">
-                            {clip.kind.toUpperCase()} • {formatTime(clip.start)} - {formatTime(clip.end)} • ×{clip.speed}
-                          </div>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p className="text-sm text-muted-foreground">Belum ada clip. Import media terlebih dulu untuk mulai menyusun timeline.</p>
-              )}
-            </CardContent>
-          </Card>
-
-          {active ? (
-            <Card>
-              <CardHeader>
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div>
-                    <CardTitle>Preview & Clip Controls</CardTitle>
-                    <CardDescription>
-                      Simulasi trim, split, speed, marker, dan preview clip aktif berlangsung di sini.
-                    </CardDescription>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline">{formatTime(playhead)} / {formatTime(active.end)}</Badge>
-                    <Button type="button" variant="ghost" size="sm" onClick={() => void removeSelectedClip()}>
-                      <Trash2 className="mr-1 size-3.5" /> Hapus media
-                    </Button>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {activeIsVideo ? (
-                  <video
-                    ref={videoRef}
-                    src={active.url}
-                    controls
-                    className="max-h-80 w-full rounded-xl bg-black"
-                    onLoadedMetadata={(event) => {
-                      const duration = event.currentTarget.duration;
-                      if (!Number.isFinite(duration) || duration <= 0) return;
-                      setClips((prev) =>
-                        prev.map((clip) => {
-                          if (clip.id !== active.id) return clip;
-                          const safeStart = Math.min(clip.start, Math.max(duration - 0.1, 0));
-                          const nextEnd = clip.end > 0 ? Math.min(clip.end, duration) : duration;
-                          return { ...clip, start: safeStart, end: Math.max(nextEnd, safeStart + 0.1) };
-                        }),
-                      );
-                    }}
-                    onTimeUpdate={(event) => {
-                      const current = event.currentTarget.currentTime;
-                      if (!active) return;
-                      if (current >= active.end) {
-                        event.currentTarget.currentTime = active.start;
-                        if (!isPlaying) event.currentTarget.pause();
-                        setPlayhead(active.start);
-                        return;
-                      }
-                      setPlayhead(current);
-                    }}
-                  />
-                ) : activeIsAudio ? (
-                  <div className="space-y-3 rounded-xl border bg-muted/20 p-4">
-                    <audio
-                      ref={audioRef}
-                      src={active.url}
-                      controls
-                      className="w-full"
-                      onTimeUpdate={(event) => {
-                        const current = event.currentTarget.currentTime;
-                        if (!active) return;
-                        if (current >= active.end) {
-                          event.currentTarget.currentTime = active.start;
-                          if (!isPlaying) event.currentTarget.pause();
-                          setPlayhead(active.start);
-                          return;
-                        }
-                        setPlayhead(current);
-                      }}
-                    />
-                    <p className="text-sm text-muted-foreground">Audio clip aktif. Track audio mendukung trimming, speed, fade, dan simulasi mixing.</p>
-                  </div>
-                ) : (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={active.url} alt={active.name} className="max-h-80 w-full rounded-xl object-contain" />
-                )}
-
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label>Trim start (s)</Label>
-                    <input
-                      type="range"
-                      min={0}
-                      max={Math.max(active.end - 0.1, 0)}
-                      step={0.1}
-                      value={active.start}
-                      className="w-full"
-                      onChange={(event) =>
-                        setClips((prev) => prev.map((clip) => (clip.id === active.id ? { ...clip, start: Number(event.target.value) } : clip)))
-                      }
-                    />
-                    <p className="text-xs text-muted-foreground">{formatTime(active.start)}</p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>Trim end (s)</Label>
-                    <input
-                      type="range"
-                      min={Math.min(active.start + 0.1, active.end)}
-                      max={Math.max(active.end, active.start + 0.1)}
-                      step={0.1}
-                      value={active.end}
-                      className="w-full"
-                      onChange={(event) => {
-                        const nextEnd = Number(event.target.value);
-                        setClips((prev) =>
-                          prev.map((clip) =>
-                            clip.id === active.id ? { ...clip, end: Math.max(nextEnd, clip.start + 0.1) } : clip,
-                          ),
-                        );
-                      }}
-                    />
-                    <p className="text-xs text-muted-foreground">{formatTime(active.end)}</p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>Speed {active.speed}x</Label>
-                    <input
-                      type="range"
-                      min={0.5}
-                      max={2}
-                      step={0.1}
-                      value={active.speed}
-                      className="w-full"
-                      onChange={(event) =>
-                        setClips((prev) => prev.map((clip) => (clip.id === active.id ? { ...clip, speed: Number(event.target.value) } : clip)))
-                      }
-                    />
-                  </div>
-
-                  <div className="flex flex-wrap gap-2 self-end">
-                    <Button type="button" variant="outline" size="sm" onClick={splitClip} disabled={active.end - active.start < 0.2}>
-                      <SplitSquareVertical className="mr-1 size-3.5" /> Split
-                    </Button>
-                    <Button type="button" variant="outline" size="sm" onClick={togglePreview}>
-                      {isPlaying ? <Pause className="mr-1 size-3.5" /> : <Play className="mr-1 size-3.5" />}
-                      {isPlaying ? "Pause preview" : "Play preview"}
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        setPlayhead(active.start);
-                        if (videoRef.current) videoRef.current.currentTime = active.start;
-                        if (audioRef.current) audioRef.current.currentTime = active.start;
-                      }}
-                    >
-                      Kembali ke awal
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ) : null}
-
-          {outputUrl ? (
-            <Card>
-              <CardHeader>
-                <CardTitle>Export Preview</CardTitle>
-                <CardDescription>Hasil simulasi export dari timeline aktif.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <video src={outputUrl} controls className="w-full rounded-xl" />
-                <a href={outputUrl} download="clartas-export.webm" className="inline-flex text-sm text-primary hover:underline">
-                  <Download className="mr-1 inline size-4" /> Download
-                </a>
-              </CardContent>
-            </Card>
-          ) : null}
-        </div>
-
-        <div className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Media Pool & Asset Manager</CardTitle>
-              <CardDescription>
-                Menyatukan media browser, pool, tagging, metadata, dan pencarian dalam satu panel yang tetap ringan.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="relative">
-                <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                <Input value={assetQuery} onChange={(event) => setAssetQuery(event.target.value)} placeholder="Cari media, tag, subtitle, LUT, atau asset studio" className="pl-9" />
-              </div>
-              <div className="grid gap-2 sm:grid-cols-2">
-                <div className="rounded-lg border p-3 text-sm">
-                  <div className="flex items-center gap-2 font-medium"><FolderSearch className="size-4 text-primary" /> Media Browser</div>
-                  <p className="mt-1 text-muted-foreground">Jelajah aset lokal, cloud, smart bin, dan duplikasi.</p>
-                </div>
-                <div className="rounded-lg border p-3 text-sm">
-                  <div className="flex items-center gap-2 font-medium"><Tags className="size-4 text-primary" /> Metadata & Tagging</div>
-                  <p className="mt-1 text-muted-foreground">Tag otomatis mempermudah media search, smart bin, dan asset manager.</p>
-                </div>
-              </div>
-              <div className="max-h-[360px] space-y-2 overflow-auto pr-1">
-                {filteredAssets.length ? (
-                  filteredAssets.map((asset) => (
-                    <div key={asset.id} className="rounded-lg border p-3 text-sm">
-                      <div className="flex items-start justify-between gap-3">
+          <div className="grid gap-0 xl:grid-cols-[280px_minmax(0,1fr)_340px]">
+                <aside className="border-b bg-muted/10 xl:border-b-0 xl:border-r">
+                  <div className="space-y-4 p-4">
+                    <div className="rounded-2xl border bg-background p-3 shadow-[0_12px_24px_-22px_rgba(0,0,0,0.22)]">
+                      <div className="flex items-center justify-between gap-2">
                         <div>
-                          <p className="font-medium">{asset.name}</p>
-                          <p className="text-xs text-muted-foreground">{asset.kind} • {formatFileSize(asset.size)} • {asset.source === "dropzone" ? "quick upload" : "library import"}</p>
+                          <p className="text-sm font-medium">Project Bin</p>
+                          <p className="text-xs text-muted-foreground">Semua media dan langkah kerja terkumpul di satu panel.</p>
                         </div>
-                        <Badge variant={asset.timelineReady ? "secondary" : "outline"}>{asset.timelineReady ? "timeline-ready" : "library-only"}</Badge>
+                        <Badge variant="outline">{assets.length} aset</Badge>
                       </div>
-                      <div className="mt-2 flex flex-wrap gap-1">
-                        {asset.tags.map((tag) => (
-                          <Badge key={tag} variant="outline">{tag}</Badge>
-                        ))}
+                      <div className="mt-3 grid gap-2">
+                        <Button type="button" size="sm" className="justify-start" onClick={() => triggerImport("video")}>
+                          <Plus className="mr-2 size-4" /> Import video
+                        </Button>
+                        <Button type="button" size="sm" variant="outline" className="justify-start" onClick={() => triggerImport("audio")}>
+                          <Plus className="mr-2 size-4" /> Import audio
+                        </Button>
+                        <Button type="button" size="sm" variant="outline" className="justify-start" onClick={() => triggerImport("image")}>
+                          <Plus className="mr-2 size-4" /> Import gambar
+                        </Button>
                       </div>
                     </div>
-                  ))
-                ) : (
-                  <p className="text-sm text-muted-foreground">Belum ada aset cocok dengan pencarian ini.</p>
-                )}
-              </div>
-            </CardContent>
-          </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Render & Delivery</CardTitle>
-              <CardDescription>Preset export sosial media dan simulasi akselerasi hardware tersedia dari satu panel.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="space-y-1">
-                <Label>Format export</Label>
-                <Select value={aspectRatio} onChange={(event) => setAspectRatio(event.target.value)}>
-                  <option value="9:16">TikTok / Reels / Shorts (9:16)</option>
-                  <option value="1:1">Instagram Feed (1:1)</option>
-                  <option value="16:9">YouTube (16:9)</option>
-                  <option value="4:5">Marketplace (4:5)</option>
-                </Select>
-              </div>
-              <div className="grid gap-2 sm:grid-cols-2">
-                <Badge variant="outline">H.264</Badge>
-                <Badge variant="outline">H.265</Badge>
-                <Badge variant="outline">ProRes</Badge>
-                <Badge variant="outline">DNxHR</Badge>
-                <Badge variant="outline">GPU rendering</Badge>
-                <Badge variant="outline">Background rendering</Badge>
-              </div>
-              <Button className="w-full" onClick={exportVideo} disabled={!clips.length || processing}>
-                {processing ? <Loader2 className="size-4 animate-spin" /> : <Film className="size-4" />}
-                Export video
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Credit Simulation</CardTitle>
-              <CardDescription>Kredit sangat besar, tetapi tiap fitur tetap mensimulasikan biaya pemakaian.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {activeFeature ? (
-                <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 text-sm">
-                  <p className="font-medium">Fitur aktif terakhir</p>
-                  <p className="mt-1">{activeFeature.name}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">{activeFeature.summary}</p>
-                </div>
-              ) : null}
-              <div className="space-y-2">
-                {creditEvents.length ? (
-                  creditEvents.map((event) => (
-                    <div key={event.id} className="flex items-center justify-between rounded-lg border p-3 text-sm">
-                      <div>
-                        <p className="font-medium">{event.featureName}</p>
-                        <p className="text-xs text-muted-foreground">{new Date(event.at).toLocaleTimeString("id-ID")}</p>
+                    <div className="rounded-2xl border bg-background p-3 shadow-[0_12px_24px_-22px_rgba(0,0,0,0.22)]">
+                      <div className="mb-3 flex items-center justify-between gap-2">
+                        <p className="text-sm font-medium">Langkah Editing</p>
+                        <Badge variant="secondary">{focusedStepMeta?.title ?? "Flow"}</Badge>
                       </div>
-                      <span className="font-semibold text-destructive">-{event.credits}</span>
+                      <div className="space-y-2">
+                        {workflowSteps.map((step, index) => {
+                          const status = workflowStep > index ? "done" : workflowStep === index ? "active" : "idle";
+                          const flowStepId =
+                            step.id === "step-import"
+                              ? "import"
+                              : step.id === "step-timeline"
+                                ? "timeline"
+                                : step.id === "step-polish"
+                                  ? "polish"
+                                  : "export";
+                          return (
+                            <button
+                              key={step.id}
+                              type="button"
+                              onClick={() => setFocusedStep(flowStepId)}
+                              className={cn(
+                                "flex w-full items-center justify-between rounded-lg border px-3 py-2 text-left transition",
+                                status === "active" && "border-primary bg-primary/10",
+                                status === "done" && "border-emerald-500/40 bg-emerald-500/10",
+                                isBeginner && focusedStep === flowStepId && "ring-1 ring-primary/50",
+                              )}
+                            >
+                              <div>
+                                <p className="text-sm font-medium">{index + 1}. {step.title}</p>
+                                <p className="text-xs text-muted-foreground">{step.subtitle}</p>
+                              </div>
+                              <ChevronRight className="size-4 text-muted-foreground" />
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
-                  ))
-                ) : (
-                  <p className="text-sm text-muted-foreground">Belum ada pemakaian fitur yang disimulasikan.</p>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
 
-      <div className="grid gap-4 xl:grid-cols-[260px_minmax(0,1fr)]">
-        <Card className="h-fit">
-          <CardHeader>
-            <CardTitle>Feature Navigator</CardTitle>
-            <CardDescription>Pilih area kerja, cari fitur, lalu aktifkan simulasi penggunaan kredit.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="relative">
-              <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-              <Input value={catalogQuery} onChange={(event) => setCatalogQuery(event.target.value)} placeholder="Cari fitur video, AI, audio, VFX..." className="pl-9" />
-            </div>
-            <div className="grid gap-2">
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                onClick={() =>
-                  simulateFeatureBatch(
-                    VIDEO_FEATURES.filter((feature) => feature.categoryId === selectedCategory),
-                    `Semua fitur ${VIDEO_FEATURE_CATEGORIES.find((category) => category.id === selectedCategory)?.title ?? "kategori"}`,
-                  )
-                }
-              >
-                Simulasi semua fitur kategori aktif
-              </Button>
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                onClick={() => simulateFeatureBatch(VIDEO_FEATURES, "Seluruh katalog fitur video")}
-              >
-                Simulasi seluruh fitur
-              </Button>
-            </div>
-            <div className="space-y-2">
-              {VIDEO_FEATURE_CATEGORIES.map((category) => {
-                const total = VIDEO_FEATURES.filter((feature) => feature.categoryId === category.id).length;
-                const visible = filteredFeatures.filter((feature) => feature.categoryId === category.id).length;
-                return (
-                  <button
-                    key={category.id}
-                    type="button"
-                    onClick={() => setSelectedCategory(category.id)}
-                    className={cn(
-                      "w-full rounded-lg border px-3 py-2 text-left transition",
-                      selectedCategory === category.id ? "border-primary bg-primary/10" : "hover:border-primary/30",
+                    <div className="rounded-2xl border bg-background p-3 shadow-[0_12px_24px_-22px_rgba(0,0,0,0.22)]">
+                      <p className="text-sm font-medium">Status Bimbingan</p>
+                      <p className="mt-2 text-sm text-muted-foreground">{featureMessage}</p>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        <Button type="button" size="sm" variant="outline" onClick={continueToTimeline}>
+                          Review timeline
+                        </Button>
+                        <Button type="button" size="sm" variant="outline" onClick={continueToPolish} disabled={!selected}>
+                          Buka preview
+                        </Button>
+                        <Button type="button" size="sm" variant="outline" onClick={continueToExport} disabled={!clips.length}>
+                          Siapkan export
+                        </Button>
+                      </div>
+                    </div>
+
+                    {(workspaceMode === "studio" || showAdvancedPanels) ? (
+                      <div className="rounded-2xl border bg-background p-3 shadow-[0_12px_24px_-22px_rgba(0,0,0,0.22)]">
+                        <div className="mb-3 flex items-center justify-between gap-2">
+                          <p className="text-sm font-medium">Tool Shelf</p>
+                          <Badge variant="outline">{selectedCategoryMeta.title}</Badge>
+                        </div>
+                        <div className="relative mb-3">
+                          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                          <Input value={catalogQuery} onChange={(event) => setCatalogQuery(event.target.value)} placeholder="Cari tool..." className="pl-9" />
+                        </div>
+                        <div className="space-y-2">
+                          {VIDEO_FEATURE_CATEGORIES.map((category) => (
+                            <button
+                              key={category.id}
+                              type="button"
+                              onClick={() => setSelectedCategory(category.id)}
+                              className={cn(
+                                "w-full rounded-lg border px-3 py-2 text-left text-sm transition",
+                                selectedCategory === category.id ? "border-primary bg-primary/10" : "hover:border-primary/30",
+                              )}
+                            >
+                              <div className="flex items-center justify-between gap-2">
+                                <span>{category.title}</span>
+                                <Badge variant="outline">{VIDEO_FEATURES.filter((feature) => feature.categoryId === category.id).length}</Badge>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="rounded-2xl border bg-background p-3 shadow-[0_12px_24px_-22px_rgba(0,0,0,0.22)]">
+                        <p className="text-sm font-medium">Mode Pemula Aktif</p>
+                        <p className="mt-2 text-sm text-muted-foreground">Panel tool lanjutan disembunyikan supaya fokus tetap ke import, timeline, preview, lalu export.</p>
+                        <Button type="button" size="sm" variant="outline" className="mt-3 w-full" onClick={() => setShowAdvancedPanels(true)}>
+                          Tampilkan tool lanjutan
+                        </Button>
+                      </div>
                     )}
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-sm font-medium">{category.title}</span>
-                      <Badge variant="outline">{visible}/{total}</Badge>
-                    </div>
-                    <p className="mt-1 text-xs text-muted-foreground">{category.summary}</p>
-                  </button>
-                );
-              })}
-            </div>
-            <div className="rounded-lg border p-3 text-xs text-muted-foreground">
-              <p className="font-medium text-foreground">Ringkasan Cakupan Fitur</p>
-              <div className="mt-2 space-y-1">
-                {categoryCoverage.map((item) => (
-                  <p key={item.id}>
-                    {item.title}: {item.total} fitur ({item.starter} starter, {item.advanced} studio)
-                  </p>
-                ))}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+                  </div>
+                </aside>
 
-        <div className="space-y-4">
-          {workspaceMode === "beginner" ? (
-            <Card>
-              <CardHeader>
-                <CardTitle>Starter Paths</CardTitle>
-                <CardDescription>Fitur dasar ditampilkan lebih dulu. Ganti ke Studio mode kapan pun untuk melihat semuanya sekaligus.</CardDescription>
-              </CardHeader>
-              <CardContent className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                {starterGroups.map(({ category, features }) => (
-                  <div key={category.id} className="rounded-xl border p-4">
-                    <div className="mb-3 flex items-center justify-between gap-2">
-                      <div>
-                        <p className="font-medium">{category.title}</p>
-                        <p className="text-xs text-muted-foreground">{category.summary}</p>
+                <section className="min-w-0 border-b xl:border-b-0 xl:border-r">
+                  <div className="grid gap-0 xl:grid-rows-[auto_auto_1fr]">
+                    <div className="grid gap-0 border-b md:grid-cols-2">
+                      <div className="border-b bg-background p-4 md:border-b-0 md:border-r">
+                        <div className="mb-3 flex items-center justify-between gap-2">
+                          <div>
+                            <p className="text-sm font-medium">Source Monitor</p>
+                            <p className="text-xs text-muted-foreground">Clip yang sedang dipilih untuk ditinjau.</p>
+                          </div>
+                          <Badge variant="outline">{active ? active.kind.toUpperCase() : "EMPTY"}</Badge>
+                        </div>
+
+                        <div className="overflow-hidden rounded-xl border bg-black/95">
+                          {active ? (
+                            activeIsVideo ? (
+                              <video
+                                ref={videoRef}
+                                src={active.url}
+                                controls
+                                className="aspect-video w-full bg-black object-contain"
+                                onLoadedMetadata={(event) => {
+                                  const duration = event.currentTarget.duration;
+                                  if (!Number.isFinite(duration) || duration <= 0) return;
+                                  setClips((prev) =>
+                                    prev.map((clip) => {
+                                      if (clip.id !== active.id) return clip;
+                                      const safeStart = Math.min(clip.start, Math.max(duration - 0.1, 0));
+                                      const nextEnd = clip.end > 0 ? Math.min(clip.end, duration) : duration;
+                                      return { ...clip, start: safeStart, end: Math.max(nextEnd, safeStart + 0.1) };
+                                    }),
+                                  );
+                                }}
+                                onTimeUpdate={(event) => {
+                                  const current = event.currentTarget.currentTime;
+                                  if (!active) return;
+                                  if (current >= active.end) {
+                                    event.currentTarget.currentTime = active.start;
+                                    if (!isPlaying) event.currentTarget.pause();
+                                    setPlayhead(active.start);
+                                    return;
+                                  }
+                                  setPlayhead(current);
+                                }}
+                              />
+                            ) : activeIsAudio ? (
+                              <div className="flex aspect-video items-center justify-center p-6">
+                                <audio
+                                  ref={audioRef}
+                                  src={active.url}
+                                  controls
+                                  className="w-full"
+                                  onTimeUpdate={(event) => {
+                                    const current = event.currentTarget.currentTime;
+                                    if (!active) return;
+                                    if (current >= active.end) {
+                                      event.currentTarget.currentTime = active.start;
+                                      if (!isPlaying) event.currentTarget.pause();
+                                      setPlayhead(active.start);
+                                      return;
+                                    }
+                                    setPlayhead(current);
+                                  }}
+                                />
+                              </div>
+                            ) : (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img src={active.url} alt={active.name} className="aspect-video w-full object-contain" />
+                            )
+                          ) : (
+                            <div className="flex aspect-video items-center justify-center p-6 text-center text-sm text-white/70">
+                              Pilih clip dari timeline atau media pool untuk memulai preview.
+                            </div>
+                          )}
+                        </div>
                       </div>
-                      <Badge variant="secondary">Starter</Badge>
+
+                      <div className="bg-background p-4">
+                        <div className="mb-3 flex items-center justify-between gap-2">
+                          <div>
+                            <p className="text-sm font-medium">Program Monitor</p>
+                            <p className="text-xs text-muted-foreground">Preview hasil sequence atau hasil export.</p>
+                          </div>
+                          <Badge variant="secondary">{outputUrl ? "READY" : "TIMELINE"}</Badge>
+                        </div>
+
+                        <div className="overflow-hidden rounded-xl border bg-black/95">
+                          {outputUrl ? (
+                            <video src={outputUrl} controls className="aspect-video w-full bg-black object-contain" />
+                          ) : active ? (
+                            activeIsAudio ? (
+                              <div className="flex aspect-video items-center justify-center p-6 text-center text-sm text-white/70">
+                                Preview sequence audio aktif. Lanjutkan ke export untuk melihat hasil akhir.
+                              </div>
+                            ) : (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img src={active.url} alt={`${active.name} preview`} className="aspect-video w-full object-contain" />
+                            )
+                          ) : (
+                            <div className="flex aspect-video items-center justify-center p-6 text-center text-sm text-white/70">
+                              Hasil sequence akan muncul di sini setelah Anda memilih clip atau melakukan export.
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                    <div className="space-y-2">
-                      {features.map((feature) => (
-                        <button
-                          key={feature.id}
-                          type="button"
-                          className="flex w-full items-center justify-between rounded-lg border px-3 py-2 text-left text-sm hover:border-primary/40"
-                          onClick={() => {
-                            setSelectedCategory(feature.categoryId);
-                            simulateFeature(feature);
-                          }}
-                        >
-                          <span>{feature.name}</span>
-                          <Badge variant="outline">{feature.credits}</Badge>
-                        </button>
+
+                    <div className="border-b bg-muted/20 p-4">
+                      <div className="flex flex-wrap items-center justify-between gap-3">
+                        <div>
+                          <p className="text-sm font-medium">Quick Flow Bar</p>
+                          <p className="text-xs text-muted-foreground">Urutan aman untuk pemula: import, review timeline, polish, lalu export.</p>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <Button type="button" size="sm" variant="outline" onClick={() => { setFocusedStep("import"); triggerImport("video"); }}>
+                            Import
+                          </Button>
+                          <Button type="button" size="sm" variant="outline" onClick={continueToTimeline}>
+                            Timeline
+                          </Button>
+                          <Button type="button" size="sm" variant="outline" onClick={continueToPolish} disabled={!selected}>
+                            Preview
+                          </Button>
+                          <Button type="button" size="sm" onClick={continueToExport} disabled={!clips.length}>
+                            Export
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-muted/10 p-4">
+                      <div className="rounded-2xl border bg-background shadow-[0_12px_24px_-22px_rgba(0,0,0,0.18)]">
+                        <div className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3">
+                          <div>
+                            <p className="text-sm font-medium">Timeline</p>
+                            <p className="text-xs text-muted-foreground">Area utama untuk menyusun klip sebelum dipoles dan diexport.</p>
+                          </div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <Badge variant="outline">Durasi {formatTime(timelineDuration)}</Badge>
+                            <Badge variant="outline">{tracks.length || 0} track</Badge>
+                          </div>
+                        </div>
+
+                        <div className="space-y-3 p-4">
+                          {showImportPanel ? (
+                            <div className="rounded-xl border border-dashed bg-background p-4">
+                              <p className="mb-3 text-sm font-medium">Import cepat ke project bin</p>
+                              <FileDropzone
+                                accept="video/*,image/*"
+                                multiple
+                                label="Upload video, foto, atau GIF untuk langsung masuk ke timeline"
+                                onUpload={(url, file) => {
+                                  const kind = inferClipKind(file);
+                                  registerAsset(file, "dropzone");
+                                  if (kind) {
+                                    appendClip(url, file.name, kind);
+                                  }
+                                  if (workspaceMode === "beginner") {
+                                    continueToTimeline();
+                                  }
+                                }}
+                              />
+                            </div>
+                          ) : null}
+
+                          {workspaceMode === "beginner" && clips.length ? (
+                            <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-primary/20 bg-primary/5 p-3">
+                              <div>
+                                <p className="text-sm font-medium text-primary">Review urutan clip dulu</p>
+                                <p className="text-xs text-muted-foreground">Setelah urutan benar dan clip dipilih, lanjutkan ke preview.</p>
+                              </div>
+                              <Button type="button" onClick={continueToPolish} disabled={!selected}>
+                                Lanjut ke preview
+                              </Button>
+                            </div>
+                          ) : null}
+
+                          {tracks.length ? (
+                            tracks.map((track) => (
+                              <div key={track.track} className="rounded-xl border bg-background p-3">
+                                <div className="mb-3 flex items-center justify-between gap-2">
+                                  <p className="text-sm font-medium">{track.label}</p>
+                                  <Badge variant="outline">{track.clips.length} clip</Badge>
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                  {track.clips.map((clip) => (
+                                    <button
+                                      key={clip.id}
+                                      type="button"
+                                      onClick={() => {
+                                        setSelected(clip.id);
+                                        if (workspaceMode === "beginner") {
+                                          setFeatureMessage("Clip dipilih. Jika urutan sudah benar, lanjutkan ke tahap preview.");
+                                        }
+                                      }}
+                                      className={cn(
+                                        "min-w-[180px] rounded-lg border px-3 py-2 text-left text-xs transition",
+                                        selected === clip.id ? "border-primary bg-primary/10" : "hover:border-primary/40",
+                                      )}
+                                    >
+                                      <div className="truncate font-medium">{clip.name}</div>
+                                      <div className="mt-1 text-[11px] text-muted-foreground">
+                                        {clip.kind.toUpperCase()} • {formatTime(clip.start)} - {formatTime(clip.end)} • ×{clip.speed}
+                                      </div>
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="rounded-xl border bg-background p-8 text-center text-sm text-muted-foreground">
+                              Belum ada clip. Mulai dari import media di kiri atau gunakan dropzone di atas timeline.
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <aside className="bg-muted/10">
+                  <div className="space-y-4 p-4">
+                    <div className="rounded-2xl border bg-background p-3 shadow-[0_12px_24px_-22px_rgba(0,0,0,0.22)]">
+                      <div className="flex items-center justify-between gap-2">
+                        <div>
+                          <p className="text-sm font-medium">Inspector</p>
+                          <p className="text-xs text-muted-foreground">Kontrol konteks untuk clip atau tahap export.</p>
+                        </div>
+                        <Badge variant="outline">{focusedStepMeta?.title ?? "Inspector"}</Badge>
+                      </div>
+
+                      {showPolishPanel && active ? (
+                        <div className="mt-4 space-y-4">
+                          <div className="rounded-lg border bg-muted/20 p-3">
+                            <div className="flex items-center justify-between gap-2">
+                              <div>
+                                <p className="text-sm font-medium">Clip aktif</p>
+                                <p className="text-xs text-muted-foreground">{active.name}</p>
+                              </div>
+                              <Button type="button" variant="ghost" size="sm" onClick={() => void removeSelectedClip()}>
+                                <Trash2 className="mr-1 size-3.5" /> Hapus
+                              </Button>
+                            </div>
+                            <p className="mt-2 text-xs text-muted-foreground">{formatTime(playhead)} / {formatTime(active.end)}</p>
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label>Trim start (s)</Label>
+                            <input
+                              type="range"
+                              min={0}
+                              max={Math.max(active.end - 0.1, 0)}
+                              step={0.1}
+                              value={active.start}
+                              className="w-full"
+                              onChange={(event) =>
+                                setClips((prev) => prev.map((clip) => (clip.id === active.id ? { ...clip, start: Number(event.target.value) } : clip)))
+                              }
+                            />
+                            <p className="text-xs text-muted-foreground">{formatTime(active.start)}</p>
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label>Trim end (s)</Label>
+                            <input
+                              type="range"
+                              min={Math.min(active.start + 0.1, active.end)}
+                              max={Math.max(active.end, active.start + 0.1)}
+                              step={0.1}
+                              value={active.end}
+                              className="w-full"
+                              onChange={(event) => {
+                                const nextEnd = Number(event.target.value);
+                                setClips((prev) =>
+                                  prev.map((clip) =>
+                                    clip.id === active.id ? { ...clip, end: Math.max(nextEnd, clip.start + 0.1) } : clip,
+                                  ),
+                                );
+                              }}
+                            />
+                            <p className="text-xs text-muted-foreground">{formatTime(active.end)}</p>
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label>Speed {active.speed}x</Label>
+                            <input
+                              type="range"
+                              min={0.5}
+                              max={2}
+                              step={0.1}
+                              value={active.speed}
+                              className="w-full"
+                              onChange={(event) =>
+                                setClips((prev) => prev.map((clip) => (clip.id === active.id ? { ...clip, speed: Number(event.target.value) } : clip)))
+                              }
+                            />
+                          </div>
+
+                          <div className="grid gap-2">
+                            <Button type="button" variant="outline" size="sm" onClick={splitClip} disabled={active.end - active.start < 0.2}>
+                              <SplitSquareVertical className="mr-1 size-3.5" /> Split clip
+                            </Button>
+                            <Button type="button" variant="outline" size="sm" onClick={togglePreview}>
+                              {isPlaying ? <Pause className="mr-1 size-3.5" /> : <Play className="mr-1 size-3.5" />}
+                              {isPlaying ? "Pause preview" : "Play preview"}
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                setPlayhead(active.start);
+                                if (videoRef.current) videoRef.current.currentTime = active.start;
+                                if (audioRef.current) audioRef.current.currentTime = active.start;
+                              }}
+                            >
+                              Kembali ke awal
+                            </Button>
+                            {workspaceMode === "beginner" ? (
+                              <Button type="button" size="sm" onClick={continueToExport}>
+                                Lanjut ke export
+                              </Button>
+                            ) : null}
+                          </div>
+                        </div>
+                      ) : showExportPanel ? (
+                        <div className="mt-4 space-y-4">
+                          <div className="space-y-1">
+                            <Label>Format export</Label>
+                            <Select value={aspectRatio} onChange={(event) => setAspectRatio(event.target.value)}>
+                              <option value="9:16">TikTok / Reels / Shorts (9:16)</option>
+                              <option value="1:1">Instagram Feed (1:1)</option>
+                              <option value="16:9">YouTube (16:9)</option>
+                              <option value="4:5">Marketplace (4:5)</option>
+                            </Select>
+                          </div>
+
+                          <div className="grid gap-2 sm:grid-cols-2">
+                            <Badge variant="outline">H.264</Badge>
+                            <Badge variant="outline">H.265</Badge>
+                            <Badge variant="outline">ProRes</Badge>
+                            <Badge variant="outline">DNxHR</Badge>
+                            <Badge variant="outline">GPU rendering</Badge>
+                            <Badge variant="outline">Background rendering</Badge>
+                          </div>
+
+                          <Button className="w-full" onClick={exportVideo} disabled={!clips.length || processing}>
+                            {processing ? <Loader2 className="size-4 animate-spin" /> : <Film className="size-4" />}
+                            Export video
+                          </Button>
+
+                          {outputUrl ? (
+                            <a href={outputUrl} download="clartas-export.webm" className="inline-flex text-sm text-primary hover:underline">
+                              <Download className="mr-1 inline size-4" /> Download hasil export
+                            </a>
+                          ) : (
+                            <p className="text-xs text-muted-foreground">Setelah export selesai, hasil akan tampil di Program Monitor.</p>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="mt-4 rounded-lg border bg-muted/20 p-4 text-sm text-muted-foreground">
+                          Pilih clip di timeline untuk membuka kontrol edit, atau pindah ke tahap export untuk menyiapkan hasil akhir.
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="rounded-2xl border bg-background p-3 shadow-[0_12px_24px_-22px_rgba(0,0,0,0.22)]">
+                      <div className="mb-3 flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2 font-medium"><FolderSearch className="size-4 text-primary" /> Media Browser</div>
+                        <Badge variant="outline">{filteredAssets.length}</Badge>
+                      </div>
+                      <div className="relative mb-3">
+                        <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                        <Input value={assetQuery} onChange={(event) => setAssetQuery(event.target.value)} placeholder="Cari media atau tag" className="pl-9" />
+                      </div>
+                      <div className="max-h-[280px] space-y-2 overflow-auto pr-1">
+                        {filteredAssets.length ? (
+                          filteredAssets.map((asset) => (
+                            <div key={asset.id} className="rounded-lg border p-3 text-sm">
+                              <div className="flex items-start justify-between gap-3">
+                                <div>
+                                  <p className="font-medium">{asset.name}</p>
+                                  <p className="text-xs text-muted-foreground">{asset.kind} • {formatFileSize(asset.size)} • {asset.source === "dropzone" ? "quick upload" : "library import"}</p>
+                                </div>
+                                <Badge variant={asset.timelineReady ? "secondary" : "outline"}>{asset.timelineReady ? "timeline-ready" : "library-only"}</Badge>
+                              </div>
+                              <div className="mt-2 flex flex-wrap gap-1">
+                                {asset.tags.map((tag) => (
+                                  <Badge key={tag} variant="outline">{tag}</Badge>
+                                ))}
+                              </div>
+                            </div>
+                          ))
+                        ) : (
+                          <p className="text-sm text-muted-foreground">Belum ada aset cocok dengan pencarian ini.</p>
+                        )}
+                      </div>
+                    </div>
+
+                    {(workspaceMode === "studio" || showAdvancedPanels) ? (
+                      <div className="rounded-xl border bg-background p-3">
+                        <div className="mb-3 flex items-center justify-between gap-2">
+                          <p className="text-sm font-medium">Simulasi & Fitur</p>
+                          <Badge variant="secondary">{selectedCategoryMeta.title}</Badge>
+                        </div>
+
+                        {activeFeature ? (
+                          <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 text-sm">
+                            <p className="font-medium">Fitur aktif terakhir</p>
+                            <p className="mt-1">{activeFeature.name}</p>
+                            <p className="mt-1 text-xs text-muted-foreground">{activeFeature.summary}</p>
+                          </div>
+                        ) : null}
+
+                        <div className="mt-3 grid gap-2">
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            onClick={() =>
+                              simulateFeatureBatch(
+                                VIDEO_FEATURES.filter((feature) => feature.categoryId === selectedCategory),
+                                `Semua fitur ${selectedCategoryMeta.title}`,
+                              )
+                            }
+                          >
+                            Simulasi kategori aktif
+                          </Button>
+                          <Button type="button" size="sm" variant="outline" onClick={() => simulateFeatureBatch(VIDEO_FEATURES, "Seluruh katalog fitur video")}>
+                            Simulasi seluruh fitur
+                          </Button>
+                        </div>
+
+                        <div className="mt-3 space-y-2">
+                          {groupedFeatures.map(({ category, features }) => (
+                            <div key={category.id} className="rounded-lg border p-3">
+                              <div className="mb-2 flex items-center justify-between gap-2">
+                                <p className="text-sm font-medium">{category.title}</p>
+                                <Badge variant="outline">{features.length}</Badge>
+                              </div>
+                              <div className="space-y-2">
+                                {features.slice(0, workspaceMode === "beginner" ? 3 : 6).map((feature) => (
+                                  <button
+                                    key={feature.id}
+                                    type="button"
+                                    className="flex w-full items-center justify-between rounded-lg border px-3 py-2 text-left text-xs hover:border-primary/40"
+                                    onClick={() => simulateFeature(feature)}
+                                  >
+                                    <span>{feature.name}</span>
+                                    <Badge variant="outline">{feature.credits}</Badge>
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+                </aside>
+              </div>
+        </CardContent>
+      </Card>
+
+      {(workspaceMode === "studio" || showAdvancedPanels) ? (
+        <div className="grid gap-4 xl:grid-cols-[260px_minmax(0,1fr)]">
+          <Card className="h-fit">
+                <CardHeader>
+                  <CardTitle>Feature Navigator</CardTitle>
+                  <CardDescription>Pilih area kerja, cari fitur, lalu aktifkan simulasi penggunaan kredit.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="rounded-lg border p-3 text-xs text-muted-foreground">
+                    <p className="font-medium text-foreground">Ringkasan Cakupan Fitur</p>
+                    <div className="mt-2 space-y-1">
+                      {categoryCoverage.map((item) => (
+                        <p key={item.id}>
+                          {item.title}: {item.total} fitur ({item.starter} starter, {item.advanced} studio)
+                        </p>
                       ))}
                     </div>
                   </div>
-                ))}
-              </CardContent>
-            </Card>
-          ) : null}
+                </CardContent>
+          </Card>
 
-          {groupedFeatures.map(({ category, features }) => (
-            <Card key={category.id}>
-              <CardHeader>
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div>
-                    <CardTitle>{category.title}</CardTitle>
-                    <CardDescription>{category.summary}</CardDescription>
-                  </div>
-                  <Badge variant="secondary">{features.length} fitur</Badge>
-                </div>
-              </CardHeader>
-              <CardContent className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-                {features.map((feature) => (
-                  <div key={feature.id} className="rounded-xl border p-4">
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <p className="font-medium">{feature.name}</p>
-                        <p className="mt-1 text-xs text-muted-foreground">{feature.summary}</p>
+          <div className="space-y-4">
+            <Card>
+                  <CardHeader>
+                    <CardTitle>Starter Paths</CardTitle>
+                    <CardDescription>Shortcut tools untuk pemula yang ingin akses cepat ke tool dasar.</CardDescription>
+                  </CardHeader>
+                  <CardContent className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    {starterGroups.map(({ category, features }) => (
+                      <div key={category.id} className="rounded-xl border p-4">
+                        <div className="mb-3 flex items-center justify-between gap-2">
+                          <div>
+                            <p className="font-medium">{category.title}</p>
+                            <p className="text-xs text-muted-foreground">{category.summary}</p>
+                          </div>
+                          <Badge variant="secondary">Starter</Badge>
+                        </div>
+                        <div className="space-y-2">
+                          {features.map((feature) => (
+                            <button
+                              key={feature.id}
+                              type="button"
+                              className="flex w-full items-center justify-between rounded-lg border px-3 py-2 text-left text-sm hover:border-primary/40"
+                              onClick={() => {
+                                setSelectedCategory(feature.categoryId);
+                                simulateFeature(feature);
+                              }}
+                            >
+                              <span>{feature.name}</span>
+                              <Badge variant="outline">{feature.credits}</Badge>
+                            </button>
+                          ))}
+                        </div>
                       </div>
-                      <Badge variant={feature.level === "starter" ? "secondary" : "outline"}>{feature.level === "starter" ? "Pemula" : "Studio"}</Badge>
-                    </div>
-                    <div className="mt-3 flex items-center justify-between gap-2 text-xs text-muted-foreground">
-                      <span>{feature.categoryTitle}</span>
-                      <span>{feature.credits} kredit</span>
-                    </div>
-                    <div className="mt-3 flex gap-2">
-                      <Button type="button" size="sm" className="flex-1" onClick={() => simulateFeature(feature)}>
-                        <Sparkles className="mr-1 size-3.5" /> Gunakan simulasi
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          ))}
+                    ))}
+                  </CardContent>
+                </Card>
+
+            {workspaceMode === "beginner" && filteredFeatures.length > visibleFeatureCards.length ? (
+              <Card>
+                <CardContent className="flex flex-wrap items-center justify-between gap-3 p-4">
+                  <p className="text-sm text-muted-foreground">
+                    Menampilkan {visibleFeatureCards.length} fitur paling relevan untuk pemula dari total {filteredFeatures.length} fitur di kategori ini.
+                  </p>
+                  <Button type="button" variant="outline" onClick={() => setWorkspaceMode("studio")}>Buka semua di Studio mode</Button>
+                </CardContent>
+              </Card>
+            ) : null}
+          </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 }
