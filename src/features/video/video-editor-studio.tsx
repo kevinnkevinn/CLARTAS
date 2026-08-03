@@ -70,6 +70,32 @@ interface CreditEvent {
   at: number;
 }
 
+interface ToolSettingsSnapshot {
+  intensity: number;
+  mix: number;
+  scale: number;
+  rotation: number;
+  blur: number;
+  brightness: number;
+  contrast: number;
+  saturation: number;
+  hue: number;
+  volume: number;
+  speed: number;
+  transitionDuration: number;
+  textValue: string;
+  feather: number;
+}
+
+interface AppliedToolEntry {
+  id: string;
+  featureId: string;
+  featureName: string;
+  preset: ToolPreset;
+  appliedAt: number;
+  settings: ToolSettingsSnapshot;
+}
+
 type ToolPreset = "generic" | "speed" | "transform" | "color" | "effects" | "audio" | "text" | "transition" | "mask";
 
 const DEFAULT_IMAGE_DURATION = 3;
@@ -173,6 +199,7 @@ export function VideoEditorStudio() {
   const [assetQuery, setAssetQuery] = useState("");
   const [simulatedCredits, setSimulatedCredits] = useState(DEFAULT_SIM_CREDITS);
   const [creditEvents, setCreditEvents] = useState<CreditEvent[]>([]);
+  const [clipToolStacks, setClipToolStacks] = useState<Record<string, AppliedToolEntry[]>>({});
   const [activeFeatureId, setActiveFeatureId] = useState<string | null>(null);
   const [featureMessage, setFeatureMessage] = useState(
     "Mode editing aktif. Fokuskan alur: import, susun timeline, preview, lalu export.",
@@ -270,6 +297,10 @@ export function VideoEditorStudio() {
   const activeFeature = useMemo(
     () => VIDEO_FEATURES.find((feature) => feature.id === activeFeatureId) ?? null,
     [activeFeatureId],
+  );
+  const activeClipToolStack = useMemo(
+    () => (active ? (clipToolStacks[active.id] ?? []) : []),
+    [active, clipToolStacks],
   );
 
   const quickFeatures = useMemo(() => filteredFeatures.slice(0, 18), [filteredFeatures]);
@@ -656,6 +687,72 @@ export function VideoEditorStudio() {
       continueToExport();
       setFeatureMessage("Tool export dijalankan. Pilih format dan lanjut render.");
     }
+  }
+
+  function snapshotToolSettings(): ToolSettingsSnapshot {
+    return {
+      intensity: toolIntensity,
+      mix: toolMix,
+      scale: toolScale,
+      rotation: toolRotation,
+      blur: toolBlur,
+      brightness: toolBrightness,
+      contrast: toolContrast,
+      saturation: toolSaturation,
+      hue: toolHue,
+      volume: toolVolume,
+      speed: toolSpeed,
+      transitionDuration: toolTransitionDuration,
+      textValue: toolTextValue,
+      feather: toolFeather,
+    };
+  }
+
+  function applyToolSettings(snapshot: ToolSettingsSnapshot) {
+    setToolIntensity(snapshot.intensity);
+    setToolMix(snapshot.mix);
+    setToolScale(snapshot.scale);
+    setToolRotation(snapshot.rotation);
+    setToolBlur(snapshot.blur);
+    setToolBrightness(snapshot.brightness);
+    setToolContrast(snapshot.contrast);
+    setToolSaturation(snapshot.saturation);
+    setToolHue(snapshot.hue);
+    setToolVolume(snapshot.volume);
+    setToolSpeed(snapshot.speed);
+    setToolTransitionDuration(snapshot.transitionDuration);
+    setToolTextValue(snapshot.textValue);
+    setToolFeather(snapshot.feather);
+  }
+
+  function appendToolToActiveClipStack(feature: VideoFeatureDefinition) {
+    if (!active) return;
+    const entry: AppliedToolEntry = {
+      id: crypto.randomUUID(),
+      featureId: feature.id,
+      featureName: feature.name,
+      preset: activeToolPreset,
+      appliedAt: Date.now(),
+      settings: snapshotToolSettings(),
+    };
+    setClipToolStacks((prev) => {
+      const current = prev[active.id] ?? [];
+      return {
+        ...prev,
+        [active.id]: [entry, ...current].slice(0, 24),
+      };
+    });
+  }
+
+  function removeToolFromActiveClipStack(entryId: string) {
+    if (!active) return;
+    setClipToolStacks((prev) => {
+      const current = prev[active.id] ?? [];
+      return {
+        ...prev,
+        [active.id]: current.filter((entry) => entry.id !== entryId),
+      };
+    });
   }
 
   const selectedImportProfile = VIDEO_IMPORT_PROFILES.find((profile) => profile.id === pendingImportProfileId)!;
@@ -1477,6 +1574,7 @@ export function VideoEditorStudio() {
                   if (activeToolPreset === "speed" || activeToolPreset === "audio") {
                     setClips((prev) => prev.map((clip) => (clip.id === active.id ? { ...clip, speed: toolSpeed } : clip)));
                   }
+                  appendToolToActiveClipStack(activeFeature);
                   setFeatureMessage(`${activeFeature.name} diterapkan ke ${active.name} dengan intensity ${toolIntensity}% dan mix ${toolMix}%.`);
                 }}
               >
@@ -1507,6 +1605,56 @@ export function VideoEditorStudio() {
               </Button>
               <Badge variant="secondary">Preset: {activeToolPreset}</Badge>
             </div>
+
+            {active ? (
+              <div className="mt-4 rounded-xl border bg-background/70 p-3">
+                <div className="mb-2 flex items-center justify-between gap-2">
+                  <p className="text-sm font-medium">Effect Stack • {active.name}</p>
+                  <Badge variant="outline">{activeClipToolStack.length}</Badge>
+                </div>
+
+                {activeClipToolStack.length ? (
+                  <div className="max-h-44 space-y-2 overflow-auto pr-1">
+                    {activeClipToolStack.map((entry) => (
+                      <div key={entry.id} className="rounded-lg border p-2">
+                        <div className="flex items-center justify-between gap-2">
+                          <div>
+                            <p className="text-xs font-medium">{entry.featureName}</p>
+                            <p className="text-[11px] text-muted-foreground">{entry.preset} • {new Date(entry.appliedAt).toLocaleTimeString("id-ID")}</p>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="outline"
+                              className="h-7 px-2 text-[11px]"
+                              onClick={() => {
+                                setActiveToolPreset(entry.preset);
+                                applyToolSettings(entry.settings);
+                                setFeatureMessage(`${entry.featureName} dimuat ulang dari effect stack.`);
+                              }}
+                            >
+                              Pakai
+                            </Button>
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="ghost"
+                              className="h-7 px-2 text-[11px]"
+                              onClick={() => removeToolFromActiveClipStack(entry.id)}
+                            >
+                              Hapus
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-xs text-muted-foreground">Belum ada tool yang diterapkan ke clip ini.</p>
+                )}
+              </div>
+            ) : null}
           </div>
 
           <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto]">
