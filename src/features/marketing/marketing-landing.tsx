@@ -139,59 +139,74 @@ export async function MarketingLanding({ locale }: { locale: string }) {
                 <div className="relative h-px bg-gradient-to-r from-transparent via-border/70 to-transparent dark:via-white/12" />
 
                 <section id="why" className="relative px-5 py-8 md:px-8 md:py-10 lg:px-12">
-                  <div className="mb-5 flex items-center gap-3">
-                    <div className="flex size-12 items-center justify-center rounded-2xl bg-white/10 text-white">
-                      <Box className="size-6" strokeWidth={1.6} />
-                    </div>
-                    <span className="rounded-full border border-border/70 px-3 py-1 text-xs font-medium text-foreground/75 dark:border-white/15 dark:text-white/75">
-                      {t("stack.title")}
-                    </span>
-                    <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">{t("security.title")}</span>
-                  </div>
+                  <div className="absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent dark:via-white/10" />
+                  <div className="absolute -left-8 top-4 size-40 rounded-full bg-primary/10 blur-3xl dark:bg-primary/20" />
+                  <div className="absolute right-0 top-10 size-56 rounded-full bg-sky-400/10 blur-3xl dark:bg-sky-400/15" />
 
-                  <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-                    <div className="space-y-5">
-                      <h2 className="max-w-xl font-display text-3xl font-bold tracking-tight md:text-4xl">
-                        {t("value.title")}
-                      </h2>
-                      <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base dark:text-slate-300">
-                        {t("stack.description")}
-                      </p>
-
-                      <div className="grid gap-3 sm:grid-cols-3">
-                        {values.map(({ key, icon: Icon }) => (
-                          <div key={key} className="rounded-2xl bg-muted/35 p-4 transition hover:bg-muted/55 dark:bg-white/[0.03] dark:hover:bg-white/[0.05]">
-                            <div className="mb-3 flex size-9 items-center justify-center rounded-xl bg-primary/10 text-primary dark:bg-white/10 dark:text-white">
-                              <Icon className="size-4" />
-                            </div>
-                            <p className="text-sm font-semibold text-foreground dark:text-white">{t(`value.items.${key}.title`)}</p>
-                            <p className="mt-1 text-xs leading-relaxed text-muted-foreground dark:text-slate-300">
-                              {t(`value.items.${key}.description`)}
-                            </p>
-                          </div>
-                        ))}
+                  <div className="relative overflow-hidden rounded-[2rem] border border-border/60 bg-gradient-to-br from-background via-background to-muted/35 p-6 shadow-[0_32px_80px_-50px_rgba(0,0,0,0.18)] md:p-8 lg:p-10 dark:border-white/10 dark:from-[#060b17] dark:via-[#090f1c] dark:to-[#10182a] dark:shadow-[0_32px_80px_-50px_rgba(0,0,0,0.6)]">
+                    <div className="mb-6 flex flex-wrap items-center gap-3">
+                      <div className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary dark:bg-white/10 dark:text-white">
+                        <Box className="size-6" strokeWidth={1.6} />
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="rounded-full border border-border/70 bg-background/80 px-3 py-1 text-xs font-medium text-foreground/75 backdrop-blur dark:border-white/15 dark:bg-white/10 dark:text-white/75">
+                          {t("stack.title")}
+                        </span>
+                        <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">
+                          {t("security.title")}
+                        </span>
                       </div>
                     </div>
 
-                    <div className="space-y-3">
-                      <p className="text-sm leading-relaxed text-muted-foreground dark:text-slate-300">{t("security.description")}</p>
+                    <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+                      <div className="space-y-6">
+                        <div className="space-y-4">
+                          <h2 className="max-w-2xl font-display text-3xl font-bold tracking-tight text-foreground md:text-4xl dark:text-white">
+                            {t("value.title")}
+                          </h2>
+                          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base dark:text-slate-300">
+                            {t("stack.description")}
+                          </p>
+                        </div>
 
-                      <div className="space-y-3">
-                        {features.slice(0, 4).map(({ key, icon: Icon }) => (
-                          <Link
-                            key={key}
-                            href={FEATURE_LINKS[key] ?? "/editor"}
-                            className="group flex items-center justify-between rounded-2xl bg-muted/35 p-4 transition hover:bg-muted/55 dark:bg-white/[0.03] dark:hover:bg-white/[0.06]"
-                          >
-                            <span className="inline-flex items-center gap-3 text-sm text-foreground/90 dark:text-white/90">
-                              <span className="flex size-8 items-center justify-center rounded-xl bg-primary/10 text-primary dark:bg-white/10 dark:text-white">
+                        <div className="grid gap-3 sm:grid-cols-3">
+                          {values.map(({ key, icon: Icon }) => (
+                            <div
+                              key={key}
+                              className="rounded-2xl border border-border/50 bg-background/80 p-4 shadow-[0_16px_32px_-26px_rgba(0,0,0,0.22)] transition hover:-translate-y-0.5 hover:border-primary/20 hover:bg-background md:p-5 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-[0_16px_32px_-26px_rgba(0,0,0,0.55)] dark:hover:bg-white/[0.06]"
+                            >
+                              <div className="mb-3 flex size-9 items-center justify-center rounded-xl bg-primary/10 text-primary dark:bg-white/10 dark:text-white">
                                 <Icon className="size-4" />
+                              </div>
+                              <p className="text-sm font-semibold text-foreground dark:text-white">{t(`value.items.${key}.title`)}</p>
+                              <p className="mt-1 text-xs leading-relaxed text-muted-foreground dark:text-slate-300">
+                                {t(`value.items.${key}.description`)}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="space-y-4 rounded-[1.75rem] border border-border/50 bg-background/70 p-4 backdrop-blur md:p-5 dark:border-white/10 dark:bg-white/[0.03]">
+                        <p className="text-sm leading-relaxed text-muted-foreground dark:text-slate-300">{t("security.description")}</p>
+
+                        <div className="space-y-3">
+                          {features.slice(0, 4).map(({ key, icon: Icon }) => (
+                            <Link
+                              key={key}
+                              href={FEATURE_LINKS[key] ?? "/editor"}
+                              className="group flex items-center justify-between rounded-2xl border border-border/50 bg-white/70 p-4 transition hover:-translate-y-0.5 hover:border-primary/25 hover:bg-white shadow-[0_16px_32px_-28px_rgba(0,0,0,0.24)] dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.06]"
+                            >
+                              <span className="inline-flex items-center gap-3 text-sm text-foreground/90 dark:text-white/90">
+                                <span className="flex size-8 items-center justify-center rounded-xl bg-primary/10 text-primary dark:bg-white/10 dark:text-white">
+                                  <Icon className="size-4" />
+                                </span>
+                                {t(`${key}.title`)}
                               </span>
-                              {t(`${key}.title`)}
-                            </span>
-                            <ArrowUpRight className="size-4 text-foreground/65 transition group-hover:text-foreground dark:text-white/65 dark:group-hover:text-white" />
-                          </Link>
-                        ))}
+                              <ArrowUpRight className="size-4 text-foreground/65 transition group-hover:text-foreground dark:text-white/65 dark:group-hover:text-white" />
+                            </Link>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
