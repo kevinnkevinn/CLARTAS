@@ -18,12 +18,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
+import { useRouter } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { env } from "@/lib/env";
 import { pollAIJob } from "@/lib/ai/poll-job";
 import { useLiteMode } from "@/lib/lite-mode/context";
 import { LITE_EDITOR_TOOL_IDS } from "@/lib/lite-mode/config";
-import { clearPendingMedia, loadPendingMedia } from "@/lib/pending-media";
+import { clearPendingMedia, loadPendingMedia, savePendingMedia } from "@/lib/pending-media";
 import { uploadMediaFile } from "@/lib/upload-client";
 import { getUploadErrorMessage } from "@/lib/upload-errors";
 import { runClientAI, playTextToSpeech, type ClientAIAction } from "@/features/lab/client-ai";
@@ -50,6 +51,7 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
   const tf = useTranslations("editor.fields");
   const tCredits = useTranslations("credits");
   const { lite } = useLiteMode();
+  const router = useRouter();
 
   const [tool, setTool] = useState<EditorTool>(getToolById(initialTool));
   const [uploading, setUploading] = useState(false);
@@ -105,6 +107,14 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
         setError(getUploadErrorMessage(result.error, uploadAccept));
         return;
       }
+
+      await savePendingMedia(result.data.signedUrl, result.data.kind, file);
+
+      if (result.data.kind === "video") {
+        router.push("/video-editor");
+        return;
+      }
+
       setInputUrl(result.data.signedUrl);
       setInputKind(result.data.kind);
       setAssetId(result.data.assetId ?? null);
@@ -125,6 +135,7 @@ export function EditorStudio({ initialTool, credits }: EditorStudioProps) {
     setOutput(null);
     setError(null);
     await clearPendingMedia("image");
+    await clearPendingMedia("video");
   }
 
   function handleFileDrop(e: React.DragEvent) {
