@@ -32,12 +32,10 @@ import {
   VIDEO_FEATURE_COUNT,
   VIDEO_FEATURES,
   VIDEO_IMPORT_PROFILES,
-  VIDEO_STARTER_FEATURE_COUNT,
   type VideoFeatureCategoryId,
   type VideoFeatureDefinition,
 } from "./video-feature-catalog";
 
-type WorkspaceMode = "beginner" | "studio";
 type ClipKind = "video" | "image" | "audio" | "gif";
 type FlowStep = "import" | "timeline" | "polish" | "export";
 
@@ -133,7 +131,6 @@ export function VideoEditorStudio() {
   const [processing, setProcessing] = useState(false);
   const [playhead, setPlayhead] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [workspaceMode, setWorkspaceMode] = useState<WorkspaceMode>("beginner");
   const [selectedCategory, setSelectedCategory] = useState<VideoFeatureCategoryId>(DEFAULT_CATEGORY);
   const [catalogQuery, setCatalogQuery] = useState("");
   const [assetQuery, setAssetQuery] = useState("");
@@ -141,9 +138,8 @@ export function VideoEditorStudio() {
   const [creditEvents, setCreditEvents] = useState<CreditEvent[]>([]);
   const [activeFeatureId, setActiveFeatureId] = useState<string | null>(null);
   const [featureMessage, setFeatureMessage] = useState(
-    "Mode Beginner aktif. Fitur dasar diprioritaskan, semua fitur tetap tersedia lewat Studio mode.",
+    "Mode editing aktif. Fokuskan alur: import, susun timeline, preview, lalu export.",
   );
-  const [showAdvancedPanels, setShowAdvancedPanels] = useState(false);
   const [focusedStep, setFocusedStep] = useState<FlowStep>("import");
   const [timelineReviewed, setTimelineReviewed] = useState(false);
   const [assets, setAssets] = useState<ImportedAsset[]>([]);
@@ -182,12 +178,11 @@ export function VideoEditorStudio() {
   const filteredFeatures = useMemo(() => {
     const query = catalogQuery.trim().toLowerCase();
     return VIDEO_FEATURES.filter((feature) => {
-      if (workspaceMode === "beginner" && feature.level !== "starter") return false;
       if (feature.categoryId !== selectedCategory) return false;
       if (!query) return true;
       return `${feature.name} ${feature.categoryTitle} ${feature.summary}`.toLowerCase().includes(query);
     });
-  }, [catalogQuery, selectedCategory, workspaceMode]);
+  }, [catalogQuery, selectedCategory]);
 
   const categoryCoverage = useMemo(
     () =>
@@ -226,18 +221,13 @@ export function VideoEditorStudio() {
     return "export";
   }, [active, clips.length, outputUrl, timelineReviewed]);
 
-  const visibleFeatureCards = useMemo(() => {
-    if (workspaceMode === "studio") return filteredFeatures;
-    return filteredFeatures.slice(0, 10);
-  }, [filteredFeatures, workspaceMode]);
-
   const groupedFeatures = useMemo(
     () =>
       VIDEO_FEATURE_CATEGORIES.map((category) => ({
         category,
-        features: visibleFeatureCards.filter((feature) => feature.categoryId === category.id),
+        features: filteredFeatures.filter((feature) => feature.categoryId === category.id),
       })).filter((group) => group.features.length > 0),
-    [visibleFeatureCards],
+    [filteredFeatures],
   );
 
   const starterGroups = useMemo(
@@ -520,8 +510,7 @@ export function VideoEditorStudio() {
 
   const selectedImportProfile = VIDEO_IMPORT_PROFILES.find((profile) => profile.id === pendingImportProfileId)!;
 
-  const showNavigator = workspaceMode === "studio" || showAdvancedPanels;
-  const isBeginner = workspaceMode === "beginner";
+  const isBeginner = true;
 
   const showImportPanel = !isBeginner || focusedStep === "import";
   const showTimelinePanel = !isBeginner || focusedStep === "timeline";
@@ -529,9 +518,8 @@ export function VideoEditorStudio() {
   const showExportPanel = !isBeginner || focusedStep === "export";
 
   useEffect(() => {
-    if (workspaceMode !== "beginner") return;
     setFocusedStep(recommendedStep);
-  }, [recommendedStep, workspaceMode]);
+  }, [recommendedStep]);
 
   function continueToTimeline() {
     setFocusedStep("timeline");
@@ -587,24 +575,6 @@ export function VideoEditorStudio() {
     return step.id === "step-export";
   });
 
-  const workspaceStages = [
-    {
-      title: "1. Import",
-      description: "Masukkan video, foto, atau audio ke project bin.",
-      active: focusedStep === "import" || workflowStep === 0,
-    },
-    {
-      title: "2. Susun",
-      description: "Atur clip di timeline dan pilih item yang mau dipoles.",
-      active: focusedStep === "timeline" || focusedStep === "polish" || workflowStep === 2,
-    },
-    {
-      title: "3. Selesai",
-      description: "Preview hasil, lalu render atau export final.",
-      active: focusedStep === "export" || workflowStep === 4,
-    },
-  ] as const;
-
   return (
     <div className="space-y-6">
       <input
@@ -634,43 +604,29 @@ export function VideoEditorStudio() {
                     Mulai dari import, susun clip, poles hasil, lalu export. Fitur tetap lengkap, tapi urutannya dibuat lebih jelas.
                   </p>
                 </div>
-                <div className="grid gap-2 sm:grid-cols-3">
-                  {workspaceStages.map((stage) => (
-                    <div
-                      key={stage.title}
-                      className={cn(
-                        "rounded-2xl border px-3 py-3 transition",
-                        stage.active
-                          ? "border-primary/30 bg-primary/10 shadow-[0_12px_24px_-20px_rgba(234,88,12,0.55)]"
-                          : "border-border/60 bg-background/80",
-                      )}
-                    >
-                      <p className="text-sm font-semibold">{stage.title}</p>
-                      <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{stage.description}</p>
-                    </div>
-                  ))}
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="rounded-full px-3 py-1 text-xs">
+                    Tahap aktif: {focusedStepMeta?.title ?? "Import"}
+                  </Badge>
+                  <Button type="button" size="sm" variant="outline" onClick={() => setFocusedStep("import")}>Import</Button>
+                  <Button type="button" size="sm" variant="outline" onClick={continueToTimeline}>Timeline</Button>
+                  <Button type="button" size="sm" variant="outline" onClick={continueToPolish} disabled={!selected}>Preview</Button>
+                  <Button type="button" size="sm" onClick={continueToExport} disabled={!clips.length}>Export</Button>
                 </div>
               </div>
 
               <div className="flex flex-wrap items-center gap-2 lg:justify-end">
                 <Badge variant="outline">{VIDEO_FEATURE_COUNT} fitur</Badge>
-                <Badge variant="outline">{VIDEO_STARTER_FEATURE_COUNT} starter</Badge>
                 <Badge variant="secondary" className="gap-1">
                   <Coins className="size-3.5 text-amber-500" />
                   {simulatedCredits.toLocaleString("id-ID")}
                 </Badge>
-                <Button type="button" variant={workspaceMode === "beginner" ? "default" : "outline"} onClick={() => setWorkspaceMode("beginner")}>
-                  Beginner mode
-                </Button>
-                <Button type="button" variant={workspaceMode === "studio" ? "default" : "outline"} onClick={() => setWorkspaceMode("studio")}>
-                  Studio mode
-                </Button>
               </div>
             </div>
           </div>
 
-          <div className="grid gap-0 xl:grid-cols-[280px_minmax(0,1fr)_340px]">
-                <aside className="border-b bg-muted/10 xl:border-b-0 xl:border-r">
+              <div className={cn("grid gap-0", isBeginner ? "grid-cols-1" : "xl:grid-cols-[280px_minmax(0,1fr)_340px]")}>
+                <aside className={cn("border-b bg-muted/10 xl:border-b-0 xl:border-r", isBeginner && "hidden")}>
                   <div className="space-y-4 p-4">
                     <div className="rounded-2xl border bg-background p-3 shadow-[0_12px_24px_-22px_rgba(0,0,0,0.22)]">
                       <div className="flex items-center justify-between gap-2">
@@ -733,65 +689,44 @@ export function VideoEditorStudio() {
                     </div>
 
                     <div className="rounded-2xl border bg-background p-3 shadow-[0_12px_24px_-22px_rgba(0,0,0,0.22)]">
-                      <p className="text-sm font-medium">Status Bimbingan</p>
-                      <p className="mt-2 text-sm text-muted-foreground">{featureMessage}</p>
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        <Button type="button" size="sm" variant="outline" onClick={continueToTimeline}>
-                          Review timeline
-                        </Button>
-                        <Button type="button" size="sm" variant="outline" onClick={continueToPolish} disabled={!selected}>
-                          Buka preview
-                        </Button>
-                        <Button type="button" size="sm" variant="outline" onClick={continueToExport} disabled={!clips.length}>
-                          Siapkan export
-                        </Button>
+                      <div className="mb-3 flex items-center justify-between gap-2">
+                        <p className="text-sm font-medium">Tool Shelf</p>
+                        <Badge variant="outline">{selectedCategoryMeta.title}</Badge>
+                      </div>
+                      <div className="relative mb-3">
+                        <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                        <Input value={catalogQuery} onChange={(event) => setCatalogQuery(event.target.value)} placeholder="Cari tool..." className="pl-9" />
+                      </div>
+                      <div className="space-y-2">
+                        {VIDEO_FEATURE_CATEGORIES.map((category) => (
+                          <button
+                            key={category.id}
+                            type="button"
+                            onClick={() => setSelectedCategory(category.id)}
+                            className={cn(
+                              "w-full rounded-lg border px-3 py-2 text-left text-sm transition",
+                              selectedCategory === category.id ? "border-primary bg-primary/10" : "hover:border-primary/30",
+                            )}
+                          >
+                            <div className="flex items-center justify-between gap-2">
+                              <span>{category.title}</span>
+                              <Badge variant="outline">{VIDEO_FEATURES.filter((feature) => feature.categoryId === category.id).length}</Badge>
+                            </div>
+                          </button>
+                        ))}
                       </div>
                     </div>
-
-                    {(workspaceMode === "studio" || showAdvancedPanels) ? (
-                      <div className="rounded-2xl border bg-background p-3 shadow-[0_12px_24px_-22px_rgba(0,0,0,0.22)]">
-                        <div className="mb-3 flex items-center justify-between gap-2">
-                          <p className="text-sm font-medium">Tool Shelf</p>
-                          <Badge variant="outline">{selectedCategoryMeta.title}</Badge>
-                        </div>
-                        <div className="relative mb-3">
-                          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                          <Input value={catalogQuery} onChange={(event) => setCatalogQuery(event.target.value)} placeholder="Cari tool..." className="pl-9" />
-                        </div>
-                        <div className="space-y-2">
-                          {VIDEO_FEATURE_CATEGORIES.map((category) => (
-                            <button
-                              key={category.id}
-                              type="button"
-                              onClick={() => setSelectedCategory(category.id)}
-                              className={cn(
-                                "w-full rounded-lg border px-3 py-2 text-left text-sm transition",
-                                selectedCategory === category.id ? "border-primary bg-primary/10" : "hover:border-primary/30",
-                              )}
-                            >
-                              <div className="flex items-center justify-between gap-2">
-                                <span>{category.title}</span>
-                                <Badge variant="outline">{VIDEO_FEATURES.filter((feature) => feature.categoryId === category.id).length}</Badge>
-                              </div>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="rounded-2xl border bg-background p-3 shadow-[0_12px_24px_-22px_rgba(0,0,0,0.22)]">
-                        <p className="text-sm font-medium">Mode Pemula Aktif</p>
-                        <p className="mt-2 text-sm text-muted-foreground">Panel tool lanjutan disembunyikan supaya fokus tetap ke import, timeline, preview, lalu export.</p>
-                        <Button type="button" size="sm" variant="outline" className="mt-3 w-full" onClick={() => setShowAdvancedPanels(true)}>
-                          Tampilkan tool lanjutan
-                        </Button>
-                      </div>
-                    )}
                   </div>
                 </aside>
 
-                <section className="min-w-0 border-b xl:border-b-0 xl:border-r">
-                  <div className="grid gap-0 xl:grid-rows-[auto_auto_1fr]">
-                    <div className="grid gap-0 border-b md:grid-cols-2">
+                <section className={cn("min-w-0", !isBeginner && "border-b xl:border-b-0 xl:border-r")}>
+                  <div className="grid gap-0 xl:grid-rows-[auto_1fr]">
+                    <div
+                      className={cn(
+                        "grid gap-0 border-b md:grid-cols-2",
+                        isBeginner && focusedStep !== "polish" && focusedStep !== "export" && "hidden",
+                      )}
+                    >
                       <div className="border-b bg-background p-4 md:border-b-0 md:border-r">
                         <div className="mb-3 flex items-center justify-between gap-2">
                           <div>
@@ -895,30 +830,32 @@ export function VideoEditorStudio() {
                       </div>
                     </div>
 
-                    <div className="border-b bg-muted/20 p-4">
-                      <div className="flex flex-wrap items-center justify-between gap-3">
-                        <div>
-                          <p className="text-sm font-medium">Quick Flow Bar</p>
-                          <p className="text-xs text-muted-foreground">Urutan aman untuk pemula: import, review timeline, polish, lalu export.</p>
+                    <div
+                      className={cn(
+                        "bg-muted/10 p-4",
+                        isBeginner && (focusedStep === "polish" || focusedStep === "export") && "hidden",
+                      )}
+                    >
+                      {isBeginner ? (
+                        <div className="mb-3 rounded-xl border border-primary/20 bg-primary/5 p-3">
+                          <p className="text-sm font-medium">Alur pemula aktif</p>
+                          <p className="text-xs text-muted-foreground">
+                            Selesaikan tahap ini dulu, lalu lanjut ke tombol tahap berikutnya di atas.
+                          </p>
+                          <div className="mt-3 flex flex-wrap gap-2">
+                            <Button type="button" size="sm" onClick={() => triggerImport("video")}>
+                              <Plus className="mr-1 size-3.5" /> Import video
+                            </Button>
+                            <Button type="button" size="sm" variant="outline" onClick={() => triggerImport("audio")}>
+                              <Plus className="mr-1 size-3.5" /> Import audio
+                            </Button>
+                            <Button type="button" size="sm" variant="outline" onClick={() => triggerImport("image")}>
+                              <Plus className="mr-1 size-3.5" /> Import gambar
+                            </Button>
+                          </div>
                         </div>
-                        <div className="flex flex-wrap items-center gap-2">
-                          <Button type="button" size="sm" variant="outline" onClick={() => { setFocusedStep("import"); triggerImport("video"); }}>
-                            Import
-                          </Button>
-                          <Button type="button" size="sm" variant="outline" onClick={continueToTimeline}>
-                            Timeline
-                          </Button>
-                          <Button type="button" size="sm" variant="outline" onClick={continueToPolish} disabled={!selected}>
-                            Preview
-                          </Button>
-                          <Button type="button" size="sm" onClick={continueToExport} disabled={!clips.length}>
-                            Export
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
+                      ) : null}
 
-                    <div className="bg-muted/10 p-4">
                       <div className="rounded-2xl border bg-background shadow-[0_12px_24px_-22px_rgba(0,0,0,0.18)]">
                         <div className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3">
                           <div>
@@ -945,15 +882,13 @@ export function VideoEditorStudio() {
                                   if (kind) {
                                     appendClip(url, file.name, kind);
                                   }
-                                  if (workspaceMode === "beginner") {
-                                    continueToTimeline();
-                                  }
+                                  continueToTimeline();
                                 }}
                               />
                             </div>
                           ) : null}
 
-                          {workspaceMode === "beginner" && clips.length ? (
+                          {clips.length ? (
                             <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-primary/20 bg-primary/5 p-3">
                               <div>
                                 <p className="text-sm font-medium text-primary">Review urutan clip dulu</p>
@@ -979,9 +914,7 @@ export function VideoEditorStudio() {
                                       type="button"
                                       onClick={() => {
                                         setSelected(clip.id);
-                                        if (workspaceMode === "beginner") {
-                                          setFeatureMessage("Clip dipilih. Jika urutan sudah benar, lanjutkan ke tahap preview.");
-                                        }
+                                        setFeatureMessage("Clip dipilih. Jika urutan sudah benar, lanjutkan ke tahap preview.");
                                       }}
                                       className={cn(
                                         "min-w-[180px] rounded-lg border px-3 py-2 text-left text-xs transition",
@@ -1008,7 +941,12 @@ export function VideoEditorStudio() {
                   </div>
                 </section>
 
-                <aside className="bg-muted/10">
+                <aside
+                  className={cn(
+                    "bg-muted/10",
+                    isBeginner && focusedStep !== "polish" && focusedStep !== "export" && "hidden",
+                  )}
+                >
                   <div className="space-y-4 p-4">
                     <div className="rounded-2xl border bg-background p-3 shadow-[0_12px_24px_-22px_rgba(0,0,0,0.22)]">
                       <div className="flex items-center justify-between gap-2">
@@ -1106,11 +1044,9 @@ export function VideoEditorStudio() {
                             >
                               Kembali ke awal
                             </Button>
-                            {workspaceMode === "beginner" ? (
-                              <Button type="button" size="sm" onClick={continueToExport}>
-                                Lanjut ke export
-                              </Button>
-                            ) : null}
+                            <Button type="button" size="sm" onClick={continueToExport}>
+                              Lanjut ke export
+                            </Button>
                           </div>
                         </div>
                       ) : showExportPanel ? (
@@ -1187,8 +1123,7 @@ export function VideoEditorStudio() {
                       </div>
                     </div>
 
-                    {(workspaceMode === "studio" || showAdvancedPanels) ? (
-                      <div className="rounded-xl border bg-background p-3">
+                    <div className="rounded-xl border bg-background p-3">
                         <div className="mb-3 flex items-center justify-between gap-2">
                           <p className="text-sm font-medium">Simulasi & Fitur</p>
                           <Badge variant="secondary">{selectedCategoryMeta.title}</Badge>
@@ -1229,7 +1164,7 @@ export function VideoEditorStudio() {
                                 <Badge variant="outline">{features.length}</Badge>
                               </div>
                               <div className="space-y-2">
-                                {features.slice(0, workspaceMode === "beginner" ? 3 : 6).map((feature) => (
+                                {features.map((feature) => (
                                   <button
                                     key={feature.id}
                                     type="button"
@@ -1245,15 +1180,13 @@ export function VideoEditorStudio() {
                           ))}
                         </div>
                       </div>
-                    ) : null}
                   </div>
                 </aside>
               </div>
         </CardContent>
       </Card>
 
-      {(workspaceMode === "studio" || showAdvancedPanels) ? (
-        <div className="grid gap-4 xl:grid-cols-[260px_minmax(0,1fr)]">
+      <div className="grid gap-4 xl:grid-cols-[260px_minmax(0,1fr)]">
           <Card className="h-fit">
                 <CardHeader>
                   <CardTitle>Feature Navigator</CardTitle>
@@ -1265,7 +1198,7 @@ export function VideoEditorStudio() {
                     <div className="mt-2 space-y-1">
                       {categoryCoverage.map((item) => (
                         <p key={item.id}>
-                          {item.title}: {item.total} fitur ({item.starter} starter, {item.advanced} studio)
+                          {item.title}: {item.total} fitur ({item.starter} starter, {item.advanced} advanced)
                         </p>
                       ))}
                     </div>
@@ -1310,19 +1243,8 @@ export function VideoEditorStudio() {
                   </CardContent>
                 </Card>
 
-            {workspaceMode === "beginner" && filteredFeatures.length > visibleFeatureCards.length ? (
-              <Card>
-                <CardContent className="flex flex-wrap items-center justify-between gap-3 p-4">
-                  <p className="text-sm text-muted-foreground">
-                    Menampilkan {visibleFeatureCards.length} fitur paling relevan untuk pemula dari total {filteredFeatures.length} fitur di kategori ini.
-                  </p>
-                  <Button type="button" variant="outline" onClick={() => setWorkspaceMode("studio")}>Buka semua di Studio mode</Button>
-                </CardContent>
-              </Card>
-            ) : null}
           </div>
         </div>
-      ) : null}
     </div>
   );
 }
